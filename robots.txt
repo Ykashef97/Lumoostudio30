@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ykashef97.github.io/Lumoostudio30/sitemap.xml
