@@ -204,7 +204,7 @@ Possible next steps, only when the reason for them appears:
 | Our own web address (e.g. lumadesign.com) | Before printing it on cards or ads | An hour plus the yearly domain fee |
 | Online ordering and payment, real booking calendar | Requests outgrow WhatsApp and the portal | Weeks of development, monthly fees, plus privacy and refund policies |
 
-The free Supabase plan includes a 500 MB database and 1 GB of photo storage, far more than this site needs. A free project that is unused for a week is paused by Supabase and is restarted from its dashboard; regular visits keep it awake.
+The free Supabase plan includes a 500 MB database and 1 GB of photo storage, far more than this site needs. Supabase pauses a free project after a week with no activity. To prevent that, a small daily job on GitHub (Actions → "Keep database awake") asks the database for the website content once a day, like a visitor would. If GitHub ever emails that this job failed, or that it was turned off (GitHub stops scheduled jobs after 60 days without any commit), open the project on supabase.com and press **Restore project** if it is paused, then on GitHub open **Actions → Keep database awake** and press **Enable workflow** or **Run workflow**. While the database is paused the website still opens with its built-in content, and requests fall back to WhatsApp.
 
 ---
 
