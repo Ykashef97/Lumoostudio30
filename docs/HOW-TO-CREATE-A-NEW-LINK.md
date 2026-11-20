@@ -117,9 +117,15 @@ They still say `ykashef97.github.io/Lumoostudio30`. The site works without this 
 
 The easy way: tell Claude "the new address is `https://…`" and it updates all seven and publishes them.
 
+Two more things move with the link:
+
+- **The admin portal** is always the new link followed by `/admin/`, for example `https://ykashef97.github.io/lumadesign/admin/`. Sign in again there; the database, password and content stay the same, so nothing else needs changing.
+- **The daily keep-awake job** (Actions → "Keep database awake") travels with the project files. With Option A, open the new project on GitHub, click **Actions**, and press the green button to enable workflows if GitHub asks. With Option D nothing changes.
+
 Then check:
 
 - [ ] The new link opens on a phone and on a computer
+- [ ] The admin portal opens at the new link + `/admin/` and you can sign in
 - [ ] Sharing the link in WhatsApp shows the LumaDesign preview picture
 - [ ] "Request a quote" opens WhatsApp with the message written
 - [ ] A wrong address such as `…/abc` shows the "This page is in the dark" page

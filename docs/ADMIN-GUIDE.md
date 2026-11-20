@@ -6,7 +6,7 @@ The admin portal is where you change the website and handle consultation request
 - **Username:** `admin` (or the email `admin@yourwebsite.com`)
 - **Password:** the one shown once in the `create-admin` window. It is not saved anywhere else.
 
-First-time setup is in [ADMIN-SETUP.md](ADMIN-SETUP.md). The Google Sheet copy of requests is in [CONSULTATION-REQUESTS-SETUP.md](CONSULTATION-REQUESTS-SETUP.md).
+A short list of everything the admin and customers can do is in [FEATURES.md](FEATURES.md). First-time setup is in [ADMIN-SETUP.md](ADMIN-SETUP.md). The Google Sheet copy of requests is in [CONSULTATION-REQUESTS-SETUP.md](CONSULTATION-REQUESTS-SETUP.md).
 
 ## The one rule: save, preview, publish
 

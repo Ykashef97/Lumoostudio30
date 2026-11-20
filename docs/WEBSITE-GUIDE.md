@@ -2,7 +2,9 @@
 
 *Updated 20 November 2026 for the owners. No coding knowledge needed.*
 
-The LumaDesign website lets a visitor browse 54 lights, explore ideas room by room, design a lamp and turn it 360° in 3D, preview it in a photo of their own room, and then request a quote or book a consultation. It does not take payments.
+The LumaDesign website lets a visitor browse our lights (54 today), explore ideas room by room, design a lamp and turn it 360° in 3D, preview it in a photo of their own room, and then request a quote or book a consultation. It does not take payments. The owners change the content in a private admin portal.
+
+A full list of what the admin and the customer can do is in [FEATURES.md](FEATURES.md).
 
 **Contents**
 
@@ -14,7 +16,7 @@ The LumaDesign website lets a visitor browse 54 lights, explore ideas room by ro
 6. [How to change a photo](#6-how-to-change-a-photo)
 7. [How to change contact details, prices and text](#7-how-to-change-contact-details-prices-and-text)
 8. [How to preview and publish](#8-how-to-preview-and-publish)
-9. [Do we need a dashboard?](#9-do-we-need-a-dashboard)
+9. [The admin portal and what comes next](#9-the-admin-portal-and-what-comes-next)
 10. [Before launch checklist](#10-before-launch-checklist)
 
 ---
@@ -34,18 +36,18 @@ flowchart TD
     D --> F
     E --> G[Book a consultation<br/>about that design]
     F --> H[Request a quote]
-    G --> I[(Shared Google Sheet<br/>once it is set up)]
-    G -.until then.-> J
+    G --> I[(Database<br/>seen in the admin portal)]
+    G -.if the database is unreachable.-> J
     H --> J[WhatsApp message to us]
 ```
 
-Quote requests arrive as WhatsApp messages. Consultation requests arrive in a shared Google Sheet (see section 4); until that is set up, they also arrive by WhatsApp.
+Quote requests arrive as WhatsApp messages. Consultation requests are saved in the database and handled in the admin portal (see section 4).
 
 ---
 
 ## 2. The pages and what is on them
 
-The website has four pages. The menu at the top links to all of them and stays visible while scrolling.
+The website has four public pages. The menu at the top links to all of them and stays visible while scrolling. A fifth, private page is the admin portal at `/admin/`, for the owners only; search engines are told not to list it.
 
 | Page | Address | What the visitor does there |
 | --- | --- | --- |
@@ -58,10 +60,11 @@ The home page, from top to bottom:
 
 | Section | What the visitor does there |
 | --- | --- |
-| Top banner | Sees five room photos that change every few seconds, with two buttons: browse the collection, or request a quote |
+| Top banner | Sees room photos that change every few seconds (set in the portal), with two buttons: browse the collection, or request a quote |
 | Three shortcut cards | Chooses a starting point: browse, design a lamp, or try a light in their room |
 | Shop by space | Taps a room to open its page |
-| Collections | Browses all 54 designs (9 wall lights, 25 ceiling lights, 20 chandeliers), searches by name, opens a design for details, or taps the heart to save it |
+| Featured designs | Optional strip of hand-picked designs, shown only when the owners turn it on in the portal |
+| Collections | Browses all designs (54 today), filters by collection (wall lights, ceiling lights, chandeliers, or any collection the owners add), searches by name or reference, opens a design for details, or taps the heart to save it |
 | How it works | Reads the three steps: choose, customise, talk to us |
 | Design your lamp | Picks a design, size, finish and cord. The 3D model updates with every choice and can be turned all the way round, tilted and zoomed |
 | Try in your room | Uploads a room photo (or uses our sample room), clicks where the light should go, and downloads the picture |
@@ -73,7 +76,7 @@ Four small windows open on top of any page: **design details**, **Your selection
 
 ### The 3D lamp designer
 
-- The 3D model matches the design chosen. Each of the 54 designs has its own model: wall lights on a wall, ceiling lights on a ceiling, chandeliers hanging on a cord.
+- The 3D model matches the design chosen. There are 54 3D shapes, one for each original design; a new design added in the portal reuses the closest shape. Wall lights sit on a wall, ceiling lights on a ceiling, chandeliers hang on a cord.
 - **Size** (19, 33 or 42 cm wide) makes the model visibly smaller or larger. **Finish** recolours the metal. **Cord** changes the hanging cord on chandeliers and the plug-in cord on wall lights. Ceiling lights need no cord, so that step is hidden and its price is left out.
 - Visitors turn it by dragging with a mouse or a finger, zoom with the + and − buttons or by pinching, and can press the layers button to see the parts pulled apart. On phones the 3D view stays at the top of the screen while the options scroll underneath.
 - The model is a simplified picture for comparing shapes, sizes and finishes. The photo of the real product is one tap away ("Photo").
@@ -126,19 +129,20 @@ If the database cannot be reached when the customer presses Send, the form hands
 | Part | Status on 20 Nov 2026 |
 | --- | --- |
 | All four pages, menu, search, filters, shortlist, selection | Working. Checked at phone, tablet, laptop and wide-screen sizes |
-| 3D lamp designer | Working for all 54 designs, with 360° turning, tilting, zoom, explode and every option shown on the model |
+| 3D lamp designer | Working for every design, with 360° turning, tilting, zoom, explode and every option shown on the model |
 | Shop by space pages | Working for all five rooms, using our existing room photos |
 | Quote requests by WhatsApp | Working, sent to 010 9324 4530 |
 | Call button | Working (`+20 109 324 4530`) |
 | Consultation form | Working: checks every field, attaches the design and setup, shows a clear confirmation |
 | Consultation requests | Saved in the database and managed in the admin portal. The Google Sheet copy is optional and needs a 10-minute setup |
-| Admin portal | Working: edit pages, rooms, collections, designs, photos, contact details and prices, then publish |
+| Admin portal | Working and tested on 20 Nov 2026: requests, photos, rooms, preview and publishing |
+| Database kept awake | A daily GitHub job stops the free database from pausing (runs once both branches are pushed) |
 | Instagram and TikTok | Hidden until we add the links in the portal |
 | Email address, city, opening hours | Hidden until we add them |
 | Prices in the lamp designer | Sample figures from the earlier draft. Must be replaced with our real prices |
 | Price on each design | Shows "On request" until we add prices |
 
-**Not yet tested:** a real message arriving on our phone, real iPhones and Android phones in hand, screen-reader software, and the Google Sheet itself (it can only be tested after we set it up; the setup guide has a 2-minute test).
+**Not yet tested:** a real message arriving on our phone, real iPhones and Android phones in hand, screen-reader software, changing the admin password, and the optional Google Sheet copy (it can only be tested after it is set up).
 
 ---
 
@@ -211,7 +215,8 @@ The free Supabase plan includes a 500 MB database and 1 GB of photo storage, far
 ## 10. Before launch checklist
 
 - [x] Add our WhatsApp number (done: 010 9324 4530)
-- [ ] Create the admin account (`create-admin.bat`), sign in, and send a test consultation from a phone
+- [x] Create the admin account and sign in to the portal
+- [ ] Push both branches (`git push origin refactor main`) so the portal and the daily keep-awake job go live
 - [ ] Optional: set up the Google Sheet copy of requests
 - [ ] Replace the sample lamp-designer prices with our real prices (portal: Settings)
 - [ ] Read and approve the About page, the room page introductions and the three promises
