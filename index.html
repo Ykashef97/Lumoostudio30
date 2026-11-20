@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#2b2724">
 <title>LumaDesign — Lighting designed around your space</title>
-<meta name="description" content="Browse wall lights, ceiling lights and chandeliers, design your own lamp, preview it in a photo of your room, and request a quote from LumaDesign.">
+<meta name="description" content="Browse wall lights, ceiling lights and chandeliers, design your own lamp in 3D, preview it in a photo of your room, and request a quote from LumaDesign.">
 <link rel="canonical" href="https://ykashef97.github.io/Lumoostudio30/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="LumaDesign">
 <meta property="og:title" content="LumaDesign — Lighting designed around your space">
-<meta property="og:description" content="Browse the collection, design your own lamp, preview it in your room, and request a quote.">
+<meta property="og:description" content="Browse the collection, design your own lamp in 3D, preview it in your room, and request a quote.">
 <meta property="og:url" content="https://ykashef97.github.io/Lumoostudio30/">
 <meta property="og:image" content="https://ykashef97.github.io/Lumoostudio30/og-image.jpg">
 <meta property="og:image:width" content="1200">
@@ -22,84 +22,48 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Inter:wght@400..600&display=swap">
 <link rel="preload" as="image" href="assets/img/hero/bedroom.webp" fetchpriority="high">
 <link rel="stylesheet" href="assets/css/styles.css">
-<script>document.documentElement.classList.add('js')</script>
+<script>document.documentElement.classList.add('js');setTimeout(function(){if(!window.LumaReady)document.documentElement.classList.remove('js')},5000)</script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"}}</script>
 </head>
 <body>
 
-<!-- Icon sprite: reference with <svg class="icon"><use href="#i-name"/></svg> -->
-<svg xmlns="http://www.w3.org/2000/svg" hidden>
-  <defs>
-    <symbol id="i-lamp" viewBox="0 0 24 24"><path d="M12 2v6"/><path d="M5 15a7 7 0 0 1 14 0Z"/><path d="M10 15v1a2 2 0 0 0 4 0v-1"/></symbol>
-    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
-    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
-    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
-    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
-    <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
-    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
-    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
-    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
-    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></symbol>
-    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></symbol>
-    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
-    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h8M16 6h4M4 12h2M10 12h10M4 18h10M18 18h2"/><circle cx="14" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="18" r="2"/></symbol>
-    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></symbol>
-    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></symbol>
-    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></symbol>
-    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 19V7M3 15h18v4M21 15v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11.5" r="1.5"/></symbol>
-    <symbol id="i-sofa" viewBox="0 0 24 24"><path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><path d="M3 13a2 2 0 0 1 4 0v2h10v-2a2 2 0 0 1 4 0v5H3Z"/><path d="M6 18v2M18 18v2"/></symbol>
-    <symbol id="i-dining" viewBox="0 0 24 24"><path d="M7 3v18M4 3v5a3 3 0 0 0 6 0V3M17 21V3c-2 2-3 4.5-3 8h3"/></symbol>
-    <symbol id="i-desk" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
-    <symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 22v-6"/><path d="M12 3 7 10h2.5L6 16h12l-3.5-6H17Z"/></symbol>
-    <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l2.1-5.4A8.5 8.5 0 1 1 21 11.5Z"/></symbol>
-    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
-    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-5.7 7-11a7 7 0 0 0-14 0c0 5.3 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
-    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
-    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></symbol>
-    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
-    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6Z"/><path d="m9 12 2 2 4-4"/></symbol>
-    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4Z"/><path d="M8 9h8M8 12h5"/></symbol>
-    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></symbol>
-  </defs>
-</svg>
-
 <a class="skip-link" href="#main">Skip to content</a>
 
-<p class="notice">Free design consultation · Request a quote in minutes</p>
+<p class="notice">Free design consultation · <button class="notice-link" type="button" data-open-consult data-source="notice">Book yours</button></p>
 
 <header class="site-header on-dark">
   <div class="container header-row">
-    <a class="brand" href="#home" aria-label="LumaDesign home">
-      <svg class="icon brand-mark" aria-hidden="true"><use href="#i-lamp"/></svg>
+    <a class="brand" href="./" aria-label="LumaDesign home">
+      <svg class="icon brand-mark" aria-hidden="true"><use href="assets/img/icons.svg#i-lamp"/></svg>
       <span class="brand-name">Luma<span>Design</span></span>
     </a>
 
     <nav class="site-nav" id="siteNav" aria-label="Main">
       <a href="#collections">Collections</a>
+      <a href="space.html">Spaces</a>
       <a href="#studio">Design your lamp</a>
-      <a href="#visualize">Try in your room</a>
-      <a href="#how">How it works</a>
-      <a href="#contact">Contact</a>
+      <a class="nav-extra" href="#visualize">Try in your room</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
       <button class="btn btn--gold nav-quote" type="button" data-open-quote>Request a quote</button>
     </nav>
 
     <div class="header-tools">
       <button class="icon-btn" type="button" id="openProductSearch" aria-label="Search the collection">
-        <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-search"/></svg>
       </button>
       <button class="icon-btn" type="button" id="favButton" aria-label="Your shortlist">
-        <svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg>
+        <svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-heart"/></svg>
         <span class="badge" id="favCount" hidden>0</span>
       </button>
       <button class="icon-btn" type="button" id="cartButton" aria-label="Your selection">
-        <svg class="icon" aria-hidden="true"><use href="#i-bag"/></svg>
+        <svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-bag"/></svg>
         <span class="badge" id="cartCount" hidden>0</span>
       </button>
       <button class="btn btn--gold btn--sm header-quote" type="button" data-open-quote>Request a quote</button>
       <button class="icon-btn menu-button" type="button" id="mobileMenuButton" aria-expanded="false" aria-controls="siteNav" aria-label="Open menu">
-        <svg class="icon icon-open" aria-hidden="true"><use href="#i-menu"/></svg>
-        <svg class="icon icon-shut" aria-hidden="true"><use href="#i-close"/></svg>
+        <svg class="icon icon-open" aria-hidden="true"><use href="assets/img/icons.svg#i-menu"/></svg>
+        <svg class="icon icon-shut" aria-hidden="true"><use href="assets/img/icons.svg#i-close"/></svg>
       </button>
     </div>
   </div>
@@ -124,7 +88,7 @@
         <h1>Find or create the <em>perfect lighting</em> for your space</h1>
         <p class="hero-lede" id="heroLede">Soft, layered light for restful evenings and slow mornings.</p>
         <div class="hero-actions">
-          <a class="btn btn--gold" href="#collections">Browse the collection <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--gold" href="#collections">Browse the collection <svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-arrow"/></svg></a>
           <button class="btn btn--ghost-light" type="button" data-open-quote>Request a quote</button>
         </div>
       </div>
@@ -132,7 +96,7 @@
       <div class="hero-carousel" id="heroCarousel" role="group" aria-label="Featured rooms">
         <span class="hero-chip" id="heroRoomLabel">Bedroom lighting</span>
         <div class="hero-controls">
-          <button class="round-btn" type="button" id="heroPrevious" aria-label="Previous room"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <button class="round-btn" type="button" id="heroPrevious" aria-label="Previous room"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-chevron-left"/></svg></button>
           <div class="hero-dots" id="heroDots">
             <button type="button" aria-label="Show bedroom" aria-current="true"></button>
             <button type="button" aria-label="Show dining room" aria-current="false"></button>
@@ -140,10 +104,10 @@
             <button type="button" aria-label="Show balcony" aria-current="false"></button>
             <button type="button" aria-label="Show living room" aria-current="false"></button>
           </div>
-          <button class="round-btn" type="button" id="heroNext" aria-label="Next room"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+          <button class="round-btn" type="button" id="heroNext" aria-label="Next room"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-chevron-right"/></svg></button>
           <button class="round-btn" type="button" id="heroAutoplay" aria-label="Pause slideshow">
-            <svg class="icon icon-pause" aria-hidden="true"><use href="#i-pause"/></svg>
-            <svg class="icon icon-play" aria-hidden="true"><use href="#i-play"/></svg>
+            <svg class="icon icon-pause" aria-hidden="true"><use href="assets/img/icons.svg#i-pause"/></svg>
+            <svg class="icon icon-play" aria-hidden="true"><use href="assets/img/icons.svg#i-play"/></svg>
           </button>
         </div>
       </div>
@@ -153,19 +117,19 @@
   <!-- Three ways in -->
   <section class="container quickcards" aria-label="Ways to get started">
     <a class="quickcard reveal" href="#collections">
-      <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg></span>
+      <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-grid"/></svg></span>
       <span class="quickcard-text"><strong>Browse the collection</strong><span>54 wall lights, ceiling lights and chandeliers.</span></span>
-      <svg class="icon quickcard-arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
+      <svg class="icon quickcard-arrow" aria-hidden="true"><use href="assets/img/icons.svg#i-arrow"/></svg>
     </a>
     <a class="quickcard reveal" href="#studio">
-      <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg></span>
-      <span class="quickcard-text"><strong>Design your own lamp</strong><span>Pick the size, finish and cord.</span></span>
-      <svg class="icon quickcard-arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
+      <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-orbit"/></svg></span>
+      <span class="quickcard-text"><strong>Design your own lamp</strong><span>Size, finish and cord, in 360° 3D.</span></span>
+      <svg class="icon quickcard-arrow" aria-hidden="true"><use href="assets/img/icons.svg#i-arrow"/></svg>
     </a>
     <a class="quickcard reveal" href="#visualize">
-      <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span>
+      <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-image"/></svg></span>
       <span class="quickcard-text"><strong>Try it in your room</strong><span>Place any design on your own photo.</span></span>
-      <svg class="icon quickcard-arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
+      <svg class="icon quickcard-arrow" aria-hidden="true"><use href="assets/img/icons.svg#i-arrow"/></svg>
     </a>
   </section>
 
@@ -174,28 +138,28 @@
     <div class="container">
       <div class="section-row">
         <h2 class="h2 h2--sm" id="spacesTitle">Shop by space</h2>
-        <a class="text-link" href="#collections" data-clear-space>View all designs <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="text-link" href="space.html">All spaces <svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-arrow"/></svg></a>
       </div>
       <div class="space-grid">
-        <a class="space-card" href="#collections" data-space="bedroom">
+        <a class="space-card" href="space.html?room=bedroom">
           <img src="assets/img/hero/bedroom-800.webp" alt="" loading="lazy" width="800" height="450">
-          <span><svg class="icon" aria-hidden="true"><use href="#i-bed"/></svg>Bedroom</span>
+          <span><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-bed"/></svg>Bedroom</span>
         </a>
-        <a class="space-card" href="#collections" data-space="living">
+        <a class="space-card" href="space.html?room=living">
           <img src="assets/img/hero/living-800.webp" alt="" loading="lazy" width="800" height="450">
-          <span><svg class="icon" aria-hidden="true"><use href="#i-sofa"/></svg>Living room</span>
+          <span><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-sofa"/></svg>Living room</span>
         </a>
-        <a class="space-card" href="#collections" data-space="dining">
+        <a class="space-card" href="space.html?room=dining">
           <img src="assets/img/hero/dining-800.webp" alt="" loading="lazy" width="800" height="450">
-          <span><svg class="icon" aria-hidden="true"><use href="#i-dining"/></svg>Dining</span>
+          <span><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-dining"/></svg>Dining</span>
         </a>
-        <a class="space-card" href="#collections" data-space="office">
+        <a class="space-card" href="space.html?room=office">
           <img src="assets/img/hero/office-800.webp" alt="" loading="lazy" width="800" height="450">
-          <span><svg class="icon" aria-hidden="true"><use href="#i-desk"/></svg>Office</span>
+          <span><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-desk"/></svg>Office</span>
         </a>
-        <a class="space-card" href="#collections" data-space="outdoor">
+        <a class="space-card" href="space.html?room=outdoor">
           <img src="assets/img/hero/balcony-800.webp" alt="" loading="lazy" width="800" height="450">
-          <span><svg class="icon" aria-hidden="true"><use href="#i-tree"/></svg>Outdoor</span>
+          <span><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-tree"/></svg>Outdoor</span>
         </a>
       </div>
     </div>
@@ -219,7 +183,7 @@
         </div>
         <label class="search-field">
           <span class="visually-hidden">Search the collection</span>
-          <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+          <svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-search"/></svg>
           <input id="catalogSearch" type="search" placeholder="Search designs" autocomplete="off">
         </label>
       </div>
@@ -245,12 +209,12 @@
         <li class="step-card reveal">
           <span class="step-num">2</span>
           <h3>Customise</h3>
-          <p>Pick the size, finish and cord, then place it on a photo of your own room.</p>
+          <p>Pick the size, finish and cord, turn it in 3D, then place it on a photo of your own room.</p>
         </li>
         <li class="step-card reveal">
           <span class="step-num">3</span>
-          <h3>Request a quote</h3>
-          <p>Send us your selection. We reply with the price, lead time and delivery details.</p>
+          <h3>Talk to us</h3>
+          <p>Request a quote or book a consultation. We reply with the price, lead time and delivery details.</p>
         </li>
       </ol>
     </div>
@@ -262,32 +226,42 @@
       <div class="section-head reveal">
         <p class="eyebrow">Design your lamp</p>
         <h2 class="h2" id="studioTitle">Put your lamp together</h2>
-        <p class="lede">Start from any design, then choose the shade size, finish and cord. The preview and estimate update as you go.</p>
+        <p class="lede">Start from any design, then choose the size, finish and cord. Every choice shows on the 3D model straight away, and you can turn it all the way round to see it from every side.</p>
       </div>
 
       <div class="builder">
-        <div class="builder-stage" id="builderStage" data-view="photo">
-          <div class="stage-bar">
-            <div class="segmented" role="group" aria-label="Preview type">
-              <button type="button" data-stage-view="photo" aria-pressed="true">Photo</button>
-              <button type="button" data-stage-view="3d" aria-pressed="false">3D size preview</button>
+        <div class="builder-stage" id="builderStage" data-view="3d" data-state="idle">
+          <div class="stage-view stage-3d" id="stage3d">
+            <div id="threeMount" tabindex="0" role="img" aria-label="3D view of the lamp. Drag to turn it all the way round. Arrow keys turn, plus and minus zoom."></div>
+            <div class="stage-loading" aria-live="polite">
+              <span class="spinner" aria-hidden="true"></span>
+              <p id="threeMessage">Loading the 3D view…</p>
             </div>
-            <div class="stage-tools">
-              <button class="btn btn--outline btn--sm" id="explodeToggle" type="button"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg><span>Explode parts</span></button>
-              <button class="btn btn--outline btn--sm" id="resetView" type="button"><svg class="icon" aria-hidden="true"><use href="#i-reset"/></svg><span>Reset view</span></button>
-            </div>
+            <p class="stage-hint" id="stageHint"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-hand"/></svg><span>Drag to turn 360°<span class="hint-zoom"> · click, then scroll to zoom</span></span></p>
           </div>
-
           <div class="stage-view stage-photo photo-fill" id="stagePhoto">
             <img id="stagePhotoImg" alt="" width="480" height="640">
           </div>
-          <div class="stage-view stage-3d" id="stage3d">
-            <div id="threeMount"></div>
-            <p class="stage-message" id="threeMessage">Loading 3D preview…</p>
-            <p class="stage-note">Simplified model for comparing shade size, finish and cord. Drag to rotate.</p>
+
+          <div class="stage-top">
+            <div class="segmented" role="group" aria-label="Preview type">
+              <button type="button" data-stage-view="3d" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-orbit"/></svg>3D view</button>
+              <button type="button" data-stage-view="photo" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-image"/></svg>Photo</button>
+            </div>
+            <div class="stage-tools" role="group" aria-label="3D view options">
+              <button class="stage-btn" type="button" id="autoRotateBtn" aria-pressed="true" aria-label="Stop turning"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-rotate"/></svg></button>
+              <button class="stage-btn" type="button" id="explodeToggle" aria-pressed="false" aria-label="Show the parts separately"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-layers"/></svg></button>
+              <button class="stage-btn" type="button" id="resetView" aria-label="Reset the view"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-reset"/></svg></button>
+            </div>
           </div>
 
           <p class="stage-caption"><strong id="selectedBuildTitle">Modern cylinder</strong><span id="selectedBuildName"></span></p>
+          <div class="stage-nav" role="group" aria-label="Turn and zoom">
+            <button class="stage-btn" type="button" id="turnLeft" aria-label="Turn left"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-chevron-left"/></svg></button>
+            <button class="stage-btn" type="button" id="zoomOut" aria-label="Zoom out"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-minus"/></svg></button>
+            <button class="stage-btn" type="button" id="zoomIn" aria-label="Zoom in"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-plus"/></svg></button>
+            <button class="stage-btn" type="button" id="turnRight" aria-label="Turn right"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-chevron-right"/></svg></button>
+          </div>
         </div>
 
         <div class="builder-panel">
@@ -309,7 +283,7 @@
           </div>
 
           <div class="builder-step">
-            <div class="step-head"><span class="step-badge">2</span><div><h3>Choose a shade size</h3><p>Fabric shade, measured across the base</p></div></div>
+            <div class="step-head"><span class="step-badge">2</span><div><h3>Choose a size</h3><p id="sizeHint">Width of the light, in centimetres</p></div></div>
             <div class="options options--3">
               <button class="option" type="button" data-shade="19" aria-pressed="false"><b>19 cm</b><small data-price="shade:19"></small></button>
               <button class="option" type="button" data-shade="33" aria-pressed="false"><b>33 cm</b><small data-price="shade:33"></small></button>
@@ -318,32 +292,34 @@
           </div>
 
           <div class="builder-step">
-            <div class="step-head"><span class="step-badge">3</span><div><h3>Pick a finish</h3><p>Shown on the 3D preview</p></div></div>
+            <div class="step-head"><span class="step-badge">3</span><div><h3>Pick a finish</h3><p>Colour of the metalwork</p></div></div>
             <div class="swatches">
-              <button class="swatch" type="button" data-finish="white" aria-pressed="true"><span style="background:#eee8d9"></span>Soft ivory</button>
+              <button class="swatch" type="button" data-finish="white" aria-pressed="false"><span style="background:#eee8d9"></span>Soft ivory</button>
               <button class="swatch" type="button" data-finish="black" aria-pressed="false"><span style="background:#262622"></span>Matte black</button>
-              <button class="swatch" type="button" data-finish="brass" aria-pressed="false"><span style="background:#b38b4b"></span>Warm brass</button>
+              <button class="swatch" type="button" data-finish="brass" aria-pressed="true"><span style="background:#b38b4b"></span>Warm brass</button>
             </div>
           </div>
 
           <div class="builder-step">
-            <div class="step-head"><span class="step-badge">4</span><div><h3>Choose a cord</h3><p>Textile cord, 1.8 m</p></div></div>
-            <div class="options options--2">
+            <div class="step-head"><span class="step-badge">4</span><div><h3>Choose a cord</h3><p id="cordHint">Plug-in textile cord, 1.8 m</p></div></div>
+            <div class="options options--2" id="cordOptions">
               <button class="option" type="button" data-cord="white" aria-pressed="true"><b>White textile</b><small data-price="cord"></small></button>
               <button class="option" type="button" data-cord="black" aria-pressed="false"><b>Black textile</b><small data-price="cord"></small></button>
             </div>
-            <p class="included"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><b>Warm white LED bulbs included</b> <small>E27 · pack of 2 · <span data-price="bulb"></span></small></span></p>
+            <p class="included included--note" id="cordNote" hidden><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-check"/></svg><span>Ceiling lights mount directly to the ceiling, so no cord is needed.</span></p>
+            <p class="included"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-check"/></svg><span><b>Warm white LED bulbs included</b> <small>E27 · pack of 2 · <span data-price="bulb"></span></small></span></p>
           </div>
 
           <div class="estimate">
-            <div><span>Estimated total</span><small>Shade, cord and bulbs. Final price confirmed in your quote.</small></div>
+            <div><span>Estimated total</span><small id="estimateNote">Light, cord and bulbs. Final price confirmed in your quote.</small></div>
             <b id="assemblyTotal"></b>
           </div>
 
           <div class="builder-actions">
             <button class="btn btn--primary btn--block" id="quoteBuild" type="button">Request a quote for this lamp</button>
+            <button class="btn btn--outline btn--block" id="consultBuild" type="button"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-calendar"/></svg>Book a consultation about this lamp</button>
             <button class="btn btn--outline" id="addBuildToCart" type="button">Add to selection</button>
-            <button class="btn btn--outline" id="saveDesign" type="button"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg>Save design</button>
+            <button class="btn btn--outline" id="saveDesign" type="button"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-heart"/></svg>Save design</button>
           </div>
         </div>
       </div>
@@ -362,7 +338,7 @@
       <div class="visualizer">
         <div class="visual-controls">
           <label class="upload-drop" for="fileInput">
-            <svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>
+            <svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-upload"/></svg>
             <span><b>Choose a room photo</b><small>JPG, PNG or WEBP · up to 20 MB</small></span>
           </label>
           <input class="visually-hidden" id="fileInput" type="file" accept="image/jpeg,image/png,image/webp">
@@ -389,7 +365,7 @@
           </div>
 
           <div class="visual-actions">
-            <button class="btn btn--primary" type="button" id="downloadVisualization" disabled><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download image</button>
+            <button class="btn btn--primary" type="button" id="downloadVisualization" disabled><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-download"/></svg>Download image</button>
             <button class="btn btn--outline" type="button" id="addVisualToCart">Add to selection</button>
           </div>
           <p class="status" id="visualStatus" role="status">Add a room photo to start.</p>
@@ -398,7 +374,7 @@
         <div class="visual-stage" id="visualStage">
           <canvas id="visualCanvas" width="1200" height="760" role="img" aria-label="Your room with the selected light placed on it" hidden></canvas>
           <div class="visual-empty" id="visualEmpty">
-            <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span>
+            <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-image"/></svg></span>
             <b>Your room preview appears here</b>
             <p>Upload a photo, then click where you want the light.</p>
             <div class="visual-empty-actions">
@@ -412,26 +388,29 @@
     </div>
   </section>
 
-  <!-- About -->
+  <!-- About teaser -->
   <section class="section" id="about" aria-labelledby="aboutTitle">
     <div class="container about">
       <div class="about-copy reveal">
         <p class="eyebrow">About LumaDesign</p>
         <h2 class="h2" id="aboutTitle">Lighting that starts with your room</h2>
         <p class="lede">Good lighting is personal. Browse the collection, shape a lamp to your taste, and see it in your own space before you decide. When you are ready, talk to us directly and we will confirm every detail with you.</p>
-        <button class="btn btn--primary" type="button" data-open-quote>Request a quote</button>
+        <div class="about-actions">
+          <a class="btn btn--primary" href="about.html">Our story</a>
+          <button class="btn btn--outline" type="button" data-open-consult data-source="home-about">Book a consultation</button>
+        </div>
       </div>
       <ul class="trust-list">
         <li class="reveal">
-          <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg></span>
+          <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-chat"/></svg></span>
           <div><h3>Free design consultation</h3><p>Tell us about your room and we will help you choose the right light.</p></div>
         </li>
         <li class="reveal">
-          <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-check"/></svg></span>
           <div><h3>No surprises</h3><p>We confirm the price, lead time and delivery before you commit to anything.</p></div>
         </li>
         <li class="reveal">
-          <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
+          <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-shield"/></svg></span>
           <div><h3>Your photos stay private</h3><p>Room previews are made in your browser. Nothing is uploaded.</p></div>
         </li>
       </ul>
@@ -458,23 +437,25 @@
 
 </main>
 
-<footer class="site-footer on-dark" id="contact">
+<footer class="site-footer on-dark">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <a class="brand" href="#home" aria-label="LumaDesign home">
-        <svg class="icon brand-mark" aria-hidden="true"><use href="#i-lamp"/></svg>
+      <a class="brand" href="./" aria-label="LumaDesign home">
+        <svg class="icon brand-mark" aria-hidden="true"><use href="assets/img/icons.svg#i-lamp"/></svg>
         <span class="brand-name">Luma<span>Design</span></span>
       </a>
       <p>Light, thoughtfully made. Every room has its own story.</p>
+      <div class="footer-social" id="footerSocial" hidden></div>
     </div>
     <div>
       <h2 class="footer-title">Explore</h2>
       <ul class="footer-links">
         <li><a href="#collections">Collections</a></li>
+        <li><a href="space.html">Shop by space</a></li>
         <li><a href="#studio">Design your lamp</a></li>
         <li><a href="#visualize">Try in your room</a></li>
-        <li><a href="#how">How it works</a></li>
-        <li><a href="#about">About</a></li>
+        <li><a href="about.html">About us</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </div>
     <div>
@@ -489,70 +470,11 @@
   </div>
   <div class="container footer-bottom">
     <p>© 2026 LumaDesign. All rights reserved.</p>
-    <a href="#home">Back to top</a>
+    <a href="#main">Back to top</a>
   </div>
 </footer>
 
-<p class="toast" id="toast" role="status" aria-live="polite"></p>
-
-<!-- Fixture details -->
-<div class="dialog-backdrop" id="fixtureModal" role="dialog" aria-modal="true" aria-labelledby="fixtureModalTitle" hidden>
-  <div class="dialog dialog--product">
-    <button class="dialog-close" type="button" data-close-dialog aria-label="Close details"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
-    <div class="dialog-photo photo-fill" id="fixtureModalPhoto"><img id="fixtureModalImg" alt=""></div>
-    <div class="dialog-info">
-      <span class="tag" id="fixtureModalCategory"></span>
-      <h2 class="h2 h2--sm" id="fixtureModalTitle"></h2>
-      <p id="fixtureModalDescription"></p>
-      <dl class="specs" id="fixtureModalSpecs"></dl>
-      <div class="dialog-actions">
-        <button class="btn btn--primary" type="button" id="quoteFixture">Request a quote</button>
-        <button class="btn btn--outline" type="button" id="addFixtureToCart">Add to selection</button>
-        <button class="icon-btn icon-btn--outline heart-btn" type="button" id="favFixture" aria-pressed="false" aria-label="Save to shortlist"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg></button>
-      </div>
-      <div class="dialog-links">
-        <button class="text-link text-link--btn" type="button" id="designFixture">Customise in the lamp designer</button>
-        <button class="text-link text-link--btn" type="button" id="tryFixture">Try it in your room</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Selection -->
-<div class="dialog-backdrop" id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle" hidden>
-  <div class="dialog dialog--narrow">
-    <button class="dialog-close" type="button" data-close-dialog aria-label="Close selection"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
-    <h2 class="h2 h2--sm" id="cartTitle">Your selection</h2>
-    <p class="dialog-lede">Collect the pieces you like, then send them to us for a quote.</p>
-    <ul class="cart-list" id="cartItemsList"></ul>
-    <div class="dialog-actions dialog-actions--split">
-      <button class="btn btn--outline" type="button" id="clearCart">Clear</button>
-      <button class="btn btn--primary" type="button" id="quoteCart">Request a quote</button>
-    </div>
-  </div>
-</div>
-
-<!-- Quote request -->
-<div class="dialog-backdrop" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteTitle" hidden>
-  <div class="dialog dialog--narrow">
-    <button class="dialog-close" type="button" data-close-dialog aria-label="Close quote request"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
-    <h2 class="h2 h2--sm" id="quoteTitle">Request a quote</h2>
-    <p class="dialog-lede" id="quoteLede"></p>
-    <ul class="quote-items" id="quoteItems"></ul>
-    <label class="field" for="quoteNote"><span>Anything we should know? <small>(optional)</small></span>
-      <textarea id="quoteNote" rows="3" placeholder="Room size, ceiling height, quantity, when you need it…"></textarea>
-    </label>
-    <div class="quote-actions">
-      <a class="btn btn--primary btn--block" id="quoteWhatsApp" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-message"/></svg>Send on WhatsApp</a>
-      <a class="btn btn--outline" id="quoteEmail" href="#"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Send by email</a>
-      <button class="btn btn--outline" id="quoteCopy" type="button"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg>Copy message</button>
-    </div>
-    <p class="fine">This opens WhatsApp or your email app with the message filled in. Nothing is sent until you press send there.</p>
-  </div>
-</div>
-
 <script src="assets/js/fixture-tones.js" defer></script>
-<script src="assets/js/app.js" defer></script>
-<script src="assets/js/visualizer.js" defer></script>
+<script type="module" src="assets/js/home.js"></script>
 </body>
 </html>

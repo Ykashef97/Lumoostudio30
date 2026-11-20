@@ -3,7 +3,7 @@ WHICH FILE NAME BELONGS TO WHICH PHOTO
 
 Name your new photo exactly like the name on the left (.jpg, .png or .webp).
 
-ROOM PHOTOS (top banner and "Shop by space")  -  wide photos, at least 1600 pixels wide
+ROOM PHOTOS (home slideshow, "Shop by space" cards and room page banners)  -  wide photos, at least 1600 pixels wide
   hero-bedroom      Bedroom
   hero-dining       Dining room
   hero-office       Home office

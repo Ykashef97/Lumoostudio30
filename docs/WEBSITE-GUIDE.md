@@ -1,15 +1,15 @@
 # LumaDesign Website Guide
 
-*Written 14 November 2026 for the owners. No coding knowledge needed.*
+*Updated 20 November 2026 for the owners. No coding knowledge needed.*
 
-The LumaDesign website lets a visitor browse 54 lights, design a lamp, preview it in a photo of their own room, and send us a quote request by WhatsApp or email. It does not take payments.
+The LumaDesign website lets a visitor browse 54 lights, explore ideas room by room, design a lamp and turn it 360° in 3D, preview it in a photo of their own room, and then request a quote or book a consultation. It does not take payments.
 
 **Contents**
 
 1. [At a glance](#1-at-a-glance)
-2. [What is on the website](#2-what-is-on-the-website)
+2. [The pages and what is on them](#2-the-pages-and-what-is-on-them)
 3. [The visitor journey](#3-the-visitor-journey)
-4. [When a quote request arrives](#4-when-a-quote-request-arrives)
+4. [When a request arrives](#4-when-a-request-arrives)
 5. [What works today and what is missing](#5-what-works-today-and-what-is-missing)
 6. [How to change a photo](#6-how-to-change-a-photo)
 7. [How to change contact details, prices and text](#7-how-to-change-contact-details-prices-and-text)
@@ -21,112 +21,123 @@ The LumaDesign website lets a visitor browse 54 lights, design a lamp, preview i
 
 ## 1. At a glance
 
-Every path on the website ends in a quote request sent to us.
+Every path on the website ends with the customer contacting us.
 
 ```mermaid
 flowchart TD
-    A[Visitor arrives on the site] --> B[Browse the collection<br/>54 designs, by type or room]
-    A --> C[Design a lamp<br/>size, finish, cord, estimate]
+    A[Visitor arrives] --> B[Browse the collection<br/>or Shop by space]
+    A --> C[Design a lamp<br/>size, finish, cord, 360° 3D]
     A --> D[Try it in their room<br/>a light on their own photo]
-    B --> E[Their selection<br/>pieces collected under the bag icon]
-    C --> E
-    D --> E
-    E --> F[Request a quote<br/>pieces listed, notes added]
-    subgraph outside [In WhatsApp or email, not on the website]
-        G[Customer presses send<br/>the message is already written]
-        H[We reply<br/>price, lead time and delivery]
-        G --> H
-    end
-    F --> G
+    B --> E[Heart a design<br/>saved to their shortlist]
+    C --> F[Their selection<br/>pieces collected under the bag icon]
+    B --> F
+    D --> F
+    E --> G[Book a consultation<br/>about that design]
+    F --> H[Request a quote]
+    G --> I[(Shared Google Sheet<br/>once it is set up)]
+    G -.until then.-> J
+    H --> J[WhatsApp message to us]
 ```
 
-A visitor can also press "Request a quote" straight from a design, the lamp designer or the menu. The piece is then added to the selection automatically. Everything in the last box happens in WhatsApp or email, where we take over.
+Quote requests arrive as WhatsApp messages. Consultation requests arrive in a shared Google Sheet (see section 4); until that is set up, they also arrive by WhatsApp.
 
 ---
 
-## 2. What is on the website
+## 2. The pages and what is on them
 
-The site is one long page. The menu at the top jumps to each part and stays visible while scrolling.
+The website has four pages. The menu at the top links to all of them and stays visible while scrolling.
+
+| Page | Address | What the visitor does there |
+| --- | --- | --- |
+| Home | `/` | Everything below in one long page |
+| Shop by space | `space.html` | Picks Bedroom, Living room, Dining, Office or Outdoor and sees the designs we suggest for that room, each on its own page with a banner photo |
+| About | `about.html` | Reads our philosophy, what makes us different, how we work and what we care about |
+| Contact | `contact.html` | Calls or WhatsApps us, books a consultation, or finds our social media |
+
+The home page, from top to bottom:
 
 | Section | What the visitor does there |
 | --- | --- |
 | Top banner | Sees five room photos that change every few seconds, with two buttons: browse the collection, or request a quote |
 | Three shortcut cards | Chooses a starting point: browse, design a lamp, or try a light in their room |
-| Shop by space | Picks Bedroom, Living room, Dining, Office or Outdoor and sees suggested lights for it |
+| Shop by space | Taps a room to open its page |
 | Collections | Browses all 54 designs (9 wall lights, 25 ceiling lights, 20 chandeliers), searches by name, opens a design for details, or taps the heart to save it |
-| How it works | Reads the three steps: choose, customise, request a quote |
-| Design your lamp | Picks a design, shade size, finish and cord, and sees an estimated price. Can switch to a simple 3D preview |
+| How it works | Reads the three steps: choose, customise, talk to us |
+| Design your lamp | Picks a design, size, finish and cord. The 3D model updates with every choice and can be turned all the way round, tilted and zoomed |
 | Try in your room | Uploads a room photo (or uses our sample room), clicks where the light should go, and downloads the picture |
-| About | Reads who we are and three promises: free consultation, no surprises, photos stay private |
-| Saved designs | Appears only after the visitor saves something. Lists their hearts and saved lamp designs |
-| Footer | Finds our contact details and the links again |
+| About | A short introduction with a link to the About page |
+| Saved designs | Appears only after the visitor saves something. Lists their hearts and saved lamp designs, each with a **Discuss** button |
+| Footer | Our phone, WhatsApp and the links again |
 
-Three small windows open on top of the page:
+Four small windows open on top of any page: **design details**, **Your selection**, **Request a quote**, and **Book a consultation**.
 
-- **Design details:** photo, description and price line of one design.
-- **Your selection:** the list of pieces the visitor picked.
-- **Request a quote:** the message that gets sent to us.
+### The 3D lamp designer
+
+- The 3D model matches the design chosen. Each of the 54 designs has its own model: wall lights on a wall, ceiling lights on a ceiling, chandeliers hanging on a cord.
+- **Size** (19, 33 or 42 cm wide) makes the model visibly smaller or larger. **Finish** recolours the metal. **Cord** changes the hanging cord on chandeliers and the plug-in cord on wall lights. Ceiling lights need no cord, so that step is hidden and its price is left out.
+- Visitors turn it by dragging with a mouse or a finger, zoom with the + and − buttons or by pinching, and can press the layers button to see the parts pulled apart. On phones the 3D view stays at the top of the screen while the options scroll underneath.
+- The model is a simplified picture for comparing shapes, sizes and finishes. The photo of the real product is one tap away ("Photo").
 
 ---
 
 ## 3. The visitor journey
 
-1. **Arrives** on the top banner and reads the headline: "Find or create the perfect lighting for your space".
-2. **Explores** in one of three ways. They can use one, two or all three:
-   - *Browse:* opens Collections, filters by type or by room, and opens a design to read about it.
-   - *Design:* builds a lamp by choosing a design, shade size, finish and cord. The estimate updates with each choice.
-   - *Preview:* places a light on a photo of their own room and downloads the result.
-3. **Collects** what they like. "Add to selection" puts a piece in their selection (the bag icon at the top). The heart saves it to a shortlist for later.
-4. **Requests a quote.** The "Request a quote" button is in the menu, the top banner, every design's details, the lamp designer, the shortlist and the selection.
-5. **Reviews the message.** A window lists the chosen pieces and has a box for notes such as room size, ceiling height or quantity.
-6. **Sends it.** They choose WhatsApp, email, or copy the text. WhatsApp or their email app opens with the message already written, and they press send there.
-7. **Hears from us.** We reply with the price, lead time and delivery details. Everything after this happens in WhatsApp or email, not on the website.
-
-A visitor with nothing selected can still press "Request a quote". It then sends a general message asking for help choosing lighting.
+1. **Arrives** on the home page, or straight on a room page from a link.
+2. **Explores** in one or more ways: browse the collection, shop by room, design a lamp in 3D, or place a light on a photo of their room.
+3. **Saves** what they like. The heart puts a design on their shortlist. A small message then offers **Discuss this design**, without stopping them from browsing. If they ignore it twice, it stops appearing for that visit.
+4. **Gets in touch**, in one of two ways:
+   - **Request a quote:** lists the pieces in their selection and opens WhatsApp with the message written. They press send.
+   - **Book a consultation:** a short form with their name, phone, optional email, WhatsApp or phone call, an optional preferred day and time, and notes. The design they liked, and their custom size, finish and cord if they made one, are attached automatically.
+5. **Sees a confirmation.** For a consultation: "Request received" with a reference such as `LD-4M1OGAFG`, and a note that the meeting is confirmed once we agree a time together. The website never shows a meeting as booked.
+6. **Hears from us** by WhatsApp or phone.
 
 ---
 
-## 4. When a quote request arrives
+## 4. When a request arrives
 
-A request reaches us as an ordinary WhatsApp message or email. The website does not keep a copy, so the chat or email is our only record.
+### Quote requests
 
-The message looks like this:
+They arrive as WhatsApp messages to 010 9324 4530, for example:
 
 > Hello LumaDesign, I would like a quote for:
 > 1. Rattan semi-flush (Ceiling light)
-> 2. Modern cylinder · 42 cm shade · soft ivory · white textile cord (Custom lamp) × 2
+> 2. Modern cylinder · 42 cm wide · warm brass finish · white textile cord (Custom lamp) × 2
 >
 > Notes: Ceiling height 2.8 m, need it by December
 
+Reply in the same chat with the price, lead time and delivery details.
+
+### Consultation requests
+
+Once the Google Sheet is set up (see [CONSULTATION-REQUESTS-SETUP.md](CONSULTATION-REQUESTS-SETUP.md)), each request becomes a row in a **Requests** tab that both partners can open, and you can get an email for each one. Each row holds the customer's details, the design and its reference, a link to its photo, their custom setup, their preferred time and notes.
+
 What we do next:
 
-1. Reply in the same chat or email with the price, lead time and delivery details.
-2. Ask for anything missing, such as room size, quantity or delivery address.
-3. Agree the order and payment directly with the customer. The website is not involved in payment.
+1. Contact the customer the way they chose (WhatsApp or phone call), within the time we promise.
+2. Agree a time for the consultation and set the row's **Status** to "Meeting agreed".
+3. After the meeting, set it to "Done", or "Not a fit".
 
-Because nothing is saved on the website, keep a shared list of requests from day one. A spreadsheet with date, customer, items, price quoted and status is enough.
+Until the sheet is set up, the form still checks everything the customer typed, then hands the request to WhatsApp with all the details written. In that case nothing is stored, and it only reaches us if the customer presses send.
 
 ---
 
 ## 5. What works today and what is missing
 
-The WhatsApp button works, but it does not reach us yet, because our phone number has not been entered into the website.
-
-| Part | Status on 14 Nov 2026 |
+| Part | Status on 20 Nov 2026 |
 | --- | --- |
-| Browsing, search, filters, shortlist, selection | Working. Checked on phone, tablet and computer screen sizes |
-| Lamp designer and 3D preview | Working |
-| Room preview and download | Working, including the sample room |
-| Building the quote message | Working. The text and item list were checked |
-| WhatsApp button | Opens WhatsApp with the message written. With no number set, the visitor is asked to pick a contact, so it does not reach us |
-| Email button | Opens the email app with the message written. With no address set, the "To" line is empty |
-| Contact details in the footer | Empty until we add our number, email, city and hours |
+| All four pages, menu, search, filters, shortlist, selection | Working. Checked at phone, tablet, laptop and wide-screen sizes |
+| 3D lamp designer | Working for all 54 designs, with 360° turning, tilting, zoom, explode and every option shown on the model |
+| Shop by space pages | Working for all five rooms, using our existing room photos |
+| Quote requests by WhatsApp | Working, sent to 010 9324 4530 |
+| Call button | Working (`+20 109 324 4530`) |
+| Consultation form | Working: checks every field, attaches the design and setup, shows a clear confirmation |
+| Consultation requests stored in a sheet | Ready, but needs the Google Sheet set up once (10 minutes). Until then they go by WhatsApp |
+| Instagram and TikTok | Shown as "Coming soon" until we add the links |
+| Email address, city, opening hours | Hidden until we add them |
 | Prices in the lamp designer | Sample figures from the earlier draft. Must be replaced with our real prices |
 | Price on each design | Shows "On request" until we add prices |
 
-**How the WhatsApp link works.** It is WhatsApp's standard "click to chat" link. It opens a chat with our number and a prepared message, and the customer presses send. There are no automatic replies, and the website cannot tell whether a message was sent.
-
-**Not yet tested:** an actual message arriving on our phone, real iPhones and Android phones, and screen-reader software.
+**Not yet tested:** a real message arriving on our phone, real iPhones and Android phones in hand, screen-reader software, and the Google Sheet itself (it can only be tested after we set it up; the setup guide has a 2-minute test).
 
 ---
 
@@ -141,33 +152,42 @@ Put the new photo in the `new-images` folder with the right name, then double-cl
 5. Double-click `preview.bat` to check the result. If the old photo still shows, press Ctrl+F5.
 6. Publish (section 8) so the public website gets the new photo.
 
-The original photo is kept in `new-images/done` with the date in its name.
+The room photos (`hero-…`) are used in three places: the slideshow at the top of the home page, the Shop by space cards, and the banner of each room page. Replacing one updates all three.
 
 Good photos for this site:
 
 - **Lights:** plain background, lamp in the middle with space around it. Wall and ceiling lights as tall photos, chandeliers as square photos.
-- **Room photos:** wide, at least 1600 pixels across, with the main subject on the right. The headline sits on the left.
+- **Room photos:** wide, at least 1600 pixels across, with the main subject on the right. Headlines sit on the left.
 
 Limits:
 
-- This replaces existing photos only. Adding a new product, removing one, or renaming one needs a change to the product list in the code.
+- This replaces existing photos only. Adding, removing or renaming a product needs a change to the product list in the code, and a 3D model for it.
 - The computer needs Python installed (free from python.org). The first run also downloads a small image tool.
 
 ---
 
 ## 7. How to change contact details, prices and text
 
-Contact details and prices live in one clearly marked block at the top of one file: `assets/js/app.js`, under the heading SETTINGS. Open the file with Notepad, change only the text between the quote marks, and save.
+All settings live in one small file: `assets/js/config.js`. Open it with Notepad, change only the text between the quote marks, and save.
 
-| To change | Where | What it looks like |
+| To change | Setting | Example |
 | --- | --- | --- |
-| WhatsApp number | `LUMA_CONTACT`, line `whatsapp` | `whatsapp: '201001234567'` (digits only, country code first, no + sign) |
-| Email, city, opening hours | `LUMA_CONTACT`, lines `email`, `city`, `hours` | `email: 'hello@example.com'` |
+| Phone number shown on the site | `LUMA_CONTACT` → `phone` | `phone: '01093244530'` |
+| WhatsApp number | `LUMA_CONTACT` → `whatsapp` | `whatsapp: '201093244530'` (digits only, country code first, no + sign) |
+| Instagram and TikTok | `LUMA_CONTACT` → `instagram`, `tiktok` | `instagram: 'https://www.instagram.com/yourname'` |
+| Email, city, opening hours | `LUMA_CONTACT` → `email`, `city`, `hours` | `city: 'Cairo, Egypt'` |
+| Where consultation requests go | `LUMA_REQUESTS` → `endpoint` | The Google Sheet link (see the setup guide) |
+| Booking calendar (optional) | `LUMA_REQUESTS` → `calendarUrl` | A Google Calendar booking page, Cal.com or Calendly link |
 | Lamp designer prices | `LUMA_PRICING` | `shade: { 19: 799, 33: 1299, 42: 1599 }`, `cord: 750`, `bulbs: 399` |
 | Price, size, material and lead time of one design | `styleSpecs` | An example line is written in the file |
-| Product names and descriptions | `styleCatalog` and `styleNotes`, lower in the same file | Lists of names and one description per design |
-| Which designs appear under each room | `SPACES`, in the same file | A list such as `'sconces:1'` per room |
-| Headlines and paragraphs on the page | `index.html` | Ordinary text between the tags |
+
+Other things to change, in other files:
+
+| To change | Where |
+| --- | --- |
+| Product names and descriptions | `assets/js/catalog.js` → `styleCatalog` and `styleNotes` |
+| Which designs appear on each room page, and its title and intro | `assets/js/catalog.js` → `SPACES` |
+| Headlines and paragraphs | The page file: `index.html`, `space.html`, `about.html` or `contact.html` |
 
 Two rules keep this safe:
 
@@ -184,9 +204,9 @@ The website has two copies: the working copy in the project folder on a computer
 
 **Preview on a computer.** Double-click `preview.bat` in the project folder. A black window opens and the site appears in the browser at `http://localhost:8124`. Keep the black window open while looking, and close it when finished. Only that computer can see the preview.
 
-**Where the public site lives.** It is hosted free on GitHub Pages, from the GitHub account `Ykashef97`, project `Lumoostudio30`.
+**Where the public site lives.** It is hosted free on GitHub Pages, from the GitHub account `Ykashef97`, project `Lumoostudio30`. The public address shows the `refactor` branch.
 
-**Publish a change.** Publishing means saving the changed files into the project's history (a "commit") and uploading them to GitHub (a "push"). The public site updates by itself one or two minutes later. This needs someone signed in to the GitHub account that owns the project, or invited to it.
+**Publish a change.** Save the changed files into the project's history (a "commit") and upload them to GitHub (a "push") on the `refactor` branch. The public site updates by itself one or two minutes later. This needs someone signed in to the GitHub account that owns the project, or invited to it as a collaborator.
 
 **A new public address.** See [HOW-TO-CREATE-A-NEW-LINK.md](HOW-TO-CREATE-A-NEW-LINK.md).
 
@@ -194,32 +214,29 @@ The website has two copies: the working copy in the project folder on a computer
 
 ## 9. Do we need a dashboard?
 
-Not yet. Today the website has no login, no database and no server, which is why it is free to host and has nothing to hack. Quote requests already arrive in WhatsApp and email, and that is our inbox. A dashboard would add monthly cost and upkeep before we know how many requests we get.
+Not yet. The website has no login, no database and no server, which is why it is free to host and has nothing to hack. Quote requests arrive in WhatsApp, and consultation requests in a shared Google Sheet. A dashboard would add monthly cost and upkeep before we know how many requests we get.
 
 Build it in stages, and move to the next stage only when the reason for it appears:
 
 | Stage | What we use | Move here when | Effort and cost |
 | --- | --- | --- | --- |
-| 1. Now | WhatsApp Business app on a shared number (both partners via linked devices, with labels and quick replies), plus a shared spreadsheet of requests | Launch | No building. Free |
-| 2. Easier editing | Products, prices and contact details moved into one simple data file or a Google Sheet that the site reads | We change prices or products more than about once a month | About a day of development. Free |
-| 3. Editing screen | A login page where either partner edits products and photos in a form and presses Publish (a ready-made tool such as Decap CMS works with our current hosting) | Editing files feels risky, or a third person needs to update the site | Two to three days. Free or low cost |
-| 4. Full dashboard | Requests saved to a database, a list of leads with status, customer accounts, online payment | We receive more requests than a spreadsheet can handle, or we want online ordering | Weeks of development. Monthly hosting and payment fees, plus privacy and refund policies |
-
-Before stage 3 or 4 we should decide: who may edit what, whether both partners need separate logins, what must be recorded about each request, and whether customers will pay online.
+| 1. Now | WhatsApp Business app on a shared number, plus the shared Google Sheet of consultation requests with a Status column | Launch | Sheet setup only. Free |
+| 2. Easier editing | Products, prices and contact details moved into a Google Sheet that the site reads | We change prices or products more than about once a month | About a day of development. Free |
+| 3. Editing screen | A login page where either partner edits products and photos in a form and presses Publish | Editing files feels risky, or a third person needs to update the site | Two to three days. Free or low cost |
+| 4. Full dashboard | Requests and quotes in a database, a list of leads, customer accounts, online payment, real booking calendar | We receive more requests than a sheet can handle, or we want online ordering | Weeks of development. Monthly hosting and payment fees, plus privacy and refund policies |
 
 ---
 
 ## 10. Before launch checklist
 
-The site is ready to publish once the first four items are done. The rest can follow in the first weeks.
-
-- [ ] Add our WhatsApp number and email to the SETTINGS block
+- [x] Add our WhatsApp number (done: 010 9324 4530)
+- [ ] Set up the Google Sheet for consultation requests, and run its 2-minute test
 - [ ] Replace the sample lamp-designer prices with our real prices
-- [ ] Read and approve the About text and the three promises
-- [ ] Publish the new version, then send ourselves a test quote from a phone
-- [ ] Add city and opening hours to the footer
+- [ ] Read and approve the About page, the room page introductions and the three promises
+- [ ] Add our Instagram and TikTok links
+- [ ] Publish the new version, then send ourselves a test quote and a test consultation from a phone
+- [ ] Add email, city and opening hours if we want them shown
 - [ ] Add price, size, material and lead time for each design
-- [ ] Check which designs appear under each room in "Shop by space"
+- [ ] Check which designs appear on each room page
 - [ ] Test on one iPhone and one Android phone
 - [ ] Decide on the public address (see the new-link guide)
-- [ ] Start the shared spreadsheet of quote requests

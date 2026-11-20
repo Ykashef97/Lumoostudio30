@@ -1,10 +1,11 @@
-'use strict';
-
 /* Room visualiser: places a fixture photo on a room photo, entirely in the browser.
-   Nothing is uploaded. Depends on window.Luma from app.js. */
+   Nothing is uploaded. Loaded by home.js. */
+import { styleCatalog, fixtureImage } from './catalog.js';
+import { escapeLuma, toast, addLumaCartItem, fixtureCartItem } from './core.js';
+
+const Luma = { catalog: styleCatalog, fixtureImage, escape: escapeLuma, toast, addToSelection: addLumaCartItem, fixtureCartItem };
+
 (function () {
-  const Luma = window.Luma;
-  if (!Luma) return;
 
   const $ = selector => document.querySelector(selector);
   const SAMPLE_ROOM = 'assets/img/hero/living.webp';
@@ -129,7 +130,7 @@
     populateFixtures(index);
   };
   window.syncVisualChoice = function () {
-    const b = window.lumaBuild;
+    const b = window.lumaBuild || { fixtureCategory: 'sconces', fixtureIndex: 0 };
     window.setVisualFixture(b.fixtureCategory, b.fixtureIndex);
   };
 

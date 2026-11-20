@@ -1,6 +1,6 @@
 # How to create a new public link for the website
 
-*Written 14 November 2026 for the owners. No coding knowledge needed for Options A, C and D.*
+*Updated 20 November 2026 for the owners. No coding knowledge needed for Options A, C and D.*
 
 The website is hosted free on **GitHub Pages**. GitHub builds the link from two names:
 
@@ -21,7 +21,7 @@ Today that is `https://ykashef97.github.io/Lumoostudio30/`. To get a different l
 
 Recommended path: **Option A now**, to get a clean LumaDesign link today. Add **Option D** when you have chosen a domain name.
 
-The new version of the website is saved on GitHub in a copy called `refactor`. The old version is in the copy called `main`. The steps below say which copy to use.
+The new version of the website is saved on GitHub in a copy called `refactor`, and since 14 November 2026 the current public link already shows it. The old version is in the copy called `main`. The steps below say which copy to use.
 
 ---
 
@@ -52,7 +52,10 @@ You need to be signed in to GitHub as the account that should own the site.
 
 ## Option B: same link, new version
 
-This replaces the old site at the current link.
+Already done: the current link shows the `refactor` branch. Two ways to keep it that way:
+
+- **Simplest:** keep pushing changes to `refactor`. In GitHub's **Settings → Pages**, the branch stays set to `refactor`.
+- **Tidier, optional:** merge `refactor` into `main`, then set the Pages branch back to `main`, as below.
 
 1. Open [github.com/Ykashef97/Lumoostudio30](https://github.com/Ykashef97/Lumoostudio30) while signed in.
 2. Open the **Pull requests** tab and press **New pull request**.
@@ -103,16 +106,16 @@ Works on top of Option A, B or C.
 
 ## After the link changes
 
-The public address is written inside four files, for search engines and for the preview picture that appears when the link is shared on WhatsApp or Facebook:
+The public address is written inside seven files, for search engines and for the preview picture that appears when the link is shared on WhatsApp or Facebook:
 
-- `index.html`
+- `index.html`, `space.html`, `about.html`, `contact.html`
 - `404.html`
 - `robots.txt`
 - `sitemap.xml`
 
 They still say `ykashef97.github.io/Lumoostudio30`. The site works without this change, but link previews and search results will point to the old address.
 
-The easy way: tell Claude "the new address is `https://…`" and it updates all four and publishes them.
+The easy way: tell Claude "the new address is `https://…`" and it updates all seven and publishes them.
 
 Then check:
 
