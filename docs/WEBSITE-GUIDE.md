@@ -109,15 +109,15 @@ Reply in the same chat with the price, lead time and delivery details.
 
 ### Consultation requests
 
-Once the Google Sheet is set up (see [CONSULTATION-REQUESTS-SETUP.md](CONSULTATION-REQUESTS-SETUP.md)), each request becomes a row in a **Requests** tab that both partners can open, and you can get an email for each one. Each row holds the customer's details, the design and its reference, a link to its photo, their custom setup, their preferred time and notes.
+Each request is saved in the database and appears in the admin portal under **Consultation requests** (see [ADMIN-GUIDE.md](ADMIN-GUIDE.md)), with the customer's details, the design and its reference, its photo, their custom setup, their preferred time and notes. If you set up the Google Sheet copy ([CONSULTATION-REQUESTS-SETUP.md](CONSULTATION-REQUESTS-SETUP.md)), it also appears there within 5 minutes, and you can get an email for each one.
 
-What we do next:
+What we do next, in the portal:
 
-1. Contact the customer the way they chose (WhatsApp or phone call), within the time we promise.
-2. Agree a time for the consultation and set the row's **Status** to "Meeting agreed".
-3. After the meeting, set it to "Done", or "Not a fit".
+1. Contact the customer the way they chose (WhatsApp or phone call), within the time we promise. Set the status to **Contacted**.
+2. Agree a time for the consultation and set it to **Meeting scheduled**. Add private notes as you go.
+3. Then **In progress**, and finally **Completed** or **Cancelled**.
 
-Until the sheet is set up, the form still checks everything the customer typed, then hands the request to WhatsApp with all the details written. In that case nothing is stored, and it only reaches us if the customer presses send.
+If the database cannot be reached when the customer presses Send, the form hands the request to WhatsApp with all the details written. In that case it only reaches us if the customer presses send in WhatsApp.
 
 ---
 
@@ -131,8 +131,9 @@ Until the sheet is set up, the form still checks everything the customer typed, 
 | Quote requests by WhatsApp | Working, sent to 010 9324 4530 |
 | Call button | Working (`+20 109 324 4530`) |
 | Consultation form | Working: checks every field, attaches the design and setup, shows a clear confirmation |
-| Consultation requests stored in a sheet | Ready, but needs the Google Sheet set up once (10 minutes). Until then they go by WhatsApp |
-| Instagram and TikTok | Shown as "Coming soon" until we add the links |
+| Consultation requests | Saved in the database and managed in the admin portal. The Google Sheet copy is optional and needs a 10-minute setup |
+| Admin portal | Working: edit pages, rooms, collections, designs, photos, contact details and prices, then publish |
+| Instagram and TikTok | Hidden until we add the links in the portal |
 | Email address, city, opening hours | Hidden until we add them |
 | Prices in the lamp designer | Sample figures from the earlier draft. Must be replaced with our real prices |
 | Price on each design | Shows "On request" until we add prices |
@@ -143,64 +144,42 @@ Until the sheet is set up, the form still checks everything the customer typed, 
 
 ## 6. How to change a photo
 
-Put the new photo in the `new-images` folder with the right name, then double-click `update-images.bat`. No editing of code is needed.
+Use the admin portal: **Media library** to upload or replace photos, then choose them where they are used (Homepage slides, Shop by space, Designs, About us, Contact us). Publish when ready. See [ADMIN-GUIDE.md](ADMIN-GUIDE.md).
 
-1. Open the project folder, then the `new-images` folder.
-2. Open `IMAGE-NAMES.txt` and find the photo to replace. Example: the "Pleated shade arm" wall light is `sconces-02`, and the bedroom banner photo is `hero-bedroom`.
-3. Rename the new photo to that name and put it in `new-images`. Example: `sconces-02.jpg`. JPG, PNG and WEBP all work, and several photos can be added at once.
-4. Go back to the project folder and double-click `update-images.bat`. It resizes each photo, replaces the old one, and lists what it updated or skipped and why.
-5. Double-click `preview.bat` to check the result. If the old photo still shows, press Ctrl+F5.
-6. Publish (section 8) so the public website gets the new photo.
-
-The room photos (`hero-…`) are used in three places: the slideshow at the top of the home page, the Shop by space cards, and the banner of each room page. Replacing one updates all three.
+Replacing a photo in the Media library updates every place that uses it.
 
 Good photos for this site:
 
 - **Lights:** plain background, lamp in the middle with space around it. Wall and ceiling lights as tall photos, chandeliers as square photos.
-- **Room photos:** wide, at least 1600 pixels across, with the main subject on the right. Headlines sit on the left.
+- **Room photos:** wide, at least 1600 pixels across, with the main subject on the right. Headlines sit on the left. Set the focal point so phones keep the important part in view.
 
-Limits:
-
-- This replaces existing photos only. Adding, removing or renaming a product needs a change to the product list in the code, and a 3D model for it.
-- The computer needs Python installed (free from python.org). The first run also downloads a small image tool.
+The older `update-images.bat` tool still replaces the photos that came with the website, but those changes only go live through a commit and push (section 8). The Media library is simpler and needs neither.
 
 ---
 
 ## 7. How to change contact details, prices and text
 
-All settings live in one small file: `assets/js/config.js`. Open it with Notepad, change only the text between the quote marks, and save.
+Everything is edited in the admin portal and goes live when you press **Publish**:
 
-| To change | Setting | Example |
-| --- | --- | --- |
-| Phone number shown on the site | `LUMA_CONTACT` → `phone` | `phone: '01093244530'` |
-| WhatsApp number | `LUMA_CONTACT` → `whatsapp` | `whatsapp: '201093244530'` (digits only, country code first, no + sign) |
-| Instagram and TikTok | `LUMA_CONTACT` → `instagram`, `tiktok` | `instagram: 'https://www.instagram.com/yourname'` |
-| Email, city, opening hours | `LUMA_CONTACT` → `email`, `city`, `hours` | `city: 'Cairo, Egypt'` |
-| Where consultation requests go | `LUMA_REQUESTS` → `endpoint` | The Google Sheet link (see the setup guide) |
-| Booking calendar (optional) | `LUMA_REQUESTS` → `calendarUrl` | A Google Calendar booking page, Cal.com or Calendly link |
-| Lamp designer prices | `LUMA_PRICING` | `shade: { 19: 799, 33: 1299, 42: 1599 }`, `cord: 750`, `bulbs: 399` |
-| Price, size, material and lead time of one design | `styleSpecs` | An example line is written in the file |
-
-Other things to change, in other files:
-
-| To change | Where |
+| To change | Where in the portal |
 | --- | --- |
-| Product names and descriptions | `assets/js/catalog.js` → `styleCatalog` and `styleNotes` |
-| Which designs appear on each room page, and its title and intro | `assets/js/catalog.js` → `SPACES` |
-| Headlines and paragraphs | The page file: `index.html`, `space.html`, `about.html` or `contact.html` |
+| Phone, WhatsApp, email, city, opening hours, Instagram, TikTok, other links | Contact us |
+| Lamp designer prices, booking calendar link | Settings |
+| Price, size, material and lead time of a design | Designs |
+| Product names, descriptions, photos, adding or hiding designs | Designs |
+| Which designs appear on each room page, and its title, intro and photo | Shop by space |
+| Filters above the product grid | Collections |
+| Headlines, slides, sections and their order | Homepage, About us, Contact us |
 
-Two rules keep this safe:
-
-1. Keep every quote mark, comma and bracket exactly as it was.
-2. Check the result with `preview.bat` before publishing. If the page looks broken after an edit, undo the change and try again.
-
-For anything beyond these values, such as a new section or a new product, ask a developer or Claude to make the change.
+A brand-new kind of section, a new page or a new 3D shape still needs a developer.
 
 ---
 
 ## 8. How to preview and publish
 
-The website has two copies: the working copy in the project folder on a computer, and the public copy on the internet. A change shows publicly only after it is published.
+**Content changes** (text, photos, designs, rooms, contact details, prices) are published from the admin portal with the **Publish** button. They need nothing below.
+
+**Code changes** (layout, new features) work differently. The website has two copies: the working copy in the project folder on a computer, and the public copy on the internet. A code change shows publicly only after it is published as described here.
 
 **Preview on a computer.** Double-click `preview.bat` in the project folder. A black window opens and the site appears in the browser at `http://localhost:8124`. Keep the black window open while looking, and close it when finished. Only that computer can see the preview.
 
@@ -212,31 +191,34 @@ The website has two copies: the working copy in the project folder on a computer
 
 ---
 
-## 9. Do we need a dashboard?
+## 9. The admin portal and what comes next
 
-Not yet. The website has no login, no database and no server, which is why it is free to host and has nothing to hack. Quote requests arrive in WhatsApp, and consultation requests in a shared Google Sheet. A dashboard would add monthly cost and upkeep before we know how many requests we get.
+The admin portal (stage 3 of the earlier plan) is built: a private login where we edit the website and handle consultation requests. It runs on Supabase's free plan (database, login and photo storage) alongside the free GitHub Pages hosting. Guides: [ADMIN-SETUP.md](ADMIN-SETUP.md) for the one-time setup and [ADMIN-GUIDE.md](ADMIN-GUIDE.md) for daily use.
 
-Build it in stages, and move to the next stage only when the reason for it appears:
+Possible next steps, only when the reason for them appears:
 
-| Stage | What we use | Move here when | Effort and cost |
-| --- | --- | --- | --- |
-| 1. Now | WhatsApp Business app on a shared number, plus the shared Google Sheet of consultation requests with a Status column | Launch | Sheet setup only. Free |
-| 2. Easier editing | Products, prices and contact details moved into a Google Sheet that the site reads | We change prices or products more than about once a month | About a day of development. Free |
-| 3. Editing screen | A login page where either partner edits products and photos in a form and presses Publish | Editing files feels risky, or a third person needs to update the site | Two to three days. Free or low cost |
-| 4. Full dashboard | Requests and quotes in a database, a list of leads, customer accounts, online payment, real booking calendar | We receive more requests than a sheet can handle, or we want online ordering | Weeks of development. Monthly hosting and payment fees, plus privacy and refund policies |
+| Step | Move here when | Effort and cost |
+| --- | --- | --- |
+| Arabic version of the site | Customers ask for it | Several days |
+| Visitor statistics | We want to know which designs and pages are popular | Half a day. Free options exist |
+| Our own web address (e.g. lumadesign.com) | Before printing it on cards or ads | An hour plus the yearly domain fee |
+| Online ordering and payment, real booking calendar | Requests outgrow WhatsApp and the portal | Weeks of development, monthly fees, plus privacy and refund policies |
+
+The free Supabase plan includes a 500 MB database and 1 GB of photo storage, far more than this site needs. A free project that is unused for a week is paused by Supabase and is restarted from its dashboard; regular visits keep it awake.
 
 ---
 
 ## 10. Before launch checklist
 
 - [x] Add our WhatsApp number (done: 010 9324 4530)
-- [ ] Set up the Google Sheet for consultation requests, and run its 2-minute test
-- [ ] Replace the sample lamp-designer prices with our real prices
+- [ ] Create the admin account (`create-admin.bat`), sign in, and send a test consultation from a phone
+- [ ] Optional: set up the Google Sheet copy of requests
+- [ ] Replace the sample lamp-designer prices with our real prices (portal: Settings)
 - [ ] Read and approve the About page, the room page introductions and the three promises
-- [ ] Add our Instagram and TikTok links
+- [ ] Add our Instagram and TikTok links (portal: Contact us)
 - [ ] Publish the new version, then send ourselves a test quote and a test consultation from a phone
 - [ ] Add email, city and opening hours if we want them shown
-- [ ] Add price, size, material and lead time for each design
+- [ ] Add price, size, material and lead time for each design (portal: Designs)
 - [ ] Check which designs appear on each room page
 - [ ] Test on one iPhone and one Android phone
 - [ ] Decide on the public address (see the new-link guide)

@@ -1,9 +1,10 @@
 /* Shared by every page: header, dialogs, shortlist, selection, quote,
    design details, consultation requests, footer contact details. */
-import { LUMA_CONTACT, LUMA_REQUESTS, styleSpecs } from './config.js';
-import { CATEGORY, styleCatalog, styleNotes, fixtureImage, refCode, findFixtureByName } from './catalog.js';
+import { LUMA_CONTACT, LUMA_REQUESTS } from './config.js';
+import { CATEGORY, styleCatalog, styleNotes, fixtureImage, fixtureTone, fixtureSpecs, refCode, findFixtureByName, parsePick } from './catalog.js';
+import { IS_PREVIEW, pageContent } from './content.js';
 import {
-  validateConsultation, normalizePhone, newRequestId, hasEndpoint, submitRequest,
+  validateConsultation, normalizePhone, newRequestId, hasEndpoint, submitRequest, recordLike,
   consultationMessage, whatsappLink, isoDay, PREFERRED_DAY_MAX, formatDay
 } from './requests.js';
 
@@ -24,13 +25,13 @@ export function absoluteUrl(path) {
   return new URL(path, document.baseURI).href;
 }
 
-// Backdrop colours sampled from each photo (assets/js/fixture-tones.js) so cards blend with the picture.
+// Backdrop colours sampled from each photo so cards blend with the picture.
 export function toneStyle(key, index) {
-  const tone = (window.LUMA_FIXTURE_TONES || {})[key]?.[index];
+  const tone = fixtureTone(key, index);
   return tone ? '--tone-top:' + tone[0] + ';--tone-bottom:' + tone[1] : '';
 }
 export function applyTone(el, key, index) {
-  const tone = (window.LUMA_FIXTURE_TONES || {})[key]?.[index];
+  const tone = fixtureTone(key, index);
   el.style.setProperty('--tone-top', tone ? tone[0] : '');
   el.style.setProperty('--tone-bottom', tone ? tone[1] : '');
   // Absolute address: a relative one would be resolved against the stylesheet's folder.
@@ -60,7 +61,7 @@ export function scrollToSection(selector) {
 
 export const isHome = () => Boolean($('#studio'));
 
-/* ---------- Contact details from config.js ---------- */
+/* ---------- Contact details (edited in the admin portal) ---------- */
 
 export const contact = {
   whatsappDigits: String(LUMA_CONTACT.whatsapp || '').replace(/\D/g, ''),
@@ -353,8 +354,8 @@ function bindDialogs() {
    ===================================================================== */
 
 export const hooks = {
-  designFixture(key, index) { location.href = './?design=' + key + ':' + index + '#studio'; },
-  tryFixture(key, index) { location.href = './?try=' + key + ':' + index + '#visualize'; },
+  designFixture(key, index) { location.href = './?design=' + refCode(key, index) + '#studio'; },
+  tryFixture(key, index) { location.href = './?try=' + refCode(key, index) + '#visualize'; },
   search() { location.href = './?search=1#collections'; },
   // (key, index) => text describing the customer's custom setup for that design, or ''
   currentSetup() { return ''; }
@@ -450,8 +451,9 @@ export function toggleFavorite(name) {
   const saved = favorites.includes(name);
   favorites = saved ? favorites.filter(x => x !== name) : [...favorites, name];
   updateSaved();
-  if (saved) { toast('Removed from your shortlist'); return; }
   const found = findFixtureByName(name);
+  if (found) recordLike(refCode(found.key, found.index), saved ? -1 : 1);
+  if (saved) { toast('Removed from your shortlist'); return; }
   if (found && shouldOfferConsultation()) {
     snackbar({
       message: 'Saved to your shortlist. Want to talk it through with us?',
@@ -534,7 +536,7 @@ let activeFixture = null;
 export function openFixtureModal(key, index) {
   activeFixture = { key, index };
   const name = styleCatalog[key].items[index];
-  const specs = styleSpecs[key + ':' + index] || {};
+  const specs = fixtureSpecs(key, index);
 
   $('#fixtureModalTitle').textContent = name;
   $('#fixtureModalCategory').textContent = CATEGORY[key].singular + ' · Ref ' + refCode(key, index);
@@ -560,7 +562,7 @@ export function openFixtureModal(key, index) {
 }
 
 export function fixtureCartItem(key, index) {
-  return { key: key + ':' + index, name: styleCatalog[key].items[index], category: CATEGORY[key].singular };
+  return { key: refCode(key, index), name: styleCatalog[key].items[index], category: CATEGORY[key].singular };
 }
 
 function bindFixtureDialog() {
@@ -596,14 +598,15 @@ export let lumaCartItems = readStore('lumaCartItems', [])
   .filter(x => x && x.key && x.name && x.kind !== 'retail')
   .map(x => ({ key: String(x.key), name: String(x.name), category: String(x.category || 'Design'), qty: Math.max(1, +x.qty || 1) }));
 
+// Keys: "W-02" (a design), "build:W-02:42:brass:white" (a custom lamp), "saved:<name>".
+// Older visits saved "sconces:1" and "build:sconces:1:..."; those still work.
 function cartImage(item) {
   const parts = item.key.split(':');
-  if (parts[0] === 'build') return fixtureImage(parts[1], +parts[2], true);
-  if (parts[0] === 'saved') {
-    const found = findFixtureByName(item.name.split(' · ')[0]);
-    return found ? fixtureImage(found.key, found.index, true) : '';
-  }
-  return styleCatalog[parts[0]] ? fixtureImage(parts[0], +parts[1], true) : '';
+  let found;
+  if (parts[0] === 'build') found = CATEGORY[parts[1]] ? parsePick(parts[1] + ':' + parts[2]) : parsePick(parts[1]);
+  else if (parts[0] === 'saved') found = findFixtureByName(item.name.split(' · ')[0]);
+  else found = parsePick(item.key) || findFixtureByName(item.name);
+  return found ? fixtureImage(found.key, found.index, true) : 'favicon.svg';
 }
 
 function saveLumaCart() {
@@ -802,7 +805,7 @@ function buildPayload(values) {
     notes: values.notes,
     design: item ? {
       ref: refCode(item.key, item.index),
-      key: item.key + ':' + item.index,
+      key: refCode(item.key, item.index),
       name: styleCatalog[item.key].items[item.index],
       category: CATEGORY[item.key].singular,
       image: absoluteUrl(fixtureImage(item.key, item.index, false))
@@ -891,13 +894,13 @@ function bindConsultation() {
   document.addEventListener('click', e => {
     const opener = e.target.closest('[data-open-consult]');
     if (!opener) return;
-    const [key, index] = (opener.dataset.openConsult || '').split(':');
-    openConsultation(key ? { key, index: +index, source: opener.dataset.source || 'page' } : { source: opener.dataset.source || 'page' });
+    const found = parsePick(opener.dataset.openConsult);
+    openConsultation(found ? { ...found, source: opener.dataset.source || 'page' } : { source: opener.dataset.source || 'page' });
   });
 }
 
 /* =====================================================================
-   FOOTER CONTACT DETAILS + SOCIAL LINKS (from config.js)
+   FOOTER CONTACT DETAILS + SOCIAL LINKS (edited in the admin portal)
    ===================================================================== */
 
 export const social = [
@@ -919,18 +922,45 @@ function renderFooterContact() {
   const socialBox = $('#footerSocial');
   const live = social.filter(s => s.url);
   if (socialBox) {
-    socialBox.hidden = !live.length;
-    socialBox.innerHTML = live.map(s => '<a class="social-link" href="' + escapeLuma(s.url) + '" target="_blank" rel="noopener" aria-label="LumaDesign on ' + s.label + '">' + icon(s.id) + '</a>').join('');
+    socialBox.hidden = !live.length && !LUMA_CONTACT.social.length;
+    socialBox.innerHTML = live.map(s => '<a class="social-link" href="' + escapeLuma(s.url) + '" target="_blank" rel="noopener" aria-label="LumaDesign on ' + s.label + '">' + icon(s.id) + '</a>').join('') +
+      LUMA_CONTACT.social.map(s => '<a class="social-link social-link--text" href="' + escapeLuma(s.url) + '" target="_blank" rel="noopener">' + escapeLuma(s.label) + '</a>').join('');
   }
-  if (!contact.whatsappDigits) console.warn('LumaDesign: add your WhatsApp number to LUMA_CONTACT in assets/js/config.js so requests reach you.');
+  if (!contact.whatsappDigits) console.warn('LumaDesign: add the WhatsApp number in the admin portal (Contact Us) so requests reach you.');
+}
+
+/* =====================================================================
+   NOTICE BAR + PREVIEW BANNER
+   ===================================================================== */
+
+function renderNotice() {
+  const bar = $('.notice'), notice = pageContent('home').notice;
+  if (!bar || !notice) return;
+  bar.hidden = notice.visible === false || !notice.text;
+  bar.innerHTML = escapeLuma(notice.text || '') + (notice.linkLabel
+    ? ' · <button class="notice-link" type="button" data-open-consult data-source="notice">' + escapeLuma(notice.linkLabel) + '</button>' : '');
+}
+
+function previewBanner() {
+  if (!IS_PREVIEW) return;
+  document.body.insertAdjacentHTML('afterbegin', '<p class="preview-banner" role="status">Preview: this page shows your unpublished changes. Visitors still see the published version.</p>');
+  // Keep the preview while moving between the website's pages.
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href]');
+    if (!a || a.target === '_blank' || a.origin !== location.origin || !/(\.html|\/)$/.test(a.pathname)) return;
+    const url = new URL(a.href);
+    url.searchParams.set('preview', '1');
+    a.href = url.href;
+  }, true);
 }
 
 /* =====================================================================
    SCROLL REVEAL
    ===================================================================== */
 
+// Runs after the page script has filled in its content, so new elements are included.
 function reveal() {
-  const items = $$('.reveal');
+  const items = $$('.reveal:not(.is-visible)');
   if (!('IntersectionObserver' in window)) { items.forEach(x => x.classList.add('is-visible')); return; }
   const observer = new IntersectionObserver(entries => entries.forEach(entry => {
     if (!entry.isIntersecting) return;
@@ -956,11 +986,14 @@ $('#snackbar').addEventListener('mouseenter', pauseSnackbar);
 $('#snackbar').addEventListener('mouseleave', resumeSnackbar);
 $('#snackbar').addEventListener('focusin', pauseSnackbar);
 $('#snackbar').addEventListener('focusout', e => { if (!$('#snackbar').contains(e.relatedTarget)) resumeSnackbar(); });
+renderNotice();
+previewBanner();
 renderFooterContact();
 updateSaved();
 renderLumaCart();
-reveal();
 window.LumaReady = true;
+// Page scripts fill in their content right after this file runs; then the content is shown.
+setTimeout(() => { document.documentElement.classList.add('cms-ready'); reveal(); }, 0);
 
 // Small hook for checking the site in a browser console; not used by the pages themselves.
 window.Luma = { openConsultation, openFixtureModal, openQuote, toggleFavorite, get cart() { return lumaCartItems; } };

@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /Lumoostudio30/admin/
 
 Sitemap: https://ykashef97.github.io/Lumoostudio30/sitemap.xml

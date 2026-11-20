@@ -157,7 +157,9 @@ export function createStage(host, { onUserInteract } = {}) {
     parts = { mount: new THREE.Group(), link: new THREE.Group(), body: new THREE.Group(), light: new THREE.Group() };
     Object.values(parts).forEach(g => model.add(g));
     const mount = MOUNT[b.fixtureCategory];
-    buildBody({ parts, mat, mount }, b.fixtureCategory, b.fixtureIndex);
+    // The 3D shape chosen for the design in the admin portal, e.g. "sconces:3".
+    const [shapeKey, shapeIndex] = String(b.fixtureModel || b.fixtureCategory + ':' + b.fixtureIndex).split(':');
+    buildBody({ parts, mat, mount }, shapeKey, +shapeIndex);
     if (mount === 'wall') {
       // Plug-in cord running down the wall from the back plate.
       const curve = new THREE.CatmullRomCurve3([
@@ -171,6 +173,7 @@ export function createStage(host, { onUserInteract } = {}) {
     root.add(model);
     state.key = b.fixtureCategory;
     state.index = b.fixtureIndex;
+    state.model = b.fixtureModel;
     state.mount = mount;
     wall.visible = mount === 'wall';
     ceiling.visible = mount !== 'wall';
@@ -336,9 +339,9 @@ export function createStage(host, { onUserInteract } = {}) {
 
   /* ---------- What home.js uses ---------- */
   const api = {
-    // b: { fixtureCategory, fixtureIndex, shade (cm), style (finish), cord, explode }
+    // b: { fixtureCategory, fixtureIndex, fixtureModel, shade (cm), style (finish), cord, explode }
     update(b) {
-      const designChanged = b.fixtureCategory !== state.key || b.fixtureIndex !== state.index;
+      const designChanged = b.fixtureCategory !== state.key || b.fixtureIndex !== state.index || b.fixtureModel !== state.model;
       const mountChanged = MOUNT[b.fixtureCategory] !== state.mount;
       const sizeChanged = b.shade !== state.size;
       const explodeChanged = (b.explode ? 1 : 0) !== state.explodeTarget;

@@ -748,7 +748,9 @@ const B = {
 };
 
 /* =====================================================================
-   WHICH BUILDER EACH DESIGN USES (same order as styleCatalog in catalog.js)
+   THE 3D SHAPES. One per original design, in the order they were first added
+   ("sconces:0" is the first wall light). Each design in the admin portal picks one
+   of these as its "3D model", so new designs reuse an existing shape.
    ===================================================================== */
 
 export const RECIPES = {

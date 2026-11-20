@@ -1,19 +1,129 @@
-/* Home page: hero slideshow, collection, lamp designer and room preview. */
+/* Home page: content from the admin portal, hero slideshow, collection, lamp designer and room preview. */
 import { LUMA_PRICING } from './config.js';
-import { CATEGORY, CATEGORY_ORDER, styleCatalog, FINISH, fixtureImage, parsePick } from './catalog.js';
+import { pageContent, fill, richText, mediaById, designCount } from './content.js';
+import { mediaUrl, focalPosition } from './media.js';
 import {
-  $, $$, escapeLuma, applyTone, toast, scrollToSection, hooks, productCardHTML, bindProductGrid,
+  CATEGORY, CATEGORY_ORDER, styleCatalog, FINISH, COLLECTIONS, SPACES, SPACE_ORDER,
+  fixtureImage, fixtureModel, refCode, parsePick, locateDesign
+} from './catalog.js';
+import {
+  $, $$, icon, escapeLuma, applyTone, toast, scrollToSection, hooks, productCardHTML, bindProductGrid,
   syncHearts, addLumaCartItem, openQuote, openConsultation, saveDesign
 } from './core.js';
 import './visualizer.js';
 
-const money = n => LUMA_PRICING.currency + ' ' + n.toLocaleString('en-EG');
+const money = n => LUMA_PRICING.currency + ' ' + Number(n || 0).toLocaleString('en-EG');
+
+/* =====================================================================
+   CONTENT FROM THE ADMIN PORTAL
+   ===================================================================== */
+
+const home = pageContent('home');
+const sections = home.sections || [];
+const sectionData = id => sections.find(s => s.id === id) || {};
+const SECTION_ELEMENT = {
+  quickcards: '#quickcards', spaces: '#spaces', featured: '#featured', collections: '#collections',
+  how: '#how', studio: '#studio', visualize: '#visualize', about: '#about'
+};
+
+// Small heading, title and introduction of a section.
+function sectionHead(root, data, { lede = true } = {}) {
+  if (!root) return;
+  const eyebrow = $('.eyebrow', root), title = $('.h2', root), intro = $('.lede', root);
+  if (eyebrow && data.eyebrow !== undefined) { eyebrow.textContent = fill(data.eyebrow); eyebrow.hidden = !data.eyebrow; }
+  if (title && data.title) title.innerHTML = richText(data.title);
+  if (lede && intro && data.lede !== undefined) { intro.textContent = fill(data.lede); intro.hidden = !data.lede; }
+}
+
+const arrowIcon = icon('arrow');
+const stepsHTML = steps => steps.map((s, i) =>
+  '<li class="step-card reveal"><span class="step-num">' + (i + 1) + '</span><h3>' + escapeLuma(fill(s.title)) + '</h3><p>' + escapeLuma(fill(s.text)) + '</p></li>').join('');
+
+function renderHero() {
+  const h = home.hero || {};
+  if (h.eyebrow !== undefined) $('.hero-copy .eyebrow').textContent = fill(h.eyebrow);
+  if (h.title) $('.hero-copy h1').innerHTML = richText(h.title);
+  const primary = $('.hero-actions a.btn');
+  if (h.primary && h.primary.label) { primary.innerHTML = escapeLuma(fill(h.primary.label)) + ' ' + arrowIcon; primary.href = h.primary.href || '#collections'; }
+  const secondary = $('.hero-actions [data-open-quote]');
+  if (h.secondary) { secondary.textContent = h.secondary.label || ''; secondary.hidden = !h.secondary.label; }
+
+  const slides = (h.slides || []).map(s => ({ ...s, media: mediaById(s.image) })).filter(s => s.media);
+  if (!slides.length) return null;
+  $('#heroSlides').innerHTML = slides.map((s, i) => {
+    const src = escapeLuma(mediaUrl(s.media, 'full'));
+    return '<img class="hero-slide' + (i ? '' : ' is-active') + '" ' + (i ? 'data-src="' + src + '" aria-hidden="true"' : 'src="' + src + '" fetchpriority="high"') +
+      ' width="' + (s.media.width || 1600) + '" height="' + (s.media.height || 900) + '" alt="' + escapeLuma(s.alt || s.media.alt || '') + '" style="object-position:' + focalPosition(s.media.focal) + '">';
+  }).join('');
+  $('#heroDots').innerHTML = slides.map((s, i) =>
+    '<button type="button" aria-label="Show ' + escapeLuma((s.label || 'photo ' + (i + 1)).toLowerCase()) + '" aria-current="' + (i === 0) + '"></button>').join('');
+  $('.hero-controls').hidden = slides.length < 2;
+  $('#heroRoomLabel').hidden = !slides[0].label;
+  return slides.map(s => ({ label: s.label || '', copy: fill(s.text || '') }));
+}
+
+function renderSections() {
+  const cards = sectionData('quickcards').cards;
+  if (Array.isArray(cards)) {
+    $('#quickcards').innerHTML = cards.map(c =>
+      '<a class="quickcard reveal" href="' + escapeLuma(c.href || '#collections') + '">' +
+        '<span class="quickcard-icon">' + icon(c.icon || 'grid') + '</span>' +
+        '<span class="quickcard-text"><strong>' + escapeLuma(fill(c.title)) + '</strong><span>' + escapeLuma(fill(c.text)) + '</span></span>' +
+        icon('arrow').replace('class="icon"', 'class="icon quickcard-arrow"') + '</a>').join('');
+  }
+
+  const spaces = sectionData('spaces');
+  if (spaces.title) $('#spacesTitle').textContent = fill(spaces.title);
+  if (spaces.linkLabel) $('#spaces .section-row .text-link').innerHTML = escapeLuma(fill(spaces.linkLabel)) + ' ' + arrowIcon;
+  $('#spaces .space-grid').innerHTML = SPACE_ORDER.map(slug => {
+    const s = SPACES[slug], m = s.image;
+    return '<a class="space-card" href="space.html?room=' + encodeURIComponent(slug) + '">' +
+      (m ? '<img src="' + escapeLuma(mediaUrl(m, 'medium')) + '" alt="" loading="lazy" width="800" height="450" style="object-position:' + focalPosition(s.focal) + '">' : '') +
+      '<span>' + icon(s.icon) + escapeLuma(s.short) + '</span></a>';
+  }).join('');
+  if (!SPACE_ORDER.length) $('#spaces').hidden = true;
+
+  const featured = sectionData('featured');
+  const featuredPicks = (featured.designs || []).map(locateDesign).filter(Boolean);
+  sectionHead($('#featured'), featured);
+  $('#featuredGrid').innerHTML = featuredPicks.map(productCardHTML).join('');
+  bindProductGrid($('#featuredGrid'));
+
+  sectionHead($('#collections .section-head'), sectionData('collections'));
+
+  const how = sectionData('how');
+  sectionHead($('#how .section-head'), how, { lede: false });
+  if (Array.isArray(how.steps)) $('#how .steps').innerHTML = stepsHTML(how.steps);
+
+  sectionHead($('#studio .section-head'), sectionData('studio'));
+  sectionHead($('#visualize .section-head'), sectionData('visualize'));
+
+  const about = sectionData('about');
+  sectionHead($('#about .about-copy'), about);
+  if (Array.isArray(about.trust)) {
+    $('#about .trust-list').innerHTML = about.trust.map(t =>
+      '<li class="reveal"><span class="quickcard-icon">' + icon(t.icon || 'check') + '</span><div><h3>' + escapeLuma(fill(t.title)) + '</h3><p>' + escapeLuma(fill(t.text)) + '</p></div></li>').join('');
+  }
+
+  // Order and visibility, as set in the portal. The shortlist always stays last.
+  const main = $('#main'), saved = $('#saved');
+  sections.forEach(s => {
+    const el = SECTION_ELEMENT[s.id] && $(SECTION_ELEMENT[s.id]);
+    if (!el) return;
+    main.insertBefore(el, saved);
+    if (s.visible === false) el.hidden = true;
+    else if (s.id === 'featured') el.hidden = !featuredPicks.length;
+  });
+}
+
+const heroFromContent = renderHero();
+renderSections();
 
 /* =====================================================================
    HERO SLIDESHOW
    ===================================================================== */
 
-const heroRooms = [
+const heroRooms = heroFromContent || [
   { label: 'Bedroom lighting', copy: 'Soft, layered light for restful evenings and slow mornings.' },
   { label: 'Dining room lighting', copy: 'A warm centerpiece for shared meals and long conversations.' },
   { label: 'Home office lighting', copy: 'Clear task lighting with a calmer, more considered feel.' },
@@ -31,7 +141,7 @@ let heroUserPaused = window.matchMedia('(prefers-reduced-motion: reduce)').match
 // Slides after the first are only downloaded shortly before they are shown.
 function loadSlide(i) {
   const slide = heroSlides[(i + heroSlides.length) % heroSlides.length];
-  if (!slide.dataset.src) return;
+  if (!slide || !slide.dataset.src) return;
   slide.src = slide.dataset.src;
   delete slide.dataset.src;
 }
@@ -45,13 +155,14 @@ function showHeroRoom(i, manual = false) {
   });
   heroDots.forEach((dot, n) => dot.setAttribute('aria-current', n === heroIndex ? 'true' : 'false'));
   $('#heroRoomLabel').textContent = heroRooms[heroIndex].label;
+  $('#heroRoomLabel').hidden = !heroRooms[heroIndex].label;
   $('#heroLede').textContent = heroRooms[heroIndex].copy;
   if (manual) runHeroTimer();
 }
 
 function runHeroTimer() {
   clearInterval(heroTimer);
-  if (heroUserPaused || !heroVisible || heroPointerInside || heroHasFocus || document.hidden) return;
+  if (heroRooms.length < 2 || heroUserPaused || !heroVisible || heroPointerInside || heroHasFocus || document.hidden) return;
   loadSlide(heroIndex + 1);
   heroTimer = setInterval(() => { showHeroRoom(heroIndex + 1); loadSlide(heroIndex + 1); }, 6500);
 }
@@ -74,26 +185,34 @@ if ('IntersectionObserver' in window) {
   new IntersectionObserver(entries => { heroVisible = entries[0].isIntersecting; runHeroTimer(); }).observe(hero);
 }
 syncHeroPause();
+showHeroRoom(0);
 if (document.readyState === 'complete') runHeroTimer(); else window.addEventListener('load', runHeroTimer);
 
 /* =====================================================================
-   COLLECTION
+   COLLECTION (filters are the collections set up in the admin portal)
    ===================================================================== */
 
-const catalogState = { category: 'sconces', query: '' };
+const allEntries = CATEGORY_ORDER.flatMap(key => styleCatalog[key].items.map((_, index) => ({ key, index })));
+const catalogState = { collection: COLLECTIONS.length ? COLLECTIONS[0].slug : 'all', query: '' };
+
+$('#collections .chips').innerHTML =
+  '<button class="chip" type="button" data-collection="all" aria-pressed="false">All <span>' + allEntries.length + '</span></button>' +
+  COLLECTIONS.map(c => '<button class="chip" type="button" data-collection="' + escapeLuma(c.slug) + '" aria-pressed="false">' + escapeLuma(c.name) + ' <span>' + c.picks.length + '</span></button>').join('');
 
 function catalogEntries() {
-  const keys = catalogState.category === 'all' ? CATEGORY_ORDER : [catalogState.category];
-  const list = keys.flatMap(key => styleCatalog[key].items.map((_, index) => ({ key, index })));
+  const chosen = COLLECTIONS.find(c => c.slug === catalogState.collection);
+  const list = chosen ? chosen.picks : allEntries;
   const query = catalogState.query.trim().toLowerCase();
   if (!query) return list;
-  return list.filter(x => (styleCatalog[x.key].items[x.index] + ' ' + CATEGORY[x.key].singular).toLowerCase().includes(query));
+  return list.filter(x => (styleCatalog[x.key].items[x.index] + ' ' + CATEGORY[x.key].singular + ' ' + refCode(x.key, x.index)).toLowerCase().includes(query));
 }
 
 function renderStyleGallery() {
   const entries = catalogEntries();
-  $$('[data-style-category]').forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.styleCategory === catalogState.category)));
-  $('#styleCategoryNote').textContent = catalogState.category === 'all' ? 'Every design in the collection.' : styleCatalog[catalogState.category].note;
+  const chosen = COLLECTIONS.find(c => c.slug === catalogState.collection);
+  $$('[data-collection]').forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.collection === catalogState.collection)));
+  $('#styleCategoryNote').textContent = chosen ? chosen.note : 'Every design in the collection.';
+  $('#styleCategoryNote').hidden = chosen ? !chosen.note : false;
   $('#styleGrid').innerHTML = entries.length
     ? entries.map(productCardHTML).join('')
     : '<p class="empty-state">No designs match “' + escapeLuma(catalogState.query.trim()) + '”. Try a different word, or clear the search.</p>';
@@ -101,14 +220,14 @@ function renderStyleGallery() {
 }
 
 bindProductGrid($('#styleGrid'));
-$$('[data-style-category]').forEach(chip => chip.addEventListener('click', () => {
-  catalogState.category = chip.dataset.styleCategory;
+$$('[data-collection]').forEach(chip => chip.addEventListener('click', () => {
+  catalogState.collection = chip.dataset.collection;
   renderStyleGallery();
 }));
 $('#catalogSearch').addEventListener('input', e => { catalogState.query = e.target.value; renderStyleGallery(); });
 
 function showAllDesigns() {
-  catalogState.category = 'all';
+  catalogState.collection = 'all';
   renderStyleGallery();
 }
 
@@ -122,11 +241,17 @@ hooks.search = () => {
    LAMP DESIGNER
    ===================================================================== */
 
+const firstKey = CATEGORY_ORDER[0];
 const build = window.lumaBuild = {
   shade: 42, style: 'brass', cord: 'white',
-  fixtureCategory: 'sconces', fixtureIndex: 0, fixtureName: styleCatalog.sconces.items[0],
+  fixtureCategory: firstKey, fixtureIndex: 0, fixtureName: styleCatalog[firstKey].items[0], fixtureModel: fixtureModel(firstKey, 0),
   explode: false, customised: false
 };
+
+$('#builderCategory').innerHTML = CATEGORY_ORDER.map(key =>
+  '<option value="' + key + '">' + CATEGORY[key].plural + ' (' + styleCatalog[key].items.length + ')</option>').join('');
+const pickIntro = $('#studio .builder-step .step-head p');
+if (pickIntro) pickIntro.textContent = 'All ' + designCount + ' designs from the collection';
 
 const mountOf = key => CATEGORY[key].mount;
 const needsCord = b => mountOf(b.fixtureCategory) !== 'ceiling';
@@ -137,7 +262,7 @@ export function buildSummary(b) {
   return b.shade + ' cm wide · ' + FINISH[b.style] + ' finish' + (needsCord(b) ? ' · ' + b.cord + ' textile cord' : '');
 }
 const buildLabel = b => b.fixtureName + ' · ' + buildSummary(b);
-const estimate = b => LUMA_PRICING.shade[b.shade] + (needsCord(b) ? LUMA_PRICING.cord : 0) + LUMA_PRICING.bulbs;
+const estimate = b => Number(LUMA_PRICING.shade[b.shade] || 0) + (needsCord(b) ? LUMA_PRICING.cord : 0) + LUMA_PRICING.bulbs;
 
 let stage = null, stageLoading = null;
 const builderStage = $('#builderStage');
@@ -159,7 +284,7 @@ function updateBuild() {
   $('#selectedBuildName').textContent = buildSummary(b);
 
   const photo = $('#stagePhotoImg'), src = fixtureImage(b.fixtureCategory, b.fixtureIndex, false);
-  if (!photo.src.endsWith(src)) photo.src = src;
+  if (photo.getAttribute('src') !== src) photo.src = src;
   photo.alt = b.fixtureName + ', ' + CATEGORY[b.fixtureCategory].singular.toLowerCase();
   applyTone($('#stagePhoto'), b.fixtureCategory, b.fixtureIndex);
 
@@ -180,6 +305,7 @@ function setBuildFixture(key, index) {
   build.fixtureCategory = key;
   build.fixtureIndex = index;
   build.fixtureName = styleCatalog[key].items[index];
+  build.fixtureModel = fixtureModel(key, index);
   $('#builderCategory').value = key;
   $('#builderSearch').value = '';
   renderBuilderStyles();
@@ -203,7 +329,7 @@ $$('[data-shade]').forEach(x => x.addEventListener('click', () => { build.shade 
 $$('[data-cord]').forEach(x => x.addEventListener('click', () => { build.cord = x.dataset.cord; build.customised = true; updateBuild(); }));
 $$('[data-finish]').forEach(x => x.addEventListener('click', () => { build.style = x.dataset.finish; build.customised = true; updateBuild(); }));
 
-// Price labels come from LUMA_PRICING.
+// Price labels come from Settings in the admin portal.
 $$('[data-price]').forEach(el => {
   const [part, size] = el.dataset.price.split(':');
   el.textContent = money(part === 'shade' ? LUMA_PRICING.shade[size] : part === 'cord' ? LUMA_PRICING.cord : LUMA_PRICING.bulbs);
@@ -280,7 +406,7 @@ $('#turnRight').addEventListener('click', () => { if (stage) stage.rotate(1); })
 /* ---------- Actions ---------- */
 
 function buildCartItem() {
-  return { key: ['build', build.fixtureCategory, build.fixtureIndex, build.shade, build.style, needsCord(build) ? build.cord : 'none'].join(':'), name: buildLabel(build), category: 'Custom lamp' };
+  return { key: ['build', refCode(build.fixtureCategory, build.fixtureIndex), build.shade, build.style, needsCord(build) ? build.cord : 'none'].join(':'), name: buildLabel(build), category: 'Custom lamp' };
 }
 $('#addBuildToCart').addEventListener('click', () => addLumaCartItem(buildCartItem()));
 $('#quoteBuild').addEventListener('click', () => { addLumaCartItem(buildCartItem(), true); openQuote(); });
@@ -311,8 +437,10 @@ hooks.currentSetup = (key, index) =>
 renderStyleGallery();
 renderBuilderStyles();
 updateBuild();
+if (window.syncVisualChoice) window.syncVisualChoice();
 
-// Other pages link here as ./?design=sconces:2#studio, ./?try=…#visualize or ./?search=1#collections.
+// Other pages link here as ./?design=W-02#studio, ./?try=…#visualize or ./?search=1#collections.
+// Older links such as ?design=sconces:2 still work.
 const params = new URLSearchParams(location.search);
 const design = parsePick(params.get('design'));
 const tryIt = parsePick(params.get('try'));
@@ -320,6 +448,7 @@ if (design) { build.customised = true; setBuildFixture(design.key, design.index)
 if (tryIt && window.setVisualFixture) window.setVisualFixture(tryIt.key, tryIt.index);
 if (params.get('search')) { showAllDesigns(); setTimeout(() => $('#catalogSearch').focus({ preventScroll: true }), 300); }
 if (design || tryIt || params.get('search')) {
-  history.replaceState(null, '', location.pathname + location.hash);
+  params.delete('design'); params.delete('try'); params.delete('search');
+  history.replaceState(null, '', location.pathname + (params.toString() ? '?' + params : '') + location.hash);
   if (location.hash) setTimeout(() => scrollToSection(location.hash), 60);
 }

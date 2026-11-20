@@ -174,6 +174,12 @@ input[type="range"] { width: 100%; height: 44px; margin: 0; accent-color: var(--
 .notice-link { margin: -12px 0; padding: 12px 4px; border: 0; background: none; color: var(--gold); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .notice-link:hover { color: var(--gold-strong); }
 
+/* Content from the admin portal fades in once it has loaded, so older text never flashes. */
+[data-cms] { transition: opacity .3s ease; }
+html.js:not(.cms-ready) [data-cms] { opacity: 0; }
+.preview-banner { position: sticky; top: 0; z-index: 90; margin: 0; padding: 8px 16px; background: var(--olive); color: var(--paper); font-size: 13px; font-weight: 600; text-align: center; }
+.social-link--text { width: auto; padding: 0 16px; border-radius: 999px; font-size: 13px; }
+
 .site-header { position: sticky; top: 0; z-index: 50; background: var(--espresso); color: var(--on-dark); box-shadow: 0 1px 0 rgb(255 255 255 / .06); }
 .header-row { display: flex; align-items: center; gap: 24px; height: var(--header); }
 .brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; flex: none; }
@@ -549,6 +555,7 @@ input[type="range"] { width: 100%; height: 44px; margin: 0; accent-color: var(--
 .contact-card h2 { display: flex; align-items: center; gap: 10px; font: 500 24px/1.2 var(--serif); }
 .contact-card h2 .icon { color: var(--olive); }
 .contact-card p { font-size: 15px; color: var(--muted); }
+.contact-card--wide { grid-column: 1 / -1; }
 .contact-card--feature { border-color: transparent; background: var(--espresso); color: var(--on-dark); }
 .contact-card--feature h2 .icon { color: var(--gold); }
 .contact-card--feature p { color: var(--on-dark-muted); }
@@ -572,6 +579,7 @@ input[type="range"] { width: 100%; height: 44px; margin: 0; accent-color: var(--
 .story-media img { width: 100%; height: 100%; object-fit: cover; }
 .story-copy { display: grid; gap: 18px; }
 .story-copy p { font-size: 17px; line-height: 1.7; color: var(--muted); }
+.story-copy--solo { max-width: 72ch; margin-inline: auto; }
 .pull-quote { padding-left: 20px; border-left: 3px solid var(--gold); font: italic 400 26px/1.35 var(--serif); color: var(--ink); }
 .compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: hidden; border: 1px solid var(--line); border-radius: var(--r-lg); }
 .compare-col { display: grid; gap: 8px; align-content: start; padding: 32px; background: var(--surface); }

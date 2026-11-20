@@ -1,92 +1,94 @@
-# Consultation requests: set up the shared Google Sheet
+# Consultation requests: the Google Sheet copy
 
-*Written 20 November 2026 for the owners. About 10 minutes, once. No coding needed.*
+Consultation requests from the website are saved in the database and managed in the admin portal, under **Requests**. There you change their status, add private notes, message the customer on WhatsApp and export to Excel.
 
-When a customer books a consultation on the website, the request becomes a new row in a Google Sheet that both partners can open. You can also get an email for each request.
+If you or your partner also want them in a Google Sheet, follow these steps. The Sheet is a **copy**:
 
-Until this is set up, the website still works: it hands each request to WhatsApp with all the details written, and the customer presses send. Nothing is stored in that case.
+- A new request adds a row within 5 minutes.
+- When you change a status in the portal, the Status column in the Sheet follows.
+- Anything typed into the Sheet stays in the Sheet. It never changes the portal.
+- Rows are never duplicated, even if the copy runs twice.
+
+It takes about 10 minutes. You only do it once.
 
 ## What you need
 
-- A Google account (Gmail). Use the one you want to own the requests, for example a shared business account.
-- The file `tools/consultation-requests.gs` from this project, opened in Notepad.
+- The Google account that should own the Sheet.
+- Your Supabase **secret key**: Supabase → your project → **Project Settings → API Keys** → the secret key (it starts with `sb_secret_`). This key gives full access to your database, so paste it only into the script settings below, never into the website, an email or a chat.
 
 ## Steps
 
-### 1. Create the sheet
+### 1. Create the Sheet and add the script
 
-1. Go to [sheets.new](https://sheets.new). A new, empty Google Sheet opens.
-2. Name it, for example `LumaDesign requests`, at the top left.
+1. Go to [sheets.new](https://sheets.new) and name the sheet, for example "LumaDesign requests".
+2. Click **Extensions → Apps Script**.
+3. Delete everything in the editor. Open `tools/consultation-requests.gs` from this project in Notepad, copy all of it and paste it into the editor.
+4. Click the disk icon to save.
 
-### 2. Add the script
+### 2. Add your two private settings
 
-1. In the sheet's menu, click **Extensions**, then **Apps Script**. A new tab opens with a code editor.
-2. Delete everything in the editor.
-3. Open `tools/consultation-requests.gs` in Notepad, select all of it (Ctrl+A), copy (Ctrl+C), and paste it into the editor (Ctrl+V).
-4. Optional, for email alerts: near the top, change `const NOTIFY_EMAILS = '';` to your addresses, for example `const NOTIFY_EMAILS = 'you@example.com, partner@example.com';`.
-5. Click the **Save** icon (the disk), or press Ctrl+S.
+1. In the Apps Script editor, click the gear icon (**Project Settings**) on the left.
+2. Scroll to **Script properties** and click **Add script property** twice:
 
-### 3. Deploy it as a web app
+   | Property | Value |
+   | --- | --- |
+   | `SUPABASE_URL` | Your project address, for example `https://abcdefgh.supabase.co` (the same as in the `.env` file) |
+   | `SUPABASE_SECRET_KEY` | The secret key from Supabase |
 
-1. Click **Deploy** (top right), then **New deployment**.
-2. Click the gear icon next to "Select type" and choose **Web app**.
-3. Fill in:
-   - **Description:** `Website requests`
-   - **Execute as:** `Me`
-   - **Who has access:** `Anyone`
-4. Click **Deploy**.
-5. Google asks you to authorise. Click **Authorize access**, choose your account, then **Advanced** and **Go to … (unsafe)**, then **Allow**. "Unsafe" only means Google has not reviewed this small script; it is your own script, running in your own account.
-6. Copy the **Web app URL**. It starts with `https://script.google.com/macros/s/` and ends with `/exec`.
+3. Click **Save script properties**.
 
-"Anyone" is needed so the website can send requests without the customer logging in to Google. People with the link can only add a request; they cannot read the sheet.
+### 3. Start the automatic copy
 
-### 4. Connect the website
+1. Go back to the editor (the `<>` icon).
+2. In the function list at the top, choose **setup** and click **Run**.
+3. Google asks for permission. Choose your account, click **Advanced → Go to … (unsafe)** and **Allow**. The warning appears because you wrote the script yourself; it only works with this Sheet and your database.
+4. A **Requests** tab appears with its headings and any requests you already have. From now on it updates every 5 minutes.
 
-1. Open `assets/js/config.js` in Notepad.
-2. Find `LUMA_REQUESTS` and paste the link between the quote marks:
+### 4. Connect the buttons in the admin portal (optional)
 
-   ```js
-   export const LUMA_REQUESTS = {
-     endpoint: 'https://script.google.com/macros/s/XXXXXXXX/exec',
-     calendarUrl: ''
-   };
-   ```
+This lets you press **Sync now** and **Rebuild the Sheet** in the portal instead of waiting 5 minutes.
 
-3. Save, check with `preview.bat`, then publish (see `WEBSITE-GUIDE.md`, section 8).
-
-### 5. Test it (2 minutes)
-
-1. Paste the web-app link into your browser. You should see `{"ok":true,"service":"LumaDesign consultation requests"}`.
-2. On the website, tap the heart on any design, then **Discuss this design**. Fill in your own name and phone, and send.
-3. You should see **Request received** with a reference such as `LD-4M1OGAFG`.
-4. In the sheet, a **Requests** tab appears with your row. Its **Status** column has a dropdown: New, Contacted, Meeting agreed, Done, Not a fit.
-
-If the website shows **We could not send that**, check that the link in `config.js` ends with `/exec` and that "Who has access" is **Anyone**.
+1. In the Apps Script editor click **Deploy → New deployment**.
+2. Click the gear next to "Select type" and choose **Web app**.
+3. Set **Execute as: Me** and **Who has access: Anyone**. ("Anyone" can only reach the buttons; the script checks that the person pressing them is signed in to the portal as the admin.)
+4. Click **Deploy** and copy the **Web app URL** (it ends in `/exec`).
+5. In the portal go to **Settings → Google Sheet copy of requests**. Paste the web app address and the Sheet's own address, then click **Save addresses**.
+6. Click **Sync now**. The table under it shows each copy, with how many rows were added or updated.
 
 ## Share it with your partner
 
-In the sheet, click **Share** and add your partner's email as an **Editor**. Both of you then see every request as it arrives and can update its status.
+In the Sheet click **Share** and add their email. Give them **Viewer** if they only need to read it. Changing statuses happens in the portal.
+
+## If something goes wrong
+
+| What you see | What to do |
+| --- | --- |
+| "Add SUPABASE_URL and SUPABASE_SECRET_KEY…" | Step 2: check both property names are spelled exactly as shown |
+| "Database answered 401" | The secret key is wrong or was rotated. Copy it again from Supabase |
+| "Only the signed-in admin can do this" in the portal | Sign out of the portal and sign in again, then retry |
+| "Could not reach the Google script" in the portal | Check the web app address ends in `/exec` and the deployment is for "Anyone" |
+| Rows were deleted from the Sheet by mistake | In the portal click **Rebuild the Sheet**. It rewrites the Requests tab from the database |
 
 ## Changing the script later
 
-After editing the script, click **Deploy**, then **Manage deployments**, the pencil icon, **Version: New version**, and **Deploy**. The web-app link stays the same, so `config.js` does not change.
+Paste the new version into the editor and save. If you use the portal buttons, also click **Deploy → Manage deployments → edit (pencil) → Version: New version → Deploy**, so the web app uses the new code. The address stays the same.
 
-## Adding a booking calendar later
+## Email alerts (optional)
 
-If you start using a booking page (for example a Google Calendar appointment schedule, Cal.com or Calendly), paste its link into `calendarUrl` in `config.js`. After a customer sends a request, the confirmation then also offers **Pick a time now**. The website never shows times as available unless they come from a real calendar like this.
+At the top of the script, put your address between the quotes in `NOTIFY_EMAILS`, for example `const NOTIFY_EMAILS = 'you@example.com';`, then save. Each new request then also arrives by email.
 
 ## What each column means
 
-| Column | What it holds |
+| Column | Meaning |
 | --- | --- |
-| Received | Date and time the request arrived |
-| Status | Your progress: New, Contacted, Meeting agreed, Done, Not a fit |
-| Request ID | The reference the customer sees, for example LD-4M1OGAFG |
-| Name, Phone, Email | How to reach the customer (email is optional) |
-| Contact by | WhatsApp or phone call, as the customer chose |
-| Preferred day, Preferred time | The customer's preference, if they gave one |
-| Design, Ref, Category, Photo | The design they want to discuss, with a link to its photo |
-| Custom setup | Size, finish and cord, if they shaped it in the lamp designer |
-| Notes | Anything they wrote, such as room size or ceiling height |
-| Started from | Where they pressed the button: like, details, shortlist, designer, contact, and so on |
-| Page | The page they were on |
+| Received | When the request was sent |
+| Status | Follows the portal: New, Contacted, Meeting scheduled, In progress, Completed or Cancelled |
+| Request ID | The `LD-…` reference the customer saw |
+| Name, Phone, Email | How to reach them |
+| Contact by | WhatsApp or phone call, as they chose |
+| Preferred day, Preferred time | Their preference. The meeting is only booked once you agree a time with them |
+| Design, Ref, Category, Photo | The design they asked about, if any |
+| Custom setup | Size, finish and cord they chose in the lamp designer |
+| Notes | What they wrote |
+| Started from | Where on the site they opened the form |
+| Page | The page address |

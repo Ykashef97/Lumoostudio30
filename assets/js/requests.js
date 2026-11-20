@@ -1,6 +1,7 @@
-/* Consultation requests: checking what the customer typed, sending it to the
-   shared Google Sheet, and the WhatsApp message used when that is not possible. */
-import { LUMA_CONTACT, LUMA_REQUESTS } from './config.js';
+/* Consultation requests: checking what the customer typed, saving it in the database
+   (seen in the admin portal), and the WhatsApp message used when that is not possible. */
+import { LUMA_CONTACT } from './config.js';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './backend.js';
 
 const TIMEOUT_MS = 15000;
 
@@ -53,32 +54,43 @@ export function newRequestId() {
 /* ---------- Sending ---------- */
 
 export function hasEndpoint() {
-  return Boolean(String(LUMA_REQUESTS.endpoint || '').trim());
+  return Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 }
 
-// Sends the request to the Google Sheet web app.
-// Sent as text/plain so the browser does not need Google's permission first.
+function apiHeaders() {
+  const h = { 'Content-Type': 'application/json', apikey: SUPABASE_ANON_KEY };
+  if (!SUPABASE_ANON_KEY.startsWith('sb_')) h.Authorization = 'Bearer ' + SUPABASE_ANON_KEY;
+  return h;
+}
+
+// Saves the request in the database. The database checks every field again.
 export async function submitRequest(payload) {
-  const url = String(LUMA_REQUESTS.endpoint || '').trim();
-  if (!url) return { ok: false, reason: 'no-endpoint' };
+  if (!hasEndpoint()) return { ok: false, reason: 'no-endpoint' };
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    const response = await fetch(url, {
+    const response = await fetch(SUPABASE_URL + '/rest/v1/rpc/submit_consultation', {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload),
-      redirect: 'follow',
+      headers: apiHeaders(),
+      body: JSON.stringify({ p: payload }),
       signal: controller.signal
     });
     const data = await response.json().catch(() => null);
     if (response.ok && data && data.ok) return { ok: true, id: data.id || payload.id };
-    return { ok: false, reason: 'rejected', message: data && data.error };
+    return { ok: false, reason: 'rejected', message: data && (data.error || data.message) };
   } catch (error) {
     return { ok: false, reason: error.name === 'AbortError' ? 'timeout' : 'network' };
   } finally {
     clearTimeout(timer);
   }
+}
+
+// Anonymous heart count per design (no personal data). Failures are ignored.
+export function recordLike(ref, delta) {
+  if (!hasEndpoint() || !ref) return;
+  fetch(SUPABASE_URL + '/rest/v1/rpc/record_like', {
+    method: 'POST', headers: apiHeaders(), body: JSON.stringify({ design_ref: ref, delta }), keepalive: true
+  }).catch(() => {});
 }
 
 /* ---------- WhatsApp hand-off ---------- */

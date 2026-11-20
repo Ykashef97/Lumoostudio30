@@ -29,7 +29,7 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<p class="notice">Free design consultation · <button class="notice-link" type="button" data-open-consult data-source="notice">Book yours</button></p>
+<p class="notice" data-cms>Free design consultation · <button class="notice-link" type="button" data-open-consult data-source="notice">Book yours</button></p>
 
 <header class="site-header on-dark">
   <div class="container header-row">
@@ -83,7 +83,7 @@
     <div class="hero-shade"></div>
 
     <div class="container hero-inner">
-      <div class="hero-copy">
+      <div class="hero-copy" data-cms>
         <p class="eyebrow">Browse · Design · Preview</p>
         <h1>Find or create the <em>perfect lighting</em> for your space</h1>
         <p class="hero-lede" id="heroLede">Soft, layered light for restful evenings and slow mornings.</p>
@@ -93,7 +93,7 @@
         </div>
       </div>
 
-      <div class="hero-carousel" id="heroCarousel" role="group" aria-label="Featured rooms">
+      <div class="hero-carousel" id="heroCarousel" data-cms role="group" aria-label="Featured rooms">
         <span class="hero-chip" id="heroRoomLabel">Bedroom lighting</span>
         <div class="hero-controls">
           <button class="round-btn" type="button" id="heroPrevious" aria-label="Previous room"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-chevron-left"/></svg></button>
@@ -115,7 +115,7 @@
   </section>
 
   <!-- Three ways in -->
-  <section class="container quickcards" aria-label="Ways to get started">
+  <section class="container quickcards" id="quickcards" aria-label="Ways to get started" data-cms>
     <a class="quickcard reveal" href="#collections">
       <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-grid"/></svg></span>
       <span class="quickcard-text"><strong>Browse the collection</strong><span>54 wall lights, ceiling lights and chandeliers.</span></span>
@@ -134,7 +134,7 @@
   </section>
 
   <!-- Shop by space -->
-  <section class="section section--tight" id="spaces" aria-labelledby="spacesTitle">
+  <section class="section section--tight" id="spaces" aria-labelledby="spacesTitle" data-cms>
     <div class="container">
       <div class="section-row">
         <h2 class="h2 h2--sm" id="spacesTitle">Shop by space</h2>
@@ -165,8 +165,20 @@
     </div>
   </section>
 
+  <!-- Featured designs (chosen in the admin portal; hidden until it has designs) -->
+  <section class="section" id="featured" aria-labelledby="featuredTitle" data-cms hidden>
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Featured</p>
+        <h2 class="h2" id="featuredTitle">Designs we love right now</h2>
+        <p class="lede" hidden></p>
+      </div>
+      <div class="product-grid" id="featuredGrid"></div>
+    </div>
+  </section>
+
   <!-- Collections -->
-  <section class="section" id="collections" aria-labelledby="collectionsTitle">
+  <section class="section" id="collections" aria-labelledby="collectionsTitle" data-cms>
     <div class="container">
       <div class="section-head reveal">
         <p class="eyebrow">Collections</p>
@@ -194,7 +206,7 @@
   </section>
 
   <!-- How it works -->
-  <section class="section section--sand" id="how" aria-labelledby="howTitle">
+  <section class="section section--sand" id="how" aria-labelledby="howTitle" data-cms>
     <div class="container">
       <div class="section-head section-head--center reveal">
         <p class="eyebrow">How it works</p>
@@ -223,7 +235,7 @@
   <!-- Lamp designer -->
   <section class="section" id="studio" aria-labelledby="studioTitle">
     <div class="container">
-      <div class="section-head reveal">
+      <div class="section-head reveal" data-cms>
         <p class="eyebrow">Design your lamp</p>
         <h2 class="h2" id="studioTitle">Put your lamp together</h2>
         <p class="lede">Start from any design, then choose the size, finish and cord. Every choice shows on the 3D model straight away, and you can turn it all the way round to see it from every side.</p>
@@ -266,7 +278,7 @@
 
         <div class="builder-panel">
           <div class="builder-step">
-            <div class="step-head"><span class="step-badge">1</span><div><h3>Pick a design</h3><p>All 54 designs from the collection</p></div></div>
+            <div class="step-head"><span class="step-badge">1</span><div><h3>Pick a design</h3><p data-cms>All 54 designs from the collection</p></div></div>
             <div class="field-row">
               <label class="field"><span>Collection</span>
                 <select id="builderCategory">
@@ -329,7 +341,7 @@
   <!-- Room visualiser -->
   <section class="section section--sand" id="visualize" aria-labelledby="visualizeTitle">
     <div class="container">
-      <div class="section-head reveal">
+      <div class="section-head reveal" data-cms>
         <p class="eyebrow">Try in your room</p>
         <h2 class="h2" id="visualizeTitle">See your space in a new light</h2>
         <p class="lede">Add a photo of your room, pick a design, and click where it should go. Your photo never leaves your device.</p>
@@ -389,7 +401,7 @@
   </section>
 
   <!-- About teaser -->
-  <section class="section" id="about" aria-labelledby="aboutTitle">
+  <section class="section" id="about" aria-labelledby="aboutTitle" data-cms>
     <div class="container about">
       <div class="about-copy reveal">
         <p class="eyebrow">About LumaDesign</p>
@@ -474,7 +486,6 @@
   </div>
 </footer>
 
-<script src="assets/js/fixture-tones.js" defer></script>
 <script type="module" src="assets/js/home.js"></script>
 </body>
 </html>

@@ -28,7 +28,7 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<p class="notice">Free design consultation · <button class="notice-link" type="button" data-open-consult data-source="notice">Book yours</button></p>
+<p class="notice" data-cms>Free design consultation · <button class="notice-link" type="button" data-open-consult data-source="notice">Book yours</button></p>
 
 <header class="site-header on-dark">
   <div class="container header-row">
@@ -71,8 +71,8 @@
 <main id="main">
 
   <section class="page-hero on-dark" aria-labelledby="spaceTitle">
-    <img class="page-hero-img" id="spaceHeroImg" src="assets/img/hero/living.webp" alt="" width="1600" height="900" fetchpriority="high">
-    <div class="container page-hero-inner">
+    <img class="page-hero-img" id="spaceHeroImg" data-cms src="assets/img/hero/living.webp" alt="" width="1600" height="900" fetchpriority="high">
+    <div class="container page-hero-inner" data-cms>
       <nav class="breadcrumb" aria-label="Breadcrumb"><ol id="spaceCrumbs"><li><a href="./">Home</a></li><li aria-current="page">Spaces</li></ol></nav>
       <p class="eyebrow">Shop by space</p>
       <h1 id="spaceTitle">Lighting for every <em>room</em></h1>
@@ -86,7 +86,7 @@
   </section>
 
   <div class="container">
-    <nav class="space-switch" id="spaceSwitch" aria-label="Spaces">
+    <nav class="space-switch" id="spaceSwitch" aria-label="Spaces" data-cms>
       <a class="chip" href="space.html?room=bedroom"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-bed"/></svg>Bedroom</a>
       <a class="chip" href="space.html?room=living"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-sofa"/></svg>Living room</a>
       <a class="chip" href="space.html?room=dining"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-dining"/></svg>Dining</a>
@@ -95,7 +95,7 @@
     </nav>
   </div>
 
-  <section class="section section--tight" id="spaceOverview" aria-label="All spaces">
+  <section class="section section--tight" data-cms id="spaceOverview" aria-label="All spaces">
     <div class="container">
       <div class="space-overview">
         <a class="space-tile" href="space.html?room=bedroom">
@@ -122,7 +122,7 @@
     </div>
   </section>
 
-  <section class="section section--tight" id="spaceDesigns" aria-labelledby="designsTitle" hidden>
+  <section class="section section--tight" data-cms id="spaceDesigns" aria-labelledby="designsTitle" hidden>
     <div class="container">
       <div class="section-row">
         <div>
@@ -135,7 +135,7 @@
     </div>
   </section>
 
-  <section class="section" id="spaceMore" aria-label="Next steps" hidden>
+  <section class="section" data-cms id="spaceMore" aria-label="Next steps" hidden>
     <div class="container">
       <div class="cta-grid">
         <article class="cta-card">
@@ -199,7 +199,6 @@
   </div>
 </footer>
 
-<script src="assets/js/fixture-tones.js" defer></script>
 <script type="module" src="assets/js/space.js"></script>
 </body>
 </html>

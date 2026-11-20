@@ -1,6 +1,6 @@
 /* Room visualiser: places a fixture photo on a room photo, entirely in the browser.
    Nothing is uploaded. Loaded by home.js. */
-import { styleCatalog, fixtureImage } from './catalog.js';
+import { CATEGORY, CATEGORY_ORDER, styleCatalog, fixtureImage } from './catalog.js';
 import { escapeLuma, toast, addLumaCartItem, fixtureCartItem } from './core.js';
 
 const Luma = { catalog: styleCatalog, fixtureImage, escape: escapeLuma, toast, addToSelection: addLumaCartItem, fixtureCartItem };
@@ -18,6 +18,9 @@ const Luma = { catalog: styleCatalog, fixtureImage, escape: escapeLuma, toast, a
   let roomBitmap = null, roomObjectUrl = '', fixtureCutout = null, fixtureKey = '';
   let point = { x: .5, y: .3 };
   const cutoutCache = new Map();
+
+  // Only the types that have designs on the website.
+  categorySelect.innerHTML = CATEGORY_ORDER.map(key => '<option value="' + key + '">' + CATEGORY[key].plural + '</option>').join('');
 
   // Removes the plain studio backdrop from a fixture photo by comparing each pixel with the photo's edges.
   function makeFixtureCutout(image, key) {
@@ -87,7 +90,7 @@ const Luma = { catalog: styleCatalog, fixtureImage, escape: escapeLuma, toast, a
   }
 
   function loadFixture(key, index) {
-    const id = key + ':' + index;
+    const id = key + ':' + index + ':' + Luma.fixtureImage(key, index, true);
     if (fixtureKey === id && fixtureCutout) return;
     fixtureKey = id;
     const img = new Image();
@@ -130,7 +133,7 @@ const Luma = { catalog: styleCatalog, fixtureImage, escape: escapeLuma, toast, a
     populateFixtures(index);
   };
   window.syncVisualChoice = function () {
-    const b = window.lumaBuild || { fixtureCategory: 'sconces', fixtureIndex: 0 };
+    const b = window.lumaBuild || { fixtureCategory: CATEGORY_ORDER[0], fixtureIndex: 0 };
     window.setVisualFixture(b.fixtureCategory, b.fixtureIndex);
   };
 

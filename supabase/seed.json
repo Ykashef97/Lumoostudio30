@@ -1,0 +1,2271 @@
+{
+ "folders": [
+  {
+   "id": "63be83ec-b9c6-5444-9c0e-ef43ec2296c8",
+   "name": "Homepage",
+   "position": 0
+  },
+  {
+   "id": "d5787dd6-58b3-5801-92aa-66868c4ac954",
+   "name": "Shop by Space",
+   "position": 1
+  },
+  {
+   "id": "1e058cbf-e6c9-56f2-bc22-8faa66800517",
+   "name": "Collections",
+   "position": 2
+  },
+  {
+   "id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "name": "Product Images",
+   "position": 3
+  },
+  {
+   "id": "63bc3e4e-68c5-564c-88dd-2aa8573ce9f2",
+   "name": "Lamp Components",
+   "position": 4
+  },
+  {
+   "id": "ba36c968-1b54-598f-b58e-9b9060565260",
+   "name": "3D Design Preview",
+   "position": 5
+  },
+  {
+   "id": "c6fc3ae8-81e7-5cc3-ae7f-2d6225b0d61d",
+   "name": "About Us",
+   "position": 6
+  },
+  {
+   "id": "1568de1f-9617-5b8f-a520-4c331feedb8d",
+   "name": "Contact Us",
+   "position": 7
+  },
+  {
+   "id": "46c76319-9a1e-5eb5-9613-93091c87cc92",
+   "name": "Other",
+   "position": 8
+  }
+ ],
+ "media": [
+  {
+   "id": "fa21ea02-6207-5889-a097-d3dc081f7dfd",
+   "folder_id": "63be83ec-b9c6-5444-9c0e-ef43ec2296c8",
+   "source": "site",
+   "path": "assets/img/hero/bedroom.webp",
+   "medium_path": "assets/img/hero/bedroom-800.webp",
+   "thumb_path": "assets/img/hero/bedroom-800.webp",
+   "mime": "image/webp",
+   "width": 1600,
+   "height": 900,
+   "title": "Bedroom room photo",
+   "alt": "Warmly lit bedroom with a sculptural woven pendant lamp",
+   "tone": null
+  },
+  {
+   "id": "ac0ac2ad-1ebf-5cdb-8072-4b8af190c77a",
+   "folder_id": "63be83ec-b9c6-5444-9c0e-ef43ec2296c8",
+   "source": "site",
+   "path": "assets/img/hero/dining.webp",
+   "medium_path": "assets/img/hero/dining-800.webp",
+   "thumb_path": "assets/img/hero/dining-800.webp",
+   "mime": "image/webp",
+   "width": 1600,
+   "height": 900,
+   "title": "Dining room room photo",
+   "alt": "Dining room with a ring chandelier above the table",
+   "tone": null
+  },
+  {
+   "id": "79c61895-fd56-5d9c-ad16-5b44fa2fa309",
+   "folder_id": "63be83ec-b9c6-5444-9c0e-ef43ec2296c8",
+   "source": "site",
+   "path": "assets/img/hero/office.webp",
+   "medium_path": "assets/img/hero/office-800.webp",
+   "thumb_path": "assets/img/hero/office-800.webp",
+   "mime": "image/webp",
+   "width": 1600,
+   "height": 900,
+   "title": "Home office room photo",
+   "alt": "Home office with a linear light above the desk",
+   "tone": null
+  },
+  {
+   "id": "9a744819-1d80-5435-9805-36221f2e38a2",
+   "folder_id": "63be83ec-b9c6-5444-9c0e-ef43ec2296c8",
+   "source": "site",
+   "path": "assets/img/hero/balcony.webp",
+   "medium_path": "assets/img/hero/balcony-800.webp",
+   "thumb_path": "assets/img/hero/balcony-800.webp",
+   "mime": "image/webp",
+   "width": 1600,
+   "height": 900,
+   "title": "Balcony room photo",
+   "alt": "Balcony at dusk with a woven pendant lamp",
+   "tone": null
+  },
+  {
+   "id": "e7d21e11-9bd6-5e28-b10e-283480217e5a",
+   "folder_id": "63be83ec-b9c6-5444-9c0e-ef43ec2296c8",
+   "source": "site",
+   "path": "assets/img/hero/living.webp",
+   "medium_path": "assets/img/hero/living-800.webp",
+   "thumb_path": "assets/img/hero/living-800.webp",
+   "mime": "image/webp",
+   "width": 1600,
+   "height": 900,
+   "title": "Living room room photo",
+   "alt": "Living room with a looped ring chandelier above the sofa",
+   "tone": null
+  },
+  {
+   "id": "acbdec83-61eb-56c3-b73b-19424635ebc2",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/sconces-01.webp",
+   "medium_path": "assets/img/fixtures/sconces-01.webp",
+   "thumb_path": "assets/img/fixtures/sconces-01-480.webp",
+   "mime": "image/webp",
+   "width": 668,
+   "height": 1080,
+   "title": "Modern cylinder",
+   "alt": "Modern cylinder",
+   "tone": [
+    "#cfa57d",
+    "#dfb389"
+   ]
+  },
+  {
+   "id": "480b24c1-4750-5610-b060-e5a3dac1cdca",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/sconces-02.webp",
+   "medium_path": "assets/img/fixtures/sconces-02.webp",
+   "thumb_path": "assets/img/fixtures/sconces-02-480.webp",
+   "mime": "image/webp",
+   "width": 724,
+   "height": 1080,
+   "title": "Pleated shade arm",
+   "alt": "Pleated shade arm",
+   "tone": [
+    "#b49376",
+    "#c1a183"
+   ]
+  },
+  {
+   "id": "638f6e07-b52b-52bd-b090-f4da51643036",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/sconces-03.webp",
+   "medium_path": "assets/img/fixtures/sconces-03.webp",
+   "thumb_path": "assets/img/fixtures/sconces-03-480.webp",
+   "mime": "image/webp",
+   "width": 781,
+   "height": 1080,
+   "title": "Black cone arm",
+   "alt": "Black cone arm",
+   "tone": [
+    "#ad9077",
+    "#cfad8f"
+   ]
+  },
+  {
+   "id": "42e08a07-1304-5e13-8c11-77df410b33da",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/sconces-04.webp",
+   "medium_path": "assets/img/fixtures/sconces-04.webp",
+   "thumb_path": "assets/img/fixtures/sconces-04-480.webp",
+   "mime": "image/webp",
+   "width": 687,
+   "height": 1080,
+   "title": "Clear glass bell",
+   "alt": "Clear glass bell",
+   "tone": [
+    "#b1947b",
+    "#be9b7c"
+   ]
+  },
+  {
+   "id": "7ad051fd-c7bb-5c02-a66a-2d103d22073a",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/sconces-05.webp",
+   "medium_path": "assets/img/fixtures/sconces-05.webp",
+   "thumb_path": "assets/img/fixtures/sconces-05-480.webp",
+   "mime": "image/webp",
+   "width": 745,
+   "height": 1080,
+   "title": "Linen shade arm",
+   "alt": "Linen shade arm",
+   "tone": [
+    "#ba9a7e",
+    "#c5a68a"
+   ]
+  },
+  {
+   "id": "a0b992d2-f24e-5d4f-a123-256c6c5e0f6a",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/sconces-06.webp",
+   "medium_path": "assets/img/fixtures/sconces-06.webp",
+   "thumb_path": "assets/img/fixtures/sconces-06-480.webp",
+   "mime": "image/webp",
+   "width": 803,
+   "height": 1080,
+   "title": "Outdoor lantern",
+   "alt": "Outdoor lantern",
+   "tone": [
+    "#b49980",
+    "#c2a285"
+   ]
+  },
+  {
+   "id": "c61ffbac-2ec3-53d6-9e7a-6b55041eb937",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/sconces-07.webp",
+   "medium_path": "assets/img/fixtures/sconces-07.webp",
+   "thumb_path": "assets/img/fixtures/sconces-07-480.webp",
+   "mime": "image/webp",
+   "width": 689,
+   "height": 1080,
+   "title": "Vertical glass tube",
+   "alt": "Vertical glass tube",
+   "tone": [
+    "#bc9e84",
+    "#bb9e84"
+   ]
+  },
+  {
+   "id": "093483b4-8f99-5ea5-85cd-61ec6b204217",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/sconces-08.webp",
+   "medium_path": "assets/img/fixtures/sconces-08.webp",
+   "thumb_path": "assets/img/fixtures/sconces-08-480.webp",
+   "mime": "image/webp",
+   "width": 747,
+   "height": 1080,
+   "title": "Textured glass cylinder",
+   "alt": "Textured glass cylinder",
+   "tone": [
+    "#b0957c",
+    "#b69578"
+   ]
+  },
+  {
+   "id": "ea73d457-705e-5cbc-908d-8b58de7e732f",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/sconces-09.webp",
+   "medium_path": "assets/img/fixtures/sconces-09.webp",
+   "thumb_path": "assets/img/fixtures/sconces-09-480.webp",
+   "mime": "image/webp",
+   "width": 805,
+   "height": 1080,
+   "title": "Double globe",
+   "alt": "Double globe",
+   "tone": [
+    "#b5987d",
+    "#b99879"
+   ]
+  },
+  {
+   "id": "5454f8f5-6cfe-53e2-ac15-7e45c24f13c7",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-01.webp",
+   "medium_path": "assets/img/fixtures/ceiling-01.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-01-480.webp",
+   "mime": "image/webp",
+   "width": 781,
+   "height": 1080,
+   "title": "LED flush mount",
+   "alt": "LED flush mount",
+   "tone": [
+    "#c0ae9f",
+    "#9d8978"
+   ]
+  },
+  {
+   "id": "37e8401f-95d7-505b-9e7c-aa70d0523429",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-02.webp",
+   "medium_path": "assets/img/fixtures/ceiling-02.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-02-480.webp",
+   "mime": "image/webp",
+   "width": 805,
+   "height": 1080,
+   "title": "Square LED light",
+   "alt": "Square LED light",
+   "tone": [
+    "#b9a799",
+    "#aa9889"
+   ]
+  },
+  {
+   "id": "c94f4268-b74f-57cb-a5d4-5fe8f1020841",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-03.webp",
+   "medium_path": "assets/img/fixtures/ceiling-03.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-03-480.webp",
+   "mime": "image/webp",
+   "width": 801,
+   "height": 1080,
+   "title": "Round LED light",
+   "alt": "Round LED light",
+   "tone": [
+    "#bca896",
+    "#a49181"
+   ]
+  },
+  {
+   "id": "90d740c7-f5e6-5b2c-b793-27aebe247e78",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-04.webp",
+   "medium_path": "assets/img/fixtures/ceiling-04.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-04-480.webp",
+   "mime": "image/webp",
+   "width": 817,
+   "height": 1080,
+   "title": "Drum semi-flush",
+   "alt": "Drum semi-flush",
+   "tone": [
+    "#dabca2",
+    "#baa18e"
+   ]
+  },
+  {
+   "id": "81007ad4-052d-5b4c-bd61-80993ba938a5",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-05.webp",
+   "medium_path": "assets/img/fixtures/ceiling-05.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-05-480.webp",
+   "mime": "image/webp",
+   "width": 845,
+   "height": 1080,
+   "title": "Crystal semi-flush",
+   "alt": "Crystal semi-flush",
+   "tone": [
+    "#cab2a0",
+    "#baa897"
+   ]
+  },
+  {
+   "id": "cff05e54-3f8f-51bd-9ebf-4f7c20d20a45",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-06.webp",
+   "medium_path": "assets/img/fixtures/ceiling-06.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-06-480.webp",
+   "mime": "image/webp",
+   "width": 802,
+   "height": 1080,
+   "title": "Industrial cage",
+   "alt": "Industrial cage",
+   "tone": [
+    "#c8b2a2",
+    "#a7907b"
+   ]
+  },
+  {
+   "id": "058f663a-463e-54f3-b45b-a5ad3c2cad7b",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-07.webp",
+   "medium_path": "assets/img/fixtures/ceiling-07.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-07-480.webp",
+   "mime": "image/webp",
+   "width": 826,
+   "height": 1080,
+   "title": "Modern Sputnik",
+   "alt": "Modern Sputnik",
+   "tone": [
+    "#cfb49e",
+    "#ad9781"
+   ]
+  },
+  {
+   "id": "a25ea21b-c5c8-5edd-8b75-26d68db351ca",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-08.webp",
+   "medium_path": "assets/img/fixtures/ceiling-08.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-08-480.webp",
+   "mime": "image/webp",
+   "width": 822,
+   "height": 1080,
+   "title": "Ring LED light",
+   "alt": "Ring LED light",
+   "tone": [
+    "#c5ab97",
+    "#ad9781"
+   ]
+  },
+  {
+   "id": "db5825e1-2462-5383-9247-6e313f3bdbb9",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-09.webp",
+   "medium_path": "assets/img/fixtures/ceiling-09.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-09-480.webp",
+   "mime": "image/webp",
+   "width": 839,
+   "height": 1080,
+   "title": "Modern loop light",
+   "alt": "Modern loop light",
+   "tone": [
+    "#bda592",
+    "#aa9582"
+   ]
+  },
+  {
+   "id": "158f3b9e-027f-5970-b8be-509238154353",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-10.webp",
+   "medium_path": "assets/img/fixtures/ceiling-10.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-10-480.webp",
+   "mime": "image/webp",
+   "width": 867,
+   "height": 1080,
+   "title": "Rattan semi-flush",
+   "alt": "Rattan semi-flush",
+   "tone": [
+    "#c5aa97",
+    "#b39c87"
+   ]
+  },
+  {
+   "id": "7b0bebd2-6e66-5b02-9237-6427ecbd881c",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-11.webp",
+   "medium_path": "assets/img/fixtures/ceiling-11.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-11-480.webp",
+   "mime": "image/webp",
+   "width": 787,
+   "height": 1080,
+   "title": "Tiered drum light",
+   "alt": "Tiered drum light",
+   "tone": [
+    "#cfb39d",
+    "#ae9886"
+   ]
+  },
+  {
+   "id": "82d647e4-e024-52e1-8c15-531017f58141",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-12.webp",
+   "medium_path": "assets/img/fixtures/ceiling-12.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-12-480.webp",
+   "mime": "image/webp",
+   "width": 811,
+   "height": 1080,
+   "title": "Boho semi-flush",
+   "alt": "Boho semi-flush",
+   "tone": [
+    "#c6ab95",
+    "#b19883"
+   ]
+  },
+  {
+   "id": "184edb3e-0c35-5ddc-acc0-328c2393e05d",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-13.webp",
+   "medium_path": "assets/img/fixtures/ceiling-13.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-13-480.webp",
+   "mime": "image/webp",
+   "width": 807,
+   "height": 1080,
+   "title": "Glass globe light",
+   "alt": "Glass globe light",
+   "tone": [
+    "#d1b39b",
+    "#a8917e"
+   ]
+  },
+  {
+   "id": "10796547-bb77-55d2-8a70-24b89c90e695",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-14.webp",
+   "medium_path": "assets/img/fixtures/ceiling-14.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-14-480.webp",
+   "mime": "image/webp",
+   "width": 823,
+   "height": 1080,
+   "title": "Geometric cage",
+   "alt": "Geometric cage",
+   "tone": [
+    "#d1b7a2",
+    "#af9a87"
+   ]
+  },
+  {
+   "id": "d5b6e940-3c61-53c5-aebd-1ea644f8ab7f",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-15.webp",
+   "medium_path": "assets/img/fixtures/ceiling-15.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-15-480.webp",
+   "mime": "image/webp",
+   "width": 851,
+   "height": 1080,
+   "title": "Globe flush mount",
+   "alt": "Globe flush mount",
+   "tone": [
+    "#c5ac96",
+    "#b4a08e"
+   ]
+  },
+  {
+   "id": "92c1d034-2803-5293-9fb3-d115639bac6b",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-16.webp",
+   "medium_path": "assets/img/fixtures/ceiling-16.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-16-480.webp",
+   "mime": "image/webp",
+   "width": 817,
+   "height": 1080,
+   "title": "Linear LED light",
+   "alt": "Linear LED light",
+   "tone": [
+    "#c3ae9c",
+    "#b39d8b"
+   ]
+  },
+  {
+   "id": "73d0a149-8f07-54c0-b854-e0ef7d450b61",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-17.webp",
+   "medium_path": "assets/img/fixtures/ceiling-17.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-17-480.webp",
+   "mime": "image/webp",
+   "width": 842,
+   "height": 1080,
+   "title": "Geometric flush",
+   "alt": "Geometric flush",
+   "tone": [
+    "#bfab99",
+    "#b4a091"
+   ]
+  },
+  {
+   "id": "e5db07a0-4c4a-50de-9c02-1282a4d47ca9",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-18.webp",
+   "medium_path": "assets/img/fixtures/ceiling-18.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-18-480.webp",
+   "mime": "image/webp",
+   "width": 838,
+   "height": 1080,
+   "title": "Mid-century light",
+   "alt": "Mid-century light",
+   "tone": [
+    "#cab09a",
+    "#b59d88"
+   ]
+  },
+  {
+   "id": "114bbf31-7df1-5abc-9480-7b33a449c4c7",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-19.webp",
+   "medium_path": "assets/img/fixtures/ceiling-19.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-19-480.webp",
+   "mime": "image/webp",
+   "width": 855,
+   "height": 1080,
+   "title": "Surface mount",
+   "alt": "Surface mount",
+   "tone": [
+    "#c2ac9a",
+    "#b49e8a"
+   ]
+  },
+  {
+   "id": "fff46559-a4f4-5c97-886d-0ca2c659d9fc",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-20.webp",
+   "medium_path": "assets/img/fixtures/ceiling-20.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-20-480.webp",
+   "mime": "image/webp",
+   "width": 884,
+   "height": 1080,
+   "title": "Ribbed glass light",
+   "alt": "Ribbed glass light",
+   "tone": [
+    "#ccae95",
+    "#b6a08d"
+   ]
+  },
+  {
+   "id": "eba9bb2a-ecba-525e-9422-553a0a930d71",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-21.webp",
+   "medium_path": "assets/img/fixtures/ceiling-21.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-21-480.webp",
+   "mime": "image/webp",
+   "width": 672,
+   "height": 1080,
+   "title": "Modern dish light",
+   "alt": "Modern dish light",
+   "tone": [
+    "#bba99b",
+    "#aa9887"
+   ]
+  },
+  {
+   "id": "d636ccbb-034d-5c73-8094-25a64e900bf5",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-22.webp",
+   "medium_path": "assets/img/fixtures/ceiling-22.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-22-480.webp",
+   "mime": "image/webp",
+   "width": 693,
+   "height": 1080,
+   "title": "Natural-fiber light",
+   "alt": "Natural-fiber light",
+   "tone": [
+    "#c9ae99",
+    "#b29984"
+   ]
+  },
+  {
+   "id": "ca7bb122-66d7-52b0-81bc-5b69881a2d22",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-23.webp",
+   "medium_path": "assets/img/fixtures/ceiling-23.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-23-480.webp",
+   "mime": "image/webp",
+   "width": 689,
+   "height": 1080,
+   "title": "Adjustable spotlight",
+   "alt": "Adjustable spotlight",
+   "tone": [
+    "#c0ac9a",
+    "#a08a76"
+   ]
+  },
+  {
+   "id": "ed56f3d8-2228-59ed-aaf3-0c7807693cb1",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-24.webp",
+   "medium_path": "assets/img/fixtures/ceiling-24.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-24-480.webp",
+   "mime": "image/webp",
+   "width": 703,
+   "height": 1080,
+   "title": "Crystal flush mount",
+   "alt": "Crystal flush mount",
+   "tone": [
+    "#bda795",
+    "#ab9683"
+   ]
+  },
+  {
+   "id": "373abe5a-017b-5056-99b5-da6e22c21240",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/ceiling-25.webp",
+   "medium_path": "assets/img/fixtures/ceiling-25.webp",
+   "thumb_path": "assets/img/fixtures/ceiling-25-480.webp",
+   "mime": "image/webp",
+   "width": 727,
+   "height": 1080,
+   "title": "Sculptural flush mount",
+   "alt": "Sculptural flush mount",
+   "tone": [
+    "#bba797",
+    "#aa9889"
+   ]
+  },
+  {
+   "id": "1121b0fd-20fb-5d8b-8486-959a5fc9ebf7",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-01.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-01.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-01-480.webp",
+   "mime": "image/webp",
+   "width": 963,
+   "height": 1080,
+   "title": "Crystal chandelier",
+   "alt": "Crystal chandelier",
+   "tone": [
+    "#18140f",
+    "#211b16"
+   ]
+  },
+  {
+   "id": "58f4daa4-c58c-51af-ae88-ae7802853501",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-02.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-02.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-02-480.webp",
+   "mime": "image/webp",
+   "width": 898,
+   "height": 1080,
+   "title": "Modern chandelier",
+   "alt": "Modern chandelier",
+   "tone": [
+    "#221c18",
+    "#28221d"
+   ]
+  },
+  {
+   "id": "cb2c9301-17e8-5fb1-9ac4-e041bd688f95",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-03.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-03.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-03-480.webp",
+   "mime": "image/webp",
+   "width": 910,
+   "height": 1080,
+   "title": "Classic chandelier",
+   "alt": "Classic chandelier",
+   "tone": [
+    "#18140f",
+    "#251c15"
+   ]
+  },
+  {
+   "id": "a5a7b96e-3a9b-5bf3-bbbc-33b5508f55b6",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-04.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-04.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-04-480.webp",
+   "mime": "image/webp",
+   "width": 914,
+   "height": 1080,
+   "title": "Linear chandelier",
+   "alt": "Linear chandelier",
+   "tone": [
+    "#110f0c",
+    "#1c1815"
+   ]
+  },
+  {
+   "id": "a90f95f3-94fc-550b-9a71-b238f02997e2",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-05.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-05.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-05-480.webp",
+   "mime": "image/webp",
+   "width": 971,
+   "height": 1080,
+   "title": "Drum chandelier",
+   "alt": "Drum chandelier",
+   "tone": [
+    "#0f0e0b",
+    "#1f1913"
+   ]
+  },
+  {
+   "id": "da254ad5-c013-5eea-b947-520e8c70ef40",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-06.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-06.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-06-480.webp",
+   "mime": "image/webp",
+   "width": 1041,
+   "height": 1080,
+   "title": "Tiered chandelier",
+   "alt": "Tiered chandelier",
+   "tone": [
+    "#1b1712",
+    "#29231c"
+   ]
+  },
+  {
+   "id": "2cd049a2-8281-5a77-ae49-b3ee4d211ca5",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-07.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-07.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-07-480.webp",
+   "mime": "image/webp",
+   "width": 971,
+   "height": 1080,
+   "title": "Cascading chandelier",
+   "alt": "Cascading chandelier",
+   "tone": [
+    "#23170e",
+    "#32261c"
+   ]
+  },
+  {
+   "id": "827fecb0-589e-5845-bfe0-ba97715caa75",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-08.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-08.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-08-480.webp",
+   "mime": "image/webp",
+   "width": 984,
+   "height": 1080,
+   "title": "Globe chandelier",
+   "alt": "Globe chandelier",
+   "tone": [
+    "#201b18",
+    "#231e1a"
+   ]
+  },
+  {
+   "id": "d8672068-b8df-567e-a19d-07c81218e3d0",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-09.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-09.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-09-480.webp",
+   "mime": "image/webp",
+   "width": 988,
+   "height": 1080,
+   "title": "Sputnik chandelier",
+   "alt": "Sputnik chandelier",
+   "tone": [
+    "#201c18",
+    "#27201a"
+   ]
+  },
+  {
+   "id": "7bb81401-0cfc-563b-9519-8ab32e1c8ce6",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-10.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-10.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-10-480.webp",
+   "mime": "image/webp",
+   "width": 1049,
+   "height": 1080,
+   "title": "Wagon-wheel chandelier",
+   "alt": "Wagon-wheel chandelier",
+   "tone": [
+    "#2d2119",
+    "#412f22"
+   ]
+  },
+  {
+   "id": "275c268e-d0bd-5fb6-8d1d-9c659836a197",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-11.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-11.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-11-480.webp",
+   "mime": "image/webp",
+   "width": 1080,
+   "height": 1007,
+   "title": "Mini chandelier",
+   "alt": "Mini chandelier",
+   "tone": [
+    "#272018",
+    "#231d18"
+   ]
+  },
+  {
+   "id": "d6de4f1b-99c5-5436-8ff3-223c730a0cf6",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-12.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-12.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-12-480.webp",
+   "mime": "image/webp",
+   "width": 1080,
+   "height": 1080,
+   "title": "Industrial chandelier",
+   "alt": "Industrial chandelier",
+   "tone": [
+    "#262220",
+    "#393028"
+   ]
+  },
+  {
+   "id": "9b777444-64ba-58c1-b359-4b2a5d2bda0f",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-13.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-13.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-13-480.webp",
+   "mime": "image/webp",
+   "width": 1080,
+   "height": 1066,
+   "title": "Bohemian chandelier",
+   "alt": "Bohemian chandelier",
+   "tone": [
+    "#2e231b",
+    "#2d231b"
+   ]
+  },
+  {
+   "id": "9037963e-ccff-56fe-9d80-65e8ba26aa31",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-14.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-14.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-14-480.webp",
+   "mime": "image/webp",
+   "width": 1080,
+   "height": 1061,
+   "title": "Art Deco chandelier",
+   "alt": "Art Deco chandelier",
+   "tone": [
+    "#201c17",
+    "#29211b"
+   ]
+  },
+  {
+   "id": "4b16c684-3525-5527-b791-e7ac4d7a2a39",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-15.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-15.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-15-480.webp",
+   "mime": "image/webp",
+   "width": 1080,
+   "height": 999,
+   "title": "Nature-inspired chandelier",
+   "alt": "Nature-inspired chandelier",
+   "tone": [
+    "#282019",
+    "#201b17"
+   ]
+  },
+  {
+   "id": "87d9f99a-d0d5-5b5f-9f01-8e9d201b889b",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-16.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-16.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-16-480.webp",
+   "mime": "image/webp",
+   "width": 1080,
+   "height": 953,
+   "title": "Ring chandelier",
+   "alt": "Ring chandelier",
+   "tone": [
+    "#201d19",
+    "#25201b"
+   ]
+  },
+  {
+   "id": "ddac6b81-8d77-5dc0-a256-542f2096cb85",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-17.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-17.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-17-480.webp",
+   "mime": "image/webp",
+   "width": 1080,
+   "height": 1022,
+   "title": "Bubble chandelier",
+   "alt": "Bubble chandelier",
+   "tone": [
+    "#1c1813",
+    "#221c18"
+   ]
+  },
+  {
+   "id": "ff00a781-5377-5818-81a5-4e7eede42b65",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-18.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-18.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-18-480.webp",
+   "mime": "image/webp",
+   "width": 1080,
+   "height": 1008,
+   "title": "Disc chandelier",
+   "alt": "Disc chandelier",
+   "tone": [
+    "#261d15",
+    "#261e18"
+   ]
+  },
+  {
+   "id": "049ad32f-745d-5d55-9359-3a770ddc8686",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-19.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-19.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-19-480.webp",
+   "mime": "image/webp",
+   "width": 1080,
+   "height": 1004,
+   "title": "Canopy chandelier",
+   "alt": "Canopy chandelier",
+   "tone": [
+    "#1d150e",
+    "#2c2118"
+   ]
+  },
+  {
+   "id": "845fe627-afff-55c4-958d-aee10d5be2e8",
+   "folder_id": "d68174ab-f80c-584f-b6a8-0d6c0aedd1af",
+   "source": "site",
+   "path": "assets/img/fixtures/chandeliers-20.webp",
+   "medium_path": "assets/img/fixtures/chandeliers-20.webp",
+   "thumb_path": "assets/img/fixtures/chandeliers-20-480.webp",
+   "mime": "image/webp",
+   "width": 1080,
+   "height": 945,
+   "title": "Sculptural chandelier",
+   "alt": "Sculptural chandelier",
+   "tone": [
+    "#251e19",
+    "#28211b"
+   ]
+  }
+ ],
+ "designs": [
+  {
+   "id": "e4a55c08-5fdf-531f-a52c-8599d40eabce",
+   "slug": "modern-cylinder",
+   "ref": "W-01",
+   "name": "Modern cylinder",
+   "category": "sconces",
+   "description": "A clean cylindrical wall light casts a soft up-and-down glow, making it a restrained choice for hallways and bedside walls.",
+   "model": "sconces:0",
+   "image_id": "acbdec83-61eb-56c3-b73b-19424635ebc2",
+   "status": "published",
+   "position": 0
+  },
+  {
+   "id": "d3b3bd45-68bf-5315-bc10-552b38fff601",
+   "slug": "pleated-shade-arm",
+   "ref": "W-02",
+   "name": "Pleated shade arm",
+   "category": "sconces",
+   "description": "A pleated fabric shade softens the light while the short brass arm adds a classic, warm accent beside a bed or reading chair.",
+   "model": "sconces:1",
+   "image_id": "480b24c1-4750-5610-b060-e5a3dac1cdca",
+   "status": "published",
+   "position": 1
+  },
+  {
+   "id": "8af5bedc-3ec3-5756-9e38-4c261bdf692b",
+   "slug": "black-cone-arm",
+   "ref": "W-03",
+   "name": "Black cone arm",
+   "category": "sconces",
+   "description": "The angled black cone directs light downward, useful for focused bedside or task lighting with a modern contrast finish.",
+   "model": "sconces:2",
+   "image_id": "638f6e07-b52b-52bd-b090-f4da51643036",
+   "status": "published",
+   "position": 2
+  },
+  {
+   "id": "21bc2f06-bfc9-5dba-a4b1-c976c2a6ca88",
+   "slug": "clear-glass-bell",
+   "ref": "W-04",
+   "name": "Clear glass bell",
+   "category": "sconces",
+   "description": "A clear bell glass shade leaves the bulb visible and gives this brass wall fixture a light, vintage-inspired character.",
+   "model": "sconces:3",
+   "image_id": "42e08a07-1304-5e13-8c11-77df410b33da",
+   "status": "published",
+   "position": 3
+  },
+  {
+   "id": "c1a2b3fd-81e7-51ca-bdfe-7586ba3f2361",
+   "slug": "linen-shade-arm",
+   "ref": "W-05",
+   "name": "Linen shade arm",
+   "category": "sconces",
+   "description": "A tapered linen shade diffuses light gently, pairing naturally with calm bedrooms and traditional interiors.",
+   "model": "sconces:4",
+   "image_id": "7ad051fd-c7bb-5c02-a66a-2d103d22073a",
+   "status": "published",
+   "position": 4
+  },
+  {
+   "id": "38b29260-91f4-51dc-b139-f9eab6ec7db4",
+   "slug": "outdoor-lantern",
+   "ref": "W-06",
+   "name": "Outdoor lantern",
+   "category": "sconces",
+   "description": "A framed lantern enclosure protects the bulb visually and suits entryways, covered porches, or transitional spaces.",
+   "model": "sconces:5",
+   "image_id": "a0b992d2-f24e-5d4f-a123-256c6c5e0f6a",
+   "status": "published",
+   "position": 5
+  },
+  {
+   "id": "737f774b-41bb-5658-bfdd-66e703dd7048",
+   "slug": "vertical-glass-tube",
+   "ref": "W-07",
+   "name": "Vertical glass tube",
+   "category": "sconces",
+   "description": "A slim vertical glass tube creates a minimal architectural line for mirrors, corridors, or a matched bedside pair.",
+   "model": "sconces:6",
+   "image_id": "c61ffbac-2ec3-53d6-9e7a-6b55041eb937",
+   "status": "published",
+   "position": 6
+  },
+  {
+   "id": "b491f64d-d297-534a-b649-8ce2d4e4efa2",
+   "slug": "textured-glass-cylinder",
+   "ref": "W-08",
+   "name": "Textured glass cylinder",
+   "category": "sconces",
+   "description": "Textured glass scatters the light into a sparkling pattern, adding detail to a vanity wall or hospitality setting.",
+   "model": "sconces:7",
+   "image_id": "093483b4-8f99-5ea5-85cd-61ec6b204217",
+   "status": "published",
+   "position": 7
+  },
+  {
+   "id": "3a391bbb-06d1-5bd6-af0a-6d32a57dc1b0",
+   "slug": "double-globe",
+   "ref": "W-09",
+   "name": "Double globe",
+   "category": "sconces",
+   "description": "Two opal globes spread light in opposite directions and create a balanced statement for a bedside or narrow wall.",
+   "model": "sconces:8",
+   "image_id": "ea73d457-705e-5cbc-908d-8b58de7e732f",
+   "status": "published",
+   "position": 8
+  },
+  {
+   "id": "443984a3-0243-54a8-accb-6cc32f2e9cef",
+   "slug": "led-flush-mount",
+   "ref": "C-01",
+   "name": "LED flush mount",
+   "category": "ceiling",
+   "description": "A low-profile round LED disc sits close to the ceiling and gives broad, even general illumination.",
+   "model": "ceiling:0",
+   "image_id": "5454f8f5-6cfe-53e2-ac15-7e45c24f13c7",
+   "status": "published",
+   "position": 100
+  },
+  {
+   "id": "5b832b99-3d93-5fc6-87c9-391f4906eee3",
+   "slug": "square-led-light",
+   "ref": "C-02",
+   "name": "Square LED light",
+   "category": "ceiling",
+   "description": "A square LED panel brings a crisp geometric outline to compact rooms, corridors, or modern utility spaces.",
+   "model": "ceiling:1",
+   "image_id": "37e8401f-95d7-505b-9e7c-aa70d0523429",
+   "status": "published",
+   "position": 101
+  },
+  {
+   "id": "5f3da872-4d31-571a-8b25-c1abf2e77d89",
+   "slug": "round-led-light",
+   "ref": "C-03",
+   "name": "Round LED light",
+   "category": "ceiling",
+   "description": "A classic round LED panel keeps the ceiling simple while providing an even, low-profile wash of light.",
+   "model": "ceiling:2",
+   "image_id": "c94f4268-b74f-57cb-a5d4-5fe8f1020841",
+   "status": "published",
+   "position": 102
+  },
+  {
+   "id": "38e60c2d-e397-52e2-84e7-ad01aa398f16",
+   "slug": "drum-semi-flush",
+   "ref": "C-04",
+   "name": "Drum semi-flush",
+   "category": "ceiling",
+   "description": "A fabric drum shade hides the light source and softens the room with a warm semi-flush silhouette.",
+   "model": "ceiling:3",
+   "image_id": "90d740c7-f5e6-5b2c-b793-27aebe247e78",
+   "status": "published",
+   "position": 103
+  },
+  {
+   "id": "024cb495-11d4-58da-9e73-6b7b46d553ae",
+   "slug": "crystal-semi-flush",
+   "ref": "C-05",
+   "name": "Crystal semi-flush",
+   "category": "ceiling",
+   "description": "Layered crystal drops add sparkle beneath a compact ceiling mount, suited to a small entry or dressing area.",
+   "model": "ceiling:4",
+   "image_id": "81007ad4-052d-5b4c-bd61-80993ba938a5",
+   "status": "published",
+   "position": 104
+  },
+  {
+   "id": "2e4efbbc-cfcb-5cd5-a4b7-a451d1480855",
+   "slug": "industrial-cage",
+   "ref": "C-06",
+   "name": "Industrial cage",
+   "category": "ceiling",
+   "description": "An open metal cage leaves the bulbs visible and brings an industrial character to kitchens and relaxed living spaces.",
+   "model": "ceiling:5",
+   "image_id": "cff05e54-3f8f-51bd-9ebf-4f7c20d20a45",
+   "status": "published",
+   "position": 105
+  },
+  {
+   "id": "318d8897-8243-51c0-8405-6e858735f098",
+   "slug": "modern-sputnik",
+   "ref": "C-07",
+   "name": "Modern Sputnik",
+   "category": "ceiling",
+   "description": "Radiating exposed bulbs create a Sputnik silhouette that works well as a sculptural focal point.",
+   "model": "ceiling:6",
+   "image_id": "058f663a-463e-54f3-b45b-a5ad3c2cad7b",
+   "status": "published",
+   "position": 106
+  },
+  {
+   "id": "862c3513-b6c0-51e6-aa0e-de581a6f5f6a",
+   "slug": "ring-led-light",
+   "ref": "C-08",
+   "name": "Ring LED light",
+   "category": "ceiling",
+   "description": "A single glowing ring keeps the form minimal and distributes light around a clean circular outline.",
+   "model": "ceiling:7",
+   "image_id": "a25ea21b-c5c8-5edd-8b75-26d68db351ca",
+   "status": "published",
+   "position": 107
+  },
+  {
+   "id": "7543a967-3bf7-5f3a-a072-8a5cf1a12843",
+   "slug": "modern-loop-light",
+   "ref": "C-09",
+   "name": "Modern loop light",
+   "category": "ceiling",
+   "description": "Interlocking illuminated loops create a contemporary sculptural centerpiece with an integrated-light look.",
+   "model": "ceiling:8",
+   "image_id": "db5825e1-2462-5383-9247-6e313f3bdbb9",
+   "status": "published",
+   "position": 108
+  },
+  {
+   "id": "260f4a6d-958e-5faf-a364-c9f0dbdb36d6",
+   "slug": "rattan-semi-flush",
+   "ref": "C-10",
+   "name": "Rattan semi-flush",
+   "category": "ceiling",
+   "description": "A woven rattan dome filters light through its natural texture for a relaxed, organic interior.",
+   "model": "ceiling:9",
+   "image_id": "158f3b9e-027f-5970-b8be-509238154353",
+   "status": "published",
+   "position": 109
+  },
+  {
+   "id": "995f907a-8d91-54dd-9e2c-fb78a6f928c4",
+   "slug": "tiered-drum-light",
+   "ref": "C-11",
+   "name": "Tiered drum light",
+   "category": "ceiling",
+   "description": "A stepped drum profile adds depth while keeping the light soft and mostly directed downward.",
+   "model": "ceiling:10",
+   "image_id": "7b0bebd2-6e66-5b02-9237-6427ecbd881c",
+   "status": "published",
+   "position": 110
+  },
+  {
+   "id": "d51a6466-2176-55d9-a4dc-2bfa38e48649",
+   "slug": "boho-semi-flush",
+   "ref": "C-12",
+   "name": "Boho semi-flush",
+   "category": "ceiling",
+   "description": "A woven shade combines a rounded profile with natural texture and a warm decorative glow.",
+   "model": "ceiling:11",
+   "image_id": "82d647e4-e024-52e1-8c15-531017f58141",
+   "status": "published",
+   "position": 111
+  },
+  {
+   "id": "a5ce76f5-0339-5df2-a141-8a6c9be263d1",
+   "slug": "glass-globe-light",
+   "ref": "C-13",
+   "name": "Glass globe light",
+   "category": "ceiling",
+   "description": "A clear globe shows the bulb and its warm filament, giving a light, vintage-inspired ceiling accent.",
+   "model": "ceiling:12",
+   "image_id": "184edb3e-0c35-5ddc-acc0-328c2393e05d",
+   "status": "published",
+   "position": 112
+  },
+  {
+   "id": "64830b3c-a058-5b09-902a-c9c3a067407e",
+   "slug": "geometric-cage",
+   "ref": "C-14",
+   "name": "Geometric cage",
+   "category": "ceiling",
+   "description": "A cubic metal frame exposes several bulbs and gives the fixture a strong architectural outline.",
+   "model": "ceiling:13",
+   "image_id": "10796547-bb77-55d2-8a70-24b89c90e695",
+   "status": "published",
+   "position": 113
+  },
+  {
+   "id": "134bbd14-d74b-5a39-aa12-ebbb13b95953",
+   "slug": "globe-flush-mount",
+   "ref": "C-15",
+   "name": "Globe flush mount",
+   "category": "ceiling",
+   "description": "An opal globe and compact brass mount create a simple diffused light for smaller rooms and hallways.",
+   "model": "ceiling:14",
+   "image_id": "d5b6e940-3c61-53c5-aebd-1ea644f8ab7f",
+   "status": "published",
+   "position": 114
+  },
+  {
+   "id": "4bb89af5-eeda-57be-86fd-5ba5d39800a8",
+   "slug": "linear-led-light",
+   "ref": "C-16",
+   "name": "Linear LED light",
+   "category": "ceiling",
+   "description": "A slim linear LED bar spreads light along its length, useful above a work surface or in a narrow passage.",
+   "model": "ceiling:15",
+   "image_id": "92c1d034-2803-5293-9fb3-d115639bac6b",
+   "status": "published",
+   "position": 115
+  },
+  {
+   "id": "2e089d71-819b-5124-aa3a-68cfed801782",
+   "slug": "geometric-flush",
+   "ref": "C-17",
+   "name": "Geometric flush",
+   "category": "ceiling",
+   "description": "A faceted shade creates angular shadows and a graphic low-profile appearance on the ceiling.",
+   "model": "ceiling:16",
+   "image_id": "73d0a149-8f07-54c0-b854-e0ef7d450b61",
+   "status": "published",
+   "position": 116
+  },
+  {
+   "id": "015b9eee-c9b8-5405-9532-d8822c6a6a13",
+   "slug": "mid-century-light",
+   "ref": "C-18",
+   "name": "Mid-century light",
+   "category": "ceiling",
+   "description": "Multiple opal globes on brass arms provide an even, mid-century-inspired statement over a living area.",
+   "model": "ceiling:17",
+   "image_id": "e5db07a0-4c4a-50de-9c02-1282a4d47ca9",
+   "status": "published",
+   "position": 117
+  },
+  {
+   "id": "5f521c34-5475-5538-9831-31e378fd0029",
+   "slug": "surface-mount",
+   "ref": "C-19",
+   "name": "Surface mount",
+   "category": "ceiling",
+   "description": "A short cylindrical surface mount directs light down from a compact, architectural form.",
+   "model": "ceiling:18",
+   "image_id": "114bbf31-7df1-5abc-9480-7b33a449c4c7",
+   "status": "published",
+   "position": 118
+  },
+  {
+   "id": "abbf86e4-7893-588b-baba-f04af08554d6",
+   "slug": "ribbed-glass-light",
+   "ref": "C-20",
+   "name": "Ribbed glass light",
+   "category": "ceiling",
+   "description": "Ribbed glass catches and refracts the bulb glow, adding texture to a compact ceiling fixture.",
+   "model": "ceiling:19",
+   "image_id": "fff46559-a4f4-5c97-886d-0ca2c659d9fc",
+   "status": "published",
+   "position": 119
+  },
+  {
+   "id": "1839482d-a772-5803-aeae-4577e6624e8d",
+   "slug": "modern-dish-light",
+   "ref": "C-21",
+   "name": "Modern dish light",
+   "category": "ceiling",
+   "description": "Several shallow dishes distribute light in multiple directions while keeping the fixture close to the ceiling.",
+   "model": "ceiling:20",
+   "image_id": "eba9bb2a-ecba-525e-9422-553a0a930d71",
+   "status": "published",
+   "position": 120
+  },
+  {
+   "id": "fdac256d-b31c-5fd9-abd5-9c65c2e72872",
+   "slug": "natural-fiber-light",
+   "ref": "C-22",
+   "name": "Natural-fiber light",
+   "category": "ceiling",
+   "description": "A woven natural-fiber dome brings a relaxed handcrafted texture and a warm pool of light.",
+   "model": "ceiling:21",
+   "image_id": "d636ccbb-034d-5c73-8094-25a64e900bf5",
+   "status": "published",
+   "position": 121
+  },
+  {
+   "id": "e9ab370a-b8ee-58bd-81be-e6a9b8c0919e",
+   "slug": "adjustable-spotlight",
+   "ref": "C-23",
+   "name": "Adjustable spotlight",
+   "category": "ceiling",
+   "description": "Adjustable heads let the light be aimed toward different task or accent areas in one room.",
+   "model": "ceiling:22",
+   "image_id": "ca7bb122-66d7-52b0-81bc-5b69881a2d22",
+   "status": "published",
+   "position": 122
+  },
+  {
+   "id": "35f3bdbb-ab0f-5b6d-9051-054fee6ea1d8",
+   "slug": "crystal-flush-mount",
+   "ref": "C-24",
+   "name": "Crystal flush mount",
+   "category": "ceiling",
+   "description": "A low crystal profile adds reflected sparkle while fitting beneath lower ceilings.",
+   "model": "ceiling:23",
+   "image_id": "ed56f3d8-2228-59ed-aaf3-0c7807693cb1",
+   "status": "published",
+   "position": 123
+  },
+  {
+   "id": "7ad36afe-411e-50fe-996a-630fb9ccb830",
+   "slug": "sculptural-flush-mount",
+   "ref": "C-25",
+   "name": "Sculptural flush mount",
+   "category": "ceiling",
+   "description": "Overlapping light loops create a contemporary graphic form and an even ambient glow.",
+   "model": "ceiling:24",
+   "image_id": "373abe5a-017b-5056-99b5-da6e22c21240",
+   "status": "published",
+   "position": 124
+  },
+  {
+   "id": "49c01ac6-d205-5239-9277-8556b4d0ec6c",
+   "slug": "crystal-chandelier",
+   "ref": "H-01",
+   "name": "Crystal chandelier",
+   "category": "chandeliers",
+   "description": "Cascading crystal strands and candle-style lamps form a traditional centerpiece for a formal dining or reception room.",
+   "model": "chandeliers:0",
+   "image_id": "1121b0fd-20fb-5d8b-8486-959a5fc9ebf7",
+   "status": "published",
+   "position": 200
+  },
+  {
+   "id": "dbce86f8-da91-5bbf-a412-1cf2b802856f",
+   "slug": "modern-chandelier",
+   "ref": "H-02",
+   "name": "Modern chandelier",
+   "category": "chandeliers",
+   "description": "A spiral of illuminated rings gives this modern chandelier a fluid, sculptural presence above a dining table.",
+   "model": "chandeliers:1",
+   "image_id": "58f4daa4-c58c-51af-ae88-ae7802853501",
+   "status": "published",
+   "position": 201
+  },
+  {
+   "id": "3d89a2b1-dc17-50c1-8831-1374197030d4",
+   "slug": "classic-chandelier",
+   "ref": "H-03",
+   "name": "Classic chandelier",
+   "category": "chandeliers",
+   "description": "Curved arms, candle bulbs, and crystal drops give the classic silhouette a decorative, heritage-inspired look.",
+   "model": "chandeliers:2",
+   "image_id": "cb2c9301-17e8-5fb1-9ac4-e041bd688f95",
+   "status": "published",
+   "position": 202
+  },
+  {
+   "id": "d0e761ef-f4ad-5046-93b8-e8d96a51d683",
+   "slug": "linear-chandelier",
+   "ref": "H-04",
+   "name": "Linear chandelier",
+   "category": "chandeliers",
+   "description": "A row of glass-shielded lights spreads illumination along a table or kitchen island.",
+   "model": "chandeliers:3",
+   "image_id": "a5a7b96e-3a9b-5bf3-bbbc-33b5508f55b6",
+   "status": "published",
+   "position": 203
+  },
+  {
+   "id": "79138199-8791-5cbf-bdbc-e8f3011eff76",
+   "slug": "drum-chandelier",
+   "ref": "H-05",
+   "name": "Drum chandelier",
+   "category": "chandeliers",
+   "description": "A broad drum shade frames several light points and helps soften the fixture over a dining area.",
+   "model": "chandeliers:4",
+   "image_id": "a90f95f3-94fc-550b-9a71-b238f02997e2",
+   "status": "published",
+   "position": 204
+  },
+  {
+   "id": "95ff26a7-2fa0-5762-a99c-9e0bacdf9011",
+   "slug": "tiered-chandelier",
+   "ref": "H-06",
+   "name": "Tiered chandelier",
+   "category": "chandeliers",
+   "description": "Stacked circular tiers create a strong vertical profile suited to rooms with generous ceiling height.",
+   "model": "chandeliers:5",
+   "image_id": "da254ad5-c013-5eea-b947-520e8c70ef40",
+   "status": "published",
+   "position": 205
+  },
+  {
+   "id": "72fae2c2-6a0b-5a5d-8992-be018fe4d915",
+   "slug": "cascading-chandelier",
+   "ref": "H-07",
+   "name": "Cascading chandelier",
+   "category": "chandeliers",
+   "description": "Suspended glass globes at varied heights create movement and a cascading focal point in stairwells or open rooms.",
+   "model": "chandeliers:6",
+   "image_id": "2cd049a2-8281-5a77-ae49-b3ee4d211ca5",
+   "status": "published",
+   "position": 206
+  },
+  {
+   "id": "aef5620e-455e-56b8-8120-a360b1aa7df7",
+   "slug": "globe-chandelier",
+   "ref": "H-08",
+   "name": "Globe chandelier",
+   "category": "chandeliers",
+   "description": "Opal globes arranged around a central frame give a balanced, softly diffused mid-century look.",
+   "model": "chandeliers:7",
+   "image_id": "827fecb0-589e-5845-bfe0-ba97715caa75",
+   "status": "published",
+   "position": 207
+  },
+  {
+   "id": "3ead1267-8cc2-539a-98f2-9857b932befd",
+   "slug": "sputnik-chandelier",
+   "ref": "H-09",
+   "name": "Sputnik chandelier",
+   "category": "chandeliers",
+   "description": "A radial arrangement of exposed bulbs makes a bold starburst centerpiece for a living or dining room.",
+   "model": "chandeliers:8",
+   "image_id": "d8672068-b8df-567e-a19d-07c81218e3d0",
+   "status": "published",
+   "position": 208
+  },
+  {
+   "id": "4c04977c-a973-5e13-a8a0-70d1e5cac156",
+   "slug": "wagon-wheel-chandelier",
+   "ref": "H-10",
+   "name": "Wagon-wheel chandelier",
+   "category": "chandeliers",
+   "description": "A circular frame with evenly spaced lights suits long tables and open-plan dining areas.",
+   "model": "chandeliers:9",
+   "image_id": "7bb81401-0cfc-563b-9519-8ab32e1c8ce6",
+   "status": "published",
+   "position": 209
+  },
+  {
+   "id": "4d0b2bd4-11c9-588f-91a6-5e531d82f047",
+   "slug": "mini-chandelier",
+   "ref": "H-11",
+   "name": "Mini chandelier",
+   "category": "chandeliers",
+   "description": "A compact chandelier keeps the decorative effect in smaller bedrooms, entries, or breakfast nooks.",
+   "model": "chandeliers:10",
+   "image_id": "275c268e-d0bd-5fb6-8d1d-9c659836a197",
+   "status": "published",
+   "position": 210
+  },
+  {
+   "id": "5c4afade-a4c7-532f-9cdd-87180866cebf",
+   "slug": "industrial-chandelier",
+   "ref": "H-12",
+   "name": "Industrial chandelier",
+   "category": "chandeliers",
+   "description": "Dark metal framing and exposed bulbs give the fixture an open, workshop-inspired character.",
+   "model": "chandeliers:11",
+   "image_id": "d6de4f1b-99c5-5436-8ff3-223c730a0cf6",
+   "status": "published",
+   "position": 211
+  },
+  {
+   "id": "65d7b263-9bea-56df-a130-d4b3186fa308",
+   "slug": "bohemian-chandelier",
+   "ref": "H-13",
+   "name": "Bohemian chandelier",
+   "category": "chandeliers",
+   "description": "A woven shade creates a handcrafted focal point and filters light into a warm, textured pattern.",
+   "model": "chandeliers:12",
+   "image_id": "9b777444-64ba-58c1-b359-4b2a5d2bda0f",
+   "status": "published",
+   "position": 212
+  },
+  {
+   "id": "eafffb11-48fd-5c9a-98eb-08c1aa270aed",
+   "slug": "art-deco-chandelier",
+   "ref": "H-14",
+   "name": "Art Deco chandelier",
+   "category": "chandeliers",
+   "description": "Layered geometric tiers and glowing panels create a structured Art Deco-inspired centerpiece.",
+   "model": "chandeliers:13",
+   "image_id": "9037963e-ccff-56fe-9d80-65e8ba26aa31",
+   "status": "published",
+   "position": 213
+  },
+  {
+   "id": "f76e36a5-b431-55a9-9b29-6e27cd3c7070",
+   "slug": "nature-inspired-chandelier",
+   "ref": "H-15",
+   "name": "Nature-inspired chandelier",
+   "category": "chandeliers",
+   "description": "Branching arms and leaf-like lights bring an organic, nature-inspired silhouette to a room.",
+   "model": "chandeliers:14",
+   "image_id": "4b16c684-3525-5527-b791-e7ac4d7a2a39",
+   "status": "published",
+   "position": 214
+  },
+  {
+   "id": "62b42c0f-acae-5585-a4ea-f709f71b9039",
+   "slug": "ring-chandelier",
+   "ref": "H-16",
+   "name": "Ring chandelier",
+   "category": "chandeliers",
+   "description": "A suspended luminous ring gives a clean contemporary outline above a table or central seating area.",
+   "model": "chandeliers:15",
+   "image_id": "87d9f99a-d0d5-5b5f-9f01-8e9d201b889b",
+   "status": "published",
+   "position": 215
+  },
+  {
+   "id": "f6154ff2-2993-5a68-a50d-915213ff62ae",
+   "slug": "bubble-chandelier",
+   "ref": "H-17",
+   "name": "Bubble chandelier",
+   "category": "chandeliers",
+   "description": "Clustered glass globes create a bright, reflective form with a sense of depth and movement.",
+   "model": "chandeliers:16",
+   "image_id": "ddac6b81-8d77-5dc0-a256-542f2096cb85",
+   "status": "published",
+   "position": 216
+  },
+  {
+   "id": "0a820ae7-1452-5746-a3bb-9c005b951195",
+   "slug": "disc-chandelier",
+   "ref": "H-18",
+   "name": "Disc chandelier",
+   "category": "chandeliers",
+   "description": "Repeated flat discs build a layered arrangement with broad, gentle light distribution.",
+   "model": "chandeliers:17",
+   "image_id": "ff00a781-5377-5818-81a5-4e7eede42b65",
+   "status": "published",
+   "position": 217
+  },
+  {
+   "id": "e587550a-4cb8-5830-9bce-ecef02488ec1",
+   "slug": "canopy-chandelier",
+   "ref": "H-19",
+   "name": "Canopy chandelier",
+   "category": "chandeliers",
+   "description": "A canopy of many small points creates a starry effect for high ceilings and spacious interiors.",
+   "model": "chandeliers:18",
+   "image_id": "049ad32f-745d-5d55-9359-3a770ddc8686",
+   "status": "published",
+   "position": 218
+  },
+  {
+   "id": "abde4043-da1d-54c4-8376-4a1ddd4bf29a",
+   "slug": "sculptural-chandelier",
+   "ref": "H-20",
+   "name": "Sculptural chandelier",
+   "category": "chandeliers",
+   "description": "A flowing continuous form turns the light fixture into a sculptural centerpiece.",
+   "model": "chandeliers:19",
+   "image_id": "845fe627-afff-55c4-958d-aee10d5be2e8",
+   "status": "published",
+   "position": 219
+  }
+ ],
+ "collections": [
+  {
+   "id": "00a51cdd-cb30-5b7a-8027-57e900fd1533",
+   "slug": "wall-lights",
+   "name": "Wall lights",
+   "description": "Wall-mounted lights for bedside, hallway and accent lighting.",
+   "cover_id": "acbdec83-61eb-56c3-b73b-19424635ebc2",
+   "status": "published",
+   "position": 0,
+   "designs": [
+    "e4a55c08-5fdf-531f-a52c-8599d40eabce",
+    "d3b3bd45-68bf-5315-bc10-552b38fff601",
+    "8af5bedc-3ec3-5756-9e38-4c261bdf692b",
+    "21bc2f06-bfc9-5dba-a4b1-c976c2a6ca88",
+    "c1a2b3fd-81e7-51ca-bdfe-7586ba3f2361",
+    "38b29260-91f4-51dc-b139-f9eab6ec7db4",
+    "737f774b-41bb-5658-bfdd-66e703dd7048",
+    "b491f64d-d297-534a-b649-8ce2d4e4efa2",
+    "3a391bbb-06d1-5bd6-af0a-6d32a57dc1b0"
+   ]
+  },
+  {
+   "id": "785952cc-7d27-5df5-bb8d-889461b8d658",
+   "slug": "ceiling-lights",
+   "name": "Ceiling lights",
+   "description": "Flush, semi-flush, surface and statement ceiling fixtures.",
+   "cover_id": "5454f8f5-6cfe-53e2-ac15-7e45c24f13c7",
+   "status": "published",
+   "position": 1,
+   "designs": [
+    "443984a3-0243-54a8-accb-6cc32f2e9cef",
+    "5b832b99-3d93-5fc6-87c9-391f4906eee3",
+    "5f3da872-4d31-571a-8b25-c1abf2e77d89",
+    "38e60c2d-e397-52e2-84e7-ad01aa398f16",
+    "024cb495-11d4-58da-9e73-6b7b46d553ae",
+    "2e4efbbc-cfcb-5cd5-a4b7-a451d1480855",
+    "318d8897-8243-51c0-8405-6e858735f098",
+    "862c3513-b6c0-51e6-aa0e-de581a6f5f6a",
+    "7543a967-3bf7-5f3a-a072-8a5cf1a12843",
+    "260f4a6d-958e-5faf-a364-c9f0dbdb36d6",
+    "995f907a-8d91-54dd-9e2c-fb78a6f928c4",
+    "d51a6466-2176-55d9-a4dc-2bfa38e48649",
+    "a5ce76f5-0339-5df2-a141-8a6c9be263d1",
+    "64830b3c-a058-5b09-902a-c9c3a067407e",
+    "134bbd14-d74b-5a39-aa12-ebbb13b95953",
+    "4bb89af5-eeda-57be-86fd-5ba5d39800a8",
+    "2e089d71-819b-5124-aa3a-68cfed801782",
+    "015b9eee-c9b8-5405-9532-d8822c6a6a13",
+    "5f521c34-5475-5538-9831-31e378fd0029",
+    "abbf86e4-7893-588b-baba-f04af08554d6",
+    "1839482d-a772-5803-aeae-4577e6624e8d",
+    "fdac256d-b31c-5fd9-abd5-9c65c2e72872",
+    "e9ab370a-b8ee-58bd-81be-e6a9b8c0919e",
+    "35f3bdbb-ab0f-5b6d-9051-054fee6ea1d8",
+    "7ad36afe-411e-50fe-996a-630fb9ccb830"
+   ]
+  },
+  {
+   "id": "50a30f1b-6c7a-5633-b494-4c0849cdc274",
+   "slug": "chandeliers",
+   "name": "Chandeliers",
+   "description": "Decorative centrepieces, from classic crystal to contemporary sculptural forms.",
+   "cover_id": "58f4daa4-c58c-51af-ae88-ae7802853501",
+   "status": "published",
+   "position": 2,
+   "designs": [
+    "49c01ac6-d205-5239-9277-8556b4d0ec6c",
+    "dbce86f8-da91-5bbf-a412-1cf2b802856f",
+    "3d89a2b1-dc17-50c1-8831-1374197030d4",
+    "d0e761ef-f4ad-5046-93b8-e8d96a51d683",
+    "79138199-8791-5cbf-bdbc-e8f3011eff76",
+    "95ff26a7-2fa0-5762-a99c-9e0bacdf9011",
+    "72fae2c2-6a0b-5a5d-8992-be018fe4d915",
+    "aef5620e-455e-56b8-8120-a360b1aa7df7",
+    "3ead1267-8cc2-539a-98f2-9857b932befd",
+    "4c04977c-a973-5e13-a8a0-70d1e5cac156",
+    "4d0b2bd4-11c9-588f-91a6-5e531d82f047",
+    "5c4afade-a4c7-532f-9cdd-87180866cebf",
+    "65d7b263-9bea-56df-a130-d4b3186fa308",
+    "eafffb11-48fd-5c9a-98eb-08c1aa270aed",
+    "f76e36a5-b431-55a9-9b29-6e27cd3c7070",
+    "62b42c0f-acae-5585-a4ea-f709f71b9039",
+    "f6154ff2-2993-5a68-a50d-915213ff62ae",
+    "0a820ae7-1452-5746-a3bb-9c005b951195",
+    "e587550a-4cb8-5830-9bce-ecef02488ec1",
+    "abde4043-da1d-54c4-8376-4a1ddd4bf29a"
+   ]
+  }
+ ],
+ "spaces": [
+  {
+   "id": "27ed1d80-29a1-5083-8379-e6f2ee28160f",
+   "slug": "bedroom",
+   "name": "Bedroom",
+   "title": "Bedroom lighting",
+   "label": "bedroom",
+   "icon": "bed",
+   "intro": "Soft, low-glare light for winding down: bedside wall lights, calm ceiling pieces and shades that keep the glow gentle.",
+   "image_id": "fa21ea02-6207-5889-a097-d3dc081f7dfd",
+   "status": "published",
+   "position": 0,
+   "designs": [
+    "d3b3bd45-68bf-5315-bc10-552b38fff601",
+    "c1a2b3fd-81e7-51ca-bdfe-7586ba3f2361",
+    "8af5bedc-3ec3-5756-9e38-4c261bdf692b",
+    "e4a55c08-5fdf-531f-a52c-8599d40eabce",
+    "3a391bbb-06d1-5bd6-af0a-6d32a57dc1b0",
+    "737f774b-41bb-5658-bfdd-66e703dd7048",
+    "38e60c2d-e397-52e2-84e7-ad01aa398f16",
+    "995f907a-8d91-54dd-9e2c-fb78a6f928c4",
+    "260f4a6d-958e-5faf-a364-c9f0dbdb36d6",
+    "d51a6466-2176-55d9-a4dc-2bfa38e48649",
+    "134bbd14-d74b-5a39-aa12-ebbb13b95953",
+    "fdac256d-b31c-5fd9-abd5-9c65c2e72872",
+    "4d0b2bd4-11c9-588f-91a6-5e531d82f047"
+   ]
+  },
+  {
+   "id": "86417215-a8c4-5564-9478-1a277197242c",
+   "slug": "living",
+   "name": "Living room",
+   "title": "Living room lighting",
+   "label": "living room",
+   "icon": "sofa",
+   "intro": "Statement pieces and layered light for the room everyone shares, from sculptural centrepieces to soft wall accents.",
+   "image_id": "e7d21e11-9bd6-5e28-b10e-283480217e5a",
+   "status": "published",
+   "position": 1,
+   "designs": [
+    "dbce86f8-da91-5bbf-a412-1cf2b802856f",
+    "aef5620e-455e-56b8-8120-a360b1aa7df7",
+    "3ead1267-8cc2-539a-98f2-9857b932befd",
+    "65d7b263-9bea-56df-a130-d4b3186fa308",
+    "f76e36a5-b431-55a9-9b29-6e27cd3c7070",
+    "f6154ff2-2993-5a68-a50d-915213ff62ae",
+    "abde4043-da1d-54c4-8376-4a1ddd4bf29a",
+    "318d8897-8243-51c0-8405-6e858735f098",
+    "7543a967-3bf7-5f3a-a072-8a5cf1a12843",
+    "015b9eee-c9b8-5405-9532-d8822c6a6a13",
+    "1839482d-a772-5803-aeae-4577e6624e8d",
+    "7ad36afe-411e-50fe-996a-630fb9ccb830",
+    "e4a55c08-5fdf-531f-a52c-8599d40eabce",
+    "3a391bbb-06d1-5bd6-af0a-6d32a57dc1b0"
+   ]
+  },
+  {
+   "id": "aaf1740e-03e3-5fb0-a3ac-a8049c8dd142",
+   "slug": "dining",
+   "name": "Dining",
+   "title": "Dining room lighting",
+   "label": "dining room",
+   "icon": "dining",
+   "intro": "Centrepieces sized to sit above a table, with warm light that flatters food and long conversations.",
+   "image_id": "ac0ac2ad-1ebf-5cdb-8072-4b8af190c77a",
+   "status": "published",
+   "position": 2,
+   "designs": [
+    "49c01ac6-d205-5239-9277-8556b4d0ec6c",
+    "3d89a2b1-dc17-50c1-8831-1374197030d4",
+    "d0e761ef-f4ad-5046-93b8-e8d96a51d683",
+    "79138199-8791-5cbf-bdbc-e8f3011eff76",
+    "95ff26a7-2fa0-5762-a99c-9e0bacdf9011",
+    "4c04977c-a973-5e13-a8a0-70d1e5cac156",
+    "eafffb11-48fd-5c9a-98eb-08c1aa270aed",
+    "62b42c0f-acae-5585-a4ea-f709f71b9039",
+    "72fae2c2-6a0b-5a5d-8992-be018fe4d915",
+    "862c3513-b6c0-51e6-aa0e-de581a6f5f6a"
+   ]
+  },
+  {
+   "id": "91609683-90ba-5b56-8b2b-8bbbd1ea8696",
+   "slug": "office",
+   "name": "Office",
+   "title": "Home office lighting",
+   "label": "home office",
+   "icon": "desk",
+   "intro": "Clear, even light for focused work, with clean lines that keep the desk calm and uncluttered.",
+   "image_id": "79c61895-fd56-5d9c-ad16-5b44fa2fa309",
+   "status": "published",
+   "position": 3,
+   "designs": [
+    "443984a3-0243-54a8-accb-6cc32f2e9cef",
+    "5b832b99-3d93-5fc6-87c9-391f4906eee3",
+    "5f3da872-4d31-571a-8b25-c1abf2e77d89",
+    "4bb89af5-eeda-57be-86fd-5ba5d39800a8",
+    "5f521c34-5475-5538-9831-31e378fd0029",
+    "e9ab370a-b8ee-58bd-81be-e6a9b8c0919e",
+    "2e089d71-819b-5124-aa3a-68cfed801782",
+    "8af5bedc-3ec3-5756-9e38-4c261bdf692b",
+    "737f774b-41bb-5658-bfdd-66e703dd7048"
+   ]
+  },
+  {
+   "id": "28818da3-c449-5cb0-a42a-4b0e1aca4fda",
+   "slug": "outdoor",
+   "name": "Outdoor",
+   "title": "Outdoor and balcony lighting",
+   "label": "outdoor space",
+   "icon": "tree",
+   "intro": "Ideas for balconies, porches and covered terraces. Ask us about weather-rated versions before you order.",
+   "image_id": "9a744819-1d80-5435-9805-36221f2e38a2",
+   "status": "published",
+   "position": 4,
+   "designs": [
+    "38b29260-91f4-51dc-b139-f9eab6ec7db4",
+    "e4a55c08-5fdf-531f-a52c-8599d40eabce",
+    "2e4efbbc-cfcb-5cd5-a4b7-a451d1480855",
+    "260f4a6d-958e-5faf-a364-c9f0dbdb36d6",
+    "fdac256d-b31c-5fd9-abd5-9c65c2e72872",
+    "a5ce76f5-0339-5df2-a141-8a6c9be263d1"
+   ]
+  },
+  {
+   "id": "ab819119-55fc-5c52-b98b-c380eb57b78d",
+   "slug": "kitchen",
+   "name": "Kitchen",
+   "title": "Kitchen lighting",
+   "label": "kitchen",
+   "icon": "dining",
+   "intro": "Bright, practical light for cooking, with pieces that make the island the heart of the room.",
+   "image_id": null,
+   "status": "hidden",
+   "position": 5,
+   "designs": [
+    "4bb89af5-eeda-57be-86fd-5ba5d39800a8",
+    "d0e761ef-f4ad-5046-93b8-e8d96a51d683",
+    "e9ab370a-b8ee-58bd-81be-e6a9b8c0919e",
+    "2e4efbbc-cfcb-5cd5-a4b7-a451d1480855",
+    "5f521c34-5475-5538-9831-31e378fd0029"
+   ]
+  }
+ ],
+ "content": {
+  "home": {
+   "notice": {
+    "visible": true,
+    "text": "Free design consultation",
+    "linkLabel": "Book yours"
+   },
+   "hero": {
+    "eyebrow": "Browse · Design · Preview",
+    "title": "Find or create the *perfect lighting* for your space",
+    "primary": {
+     "label": "Browse the collection",
+     "href": "#collections"
+    },
+    "secondary": {
+     "label": "Request a quote",
+     "action": "quote"
+    },
+    "slides": [
+     {
+      "image": "fa21ea02-6207-5889-a097-d3dc081f7dfd",
+      "label": "Bedroom lighting",
+      "text": "Soft, layered light for restful evenings and slow mornings.",
+      "alt": "Warmly lit bedroom with a sculptural woven pendant lamp"
+     },
+     {
+      "image": "ac0ac2ad-1ebf-5cdb-8072-4b8af190c77a",
+      "label": "Dining room lighting",
+      "text": "A warm centerpiece for shared meals and long conversations.",
+      "alt": "Dining room with a ring chandelier above the table"
+     },
+     {
+      "image": "79c61895-fd56-5d9c-ad16-5b44fa2fa309",
+      "label": "Home office lighting",
+      "text": "Clear task lighting with a calmer, more considered feel.",
+      "alt": "Home office with a linear light above the desk"
+     },
+     {
+      "image": "9a744819-1d80-5435-9805-36221f2e38a2",
+      "label": "Balcony lighting",
+      "text": "Bring a gentle glow to open-air evenings and quiet corners.",
+      "alt": "Balcony at dusk with a woven pendant lamp"
+     },
+     {
+      "image": "e7d21e11-9bd6-5e28-b10e-283480217e5a",
+      "label": "Living room lighting",
+      "text": "Make the room feel welcoming with light at every level.",
+      "alt": "Living room with a looped ring chandelier above the sofa"
+     }
+    ]
+   },
+   "sections": [
+    {
+     "id": "quickcards",
+     "visible": true,
+     "cards": [
+      {
+       "title": "Browse the collection",
+       "text": "{designCount} wall lights, ceiling lights and chandeliers.",
+       "href": "#collections",
+       "icon": "grid"
+      },
+      {
+       "title": "Design your own lamp",
+       "text": "Size, finish and cord, in 360° 3D.",
+       "href": "#studio",
+       "icon": "orbit"
+      },
+      {
+       "title": "Try it in your room",
+       "text": "Place any design on your own photo.",
+       "href": "#visualize",
+       "icon": "image"
+      }
+     ]
+    },
+    {
+     "id": "spaces",
+     "visible": true,
+     "title": "Shop by space",
+     "linkLabel": "All spaces"
+    },
+    {
+     "id": "featured",
+     "visible": false,
+     "eyebrow": "Featured",
+     "title": "Designs we love right now",
+     "lede": "",
+     "designs": []
+    },
+    {
+     "id": "collections",
+     "visible": true,
+     "eyebrow": "Collections",
+     "title": "Explore the collection",
+     "lede": "{designCount} designs across wall, ceiling and statement lighting. Open any piece for details, or tap the heart to keep it on your shortlist."
+    },
+    {
+     "id": "how",
+     "visible": true,
+     "eyebrow": "How it works",
+     "title": "From idea to installed, in three steps",
+     "steps": [
+      {
+       "title": "Choose",
+       "text": "Browse the collection, or start from any design in the lamp designer."
+      },
+      {
+       "title": "Customise",
+       "text": "Pick the size, finish and cord, turn it in 3D, then place it on a photo of your own room."
+      },
+      {
+       "title": "Talk to us",
+       "text": "Request a quote or book a consultation. We reply with the price, lead time and delivery details."
+      }
+     ]
+    },
+    {
+     "id": "studio",
+     "visible": true,
+     "eyebrow": "Design your lamp",
+     "title": "Put your lamp together",
+     "lede": "Start from any design, then choose the size, finish and cord. Every choice shows on the 3D model straight away, and you can turn it all the way round to see it from every side."
+    },
+    {
+     "id": "visualize",
+     "visible": true,
+     "eyebrow": "Try in your room",
+     "title": "See your space in a new light",
+     "lede": "Add a photo of your room, pick a design, and click where it should go. Your photo never leaves your device."
+    },
+    {
+     "id": "about",
+     "visible": true,
+     "eyebrow": "About LumaDesign",
+     "title": "Lighting that starts with your room",
+     "lede": "Good lighting is personal. Browse the collection, shape a lamp to your taste, and see it in your own space before you decide. When you are ready, talk to us directly and we will confirm every detail with you.",
+     "trust": [
+      {
+       "icon": "chat",
+       "title": "Free design consultation",
+       "text": "Tell us about your room and we will help you choose the right light."
+      },
+      {
+       "icon": "check",
+       "title": "No surprises",
+       "text": "We confirm the price, lead time and delivery before you commit to anything."
+      },
+      {
+       "icon": "shield",
+       "title": "Your photos stay private",
+       "text": "Room previews are made in your browser. Nothing is uploaded."
+      }
+     ]
+    }
+   ]
+  },
+  "about": {
+   "hero": {
+    "eyebrow": "About LumaDesign",
+    "title": "Light, shaped *around you*",
+    "image": "e7d21e11-9bd6-5e28-b10e-283480217e5a",
+    "lede": "The right light starts with your room, not with what happens to be on a shelf. LumaDesign brings design, preview and personal advice together, so the light you choose fits the way you live."
+   },
+   "blocks": [
+    {
+     "id": "philosophy",
+     "type": "story",
+     "visible": true,
+     "eyebrow": "Our philosophy",
+     "title": "Every room has its own story",
+     "image": "ac0ac2ad-1ebf-5cdb-8072-4b8af190c77a",
+     "imageAlt": "A ring chandelier glowing above a dining table",
+     "paragraphs": [
+      "A bedroom wants a softer glow than a dining table. A home office needs clear, calm light. We start from the space and the people in it, then help you find or shape the light that suits them.",
+      "That is why LumaDesign is built around three simple ideas: see the options clearly, shape them to your taste, and see them in your own room before you decide."
+     ],
+     "quote": "Light should feel as if it was chosen for the room, because it was."
+    },
+    {
+     "id": "different",
+     "type": "compare",
+     "visible": true,
+     "eyebrow": "What makes us different",
+     "title": "Designed with you, not picked off a shelf",
+     "leftTitle": "A typical lighting store",
+     "left": [
+      "Choose from whatever is in stock",
+      "Imagine how it will look at home",
+      "Fixed sizes and finishes",
+      "A quick chat at the counter"
+     ],
+     "rightTitle": "LumaDesign",
+     "right": [
+      "Browse {designCount} designs, or shape your own and turn it in 3D",
+      "Place it on a photo of your own room before you decide",
+      "Choose the size, finish and cord that suit your space",
+      "A personal consultation about your room and your design"
+     ]
+    },
+    {
+     "id": "process",
+     "type": "steps",
+     "visible": true,
+     "eyebrow": "How we work",
+     "title": "From first idea to the right light",
+     "steps": [
+      {
+       "title": "Explore",
+       "text": "Browse the collection, or start from your room with Shop by space."
+      },
+      {
+       "title": "Shape",
+       "text": "Choose the size, finish and cord, and turn your lamp all the way round in 3D."
+      },
+      {
+       "title": "Preview",
+       "text": "Place the design on a photo of your own room. The photo never leaves your device."
+      },
+      {
+       "title": "Talk to us",
+       "text": "Request a quote or book a consultation. We confirm the price, lead time and delivery before you commit."
+      }
+     ]
+    },
+    {
+     "id": "values",
+     "type": "values",
+     "visible": true,
+     "eyebrow": "What we care about",
+     "title": "The details that make a light feel right",
+     "items": [
+      {
+       "icon": "sliders",
+       "title": "Personalisation",
+       "text": "Your room, your taste. Any design can be the start of a conversation about size, finish and detail."
+      },
+      {
+       "icon": "lamp",
+       "title": "Craftsmanship",
+       "text": "We care about how a light is made: the finish of the metal, the line of the shade and the quality of the glow."
+      },
+      {
+       "icon": "ruler",
+       "title": "Attention to detail",
+       "text": "From the cord colour to the bulb, we talk through the details so nothing is left to guesswork."
+      },
+      {
+       "icon": "sparkle",
+       "title": "Creativity",
+       "text": "From classic crystal to sculptural loops, we enjoy helping you find something you would not have expected."
+      }
+     ]
+    },
+    {
+     "id": "gallery",
+     "type": "gallery",
+     "visible": true,
+     "title": "A glimpse of the collection",
+     "linkLabel": "See all {designCount} designs",
+     "designs": [
+      "dbce86f8-da91-5bbf-a412-1cf2b802856f",
+      "d3b3bd45-68bf-5315-bc10-552b38fff601",
+      "260f4a6d-958e-5faf-a364-c9f0dbdb36d6",
+      "aef5620e-455e-56b8-8120-a360b1aa7df7",
+      "318d8897-8243-51c0-8405-6e858735f098",
+      "21bc2f06-bfc9-5dba-a4b1-c976c2a6ca88"
+     ]
+    },
+    {
+     "id": "closing",
+     "type": "cta",
+     "visible": true,
+     "title": "Let's find the right light for your space",
+     "text": "Tell us about your room. We will help you choose, and confirm every detail before you commit.",
+     "primaryLabel": "Book a consultation",
+     "secondaryLabel": "Request a quote"
+    }
+   ]
+  },
+  "contact": {
+   "phone": "01093244530",
+   "whatsapp": "201093244530",
+   "email": "",
+   "city": "",
+   "hours": "",
+   "instagram": "",
+   "tiktok": "",
+   "social": [],
+   "hero": {
+    "eyebrow": "Contact",
+    "title": "Let's talk about *light*",
+    "image": "79c61895-fd56-5d9c-ad16-5b44fa2fa309",
+    "lede": "Questions about a design, a size or your room? Message us on WhatsApp, give us a call, or book a consultation."
+   },
+   "cards": {
+    "whatsapp": {
+     "title": "WhatsApp",
+     "text": "The quickest way to reach us. Send photos of your room, ask about a design, or request a quote.",
+     "button": "Chat on WhatsApp",
+     "greeting": "Hello LumaDesign, I have a question about lighting for my space."
+    },
+    "call": {
+     "title": "Call us",
+     "text": "Prefer to talk it through? Call us on this number.",
+     "button": "Call now"
+    },
+    "consult": {
+     "title": "Book a consultation",
+     "text": "Tell us about your room and when suits you. We will contact you to agree a time, then talk through designs, sizes, finishes and prices.",
+     "button": "Book a consultation"
+    },
+    "follow": {
+     "title": "Follow us",
+     "text": "New designs and finished rooms."
+    }
+   },
+   "steps": {
+    "eyebrow": "What happens next",
+    "title": "Simple, personal and with no surprises",
+    "items": [
+     {
+      "title": "You get in touch",
+      "text": "By WhatsApp, phone or a consultation request. Share a photo of your room if you have one."
+     },
+     {
+      "title": "We talk it through",
+      "text": "Designs, sizes, finishes and what will suit your space."
+     },
+     {
+      "title": "We confirm the details",
+      "text": "Price, lead time and delivery, agreed before you commit to anything."
+     }
+    ]
+   }
+  },
+  "settings": {
+   "pricing": {
+    "currency": "EGP",
+    "shade": {
+     "19": 799,
+     "33": 1299,
+     "42": 1599
+    },
+    "cord": 750,
+    "bulbs": 399
+   },
+   "calendarUrl": ""
+  }
+ }
+}

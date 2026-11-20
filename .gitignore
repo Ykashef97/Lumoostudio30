@@ -11,3 +11,7 @@ new-images/*
 # Python leftovers
 __pycache__/
 *.pyc
+
+# Secret keys and the local Python environment for the backend tools
+.env
+.venv/
