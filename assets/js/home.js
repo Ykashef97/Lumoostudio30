@@ -277,8 +277,10 @@ function updateBuild() {
   $('#cordHint').textContent = CORD_HINT[mount];
   $('#cordOptions').hidden = mount === 'ceiling';
   $('#cordNote').hidden = mount !== 'ceiling';
-  $('#assemblyTotal').textContent = money(estimate(b));
-  $('#estimateNote').textContent = (needsCord(b) ? 'Light, cord and bulbs.' : 'Light and bulbs.') + ' Final price confirmed in your quote.';
+  if (LUMA_PRICING.show) {
+    $('#assemblyTotal').textContent = money(estimate(b));
+    $('#estimateNote').textContent = (needsCord(b) ? 'Light, cord and bulbs.' : 'Light and bulbs.') + ' Final price confirmed in your quote.';
+  }
 
   $('#selectedBuildTitle').textContent = b.fixtureName;
   $('#selectedBuildName').textContent = buildSummary(b);
@@ -329,11 +331,22 @@ $$('[data-shade]').forEach(x => x.addEventListener('click', () => { build.shade 
 $$('[data-cord]').forEach(x => x.addEventListener('click', () => { build.cord = x.dataset.cord; build.customised = true; updateBuild(); }));
 $$('[data-finish]').forEach(x => x.addEventListener('click', () => { build.style = x.dataset.finish; build.customised = true; updateBuild(); }));
 
-// Price labels come from Settings in the admin portal.
-$$('[data-price]').forEach(el => {
-  const [part, size] = el.dataset.price.split(':');
-  el.textContent = money(part === 'shade' ? LUMA_PRICING.shade[size] : part === 'cord' ? LUMA_PRICING.cord : LUMA_PRICING.bulbs);
-});
+// Price labels come from Settings in the admin portal. Until the owners switch prices on there,
+// no figures are shown and the estimate says the price comes with the quote.
+if (LUMA_PRICING.show) {
+  $$('[data-price]').forEach(el => {
+    const [part, size] = el.dataset.price.split(':');
+    el.textContent = money(part === 'shade' ? LUMA_PRICING.shade[size] : part === 'cord' ? LUMA_PRICING.cord : LUMA_PRICING.bulbs);
+  });
+} else {
+  $$('[data-price]').forEach(el => {
+    if (el.dataset.price === 'bulb') el.parentElement.textContent = 'E27 · pack of 2';
+    else el.hidden = true;
+  });
+  $('.estimate span').textContent = 'Price';
+  $('#assemblyTotal').textContent = 'On request';
+  $('#estimateNote').textContent = 'We confirm the price, lead time and delivery with your quote.';
+}
 
 /* ---------- 3D view ---------- */
 

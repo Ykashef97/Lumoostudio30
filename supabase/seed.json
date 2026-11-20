@@ -2256,6 +2256,7 @@
   },
   "settings": {
    "pricing": {
+    "show": false,
     "currency": "EGP",
     "shade": {
      "19": 799,

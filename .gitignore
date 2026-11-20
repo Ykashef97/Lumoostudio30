@@ -15,3 +15,6 @@ __pycache__/
 # Secret keys and the local Python environment for the backend tools
 .env
 .venv/
+
+# Database backups contain customers' personal details: never commit them
+backups/

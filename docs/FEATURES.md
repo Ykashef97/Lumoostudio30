@@ -51,7 +51,7 @@ Every content change is a **draft** until it is published:
 | **Designs** | Add, edit, hide or delete products. For each: name, reference (W-02 style), type (wall, ceiling, chandelier), description, price, size, material, lead time, photo, 3D shape used in the lamp designer, and order. See how many hearts each design has |
 | **About us** | The banner (text and photo). Blocks that can be added, reordered, hidden or removed: story with photo, text, comparison, steps, values, photo strip of designs, closing message with buttons |
 | **Contact us** | Phone, WhatsApp number, email, city, opening hours, Instagram, TikTok and any other links. The Contact page text and banner photo. These details also update the footer and every WhatsApp button on the site |
-| **Settings** | Lamp designer prices (per size, cord, bulbs). An optional online booking link. The optional Google Sheet copy of requests. Published versions with Restore |
+| **Settings** | Lamp designer prices (per size, cord, bulbs) and a switch to show them on the website (off until real prices are entered). An optional online booking link. The optional Google Sheet copy of requests. Published versions with Restore |
 
 ### Media library (photos)
 
@@ -94,7 +94,7 @@ No account is needed. It works on phones, tablets and computers.
 - Start from any design, then choose the size (19, 33 or 42 cm), the finish (soft ivory, matte black, warm brass) and the cord (white or black; not needed for ceiling lights).
 - Turn the 3D model all the way round, tilt it, zoom in and out, and see the parts pulled apart.
 - Switch to the real product photo.
-- See an estimated price, confirmed later in the quote.
+- See an estimated price, confirmed later in the quote (only once the owners switch prices on; until then "Price: On request").
 - Save the design to the shortlist, add it to the selection, request a quote, or book a consultation about it.
 
 ### Try it in your room
@@ -116,6 +116,10 @@ No account is needed. It works on phones, tablets and computers.
 - Their name and phone are remembered on their device for next time.
 - If the database cannot be reached, the request is written into a WhatsApp message for them to send instead.
 
+### Privacy
+
+- A privacy policy page (`privacy.html`) explains what is collected, where it is kept and how to ask for it to be deleted. Linked in every footer and under the consultation form.
+
 ### Contact
 
 - Contact page with WhatsApp and call buttons, the consultation form, and social links once added.
@@ -130,6 +134,9 @@ No account is needed. It works on phones, tablets and computers.
 ---
 
 ## Behind the scenes
+
+**Backups:** `backup-database.bat` saves the requests, content, settings and uploaded photos into a private `backups` folder on the owner's computer (the free database plan keeps no backups).
+
 
 | Part | What it is | Cost |
 | --- | --- | --- |

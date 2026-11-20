@@ -263,7 +263,7 @@ function injectSharedMarkup() {
         </div>
         <p class="form-error" id="consultError" role="alert" hidden></p>
         <button class="btn btn--primary btn--block" type="submit" id="consultSubmit">Send request</button>
-        <p class="fine">We only use these details to arrange your consultation. Your name and phone are remembered on this device to save typing next time.</p>
+        <p class="fine">We only use these details to arrange your consultation. Your name and phone are remembered on this device to save typing next time. <a href="privacy.html">Privacy policy</a></p>
       </form>
     </div>
 

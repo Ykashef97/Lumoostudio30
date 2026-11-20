@@ -63,11 +63,14 @@ export async function render(root, params) {
   });
 
   async function load() {
-    $('#rqTable').innerHTML = loading();
+    const table = $('#rqTable', root), pager = $('#rqPager', root);
+    if (!table) return;
+    table.innerHTML = loading();
     try {
       const start = (state.page - 1) * PAGE_SIZE;
       const { data, count } = await q(buildQuery(sb.from('consultation_requests').select('*', { count: 'exact' })).range(start, start + PAGE_SIZE - 1));
-      $('#rqTable').innerHTML = data.length ? `<div class="table-wrap"><table class="table">
+      if (!table.isConnected) return; // the admin moved to another page while this was loading
+      table.innerHTML = data.length ? `<div class="table-wrap"><table class="table">
         <thead><tr><th>Request</th><th>Customer</th><th>Design</th><th>Status</th><th class="hide-sm">Contact by</th></tr></thead>
         <tbody>${data.map(r => `<tr class="clickable" data-id="${esc(r.id)}" tabindex="0">
           <td><span class="cell-main">${esc(r.id)}</span><span class="cell-sub">${fmtDate(r.created_at)}</span></td>
@@ -77,13 +80,12 @@ export async function render(root, params) {
           <td class="hide-sm">${esc(r.contact_by)}</td></tr>`).join('')}</tbody></table></div>`
         : empty(state.search || state.status || state.from || state.to ? 'No requests match these filters.' : 'No consultation requests yet.', 'calendar');
       const pages = Math.max(1, Math.ceil(count / PAGE_SIZE));
-      const pager = $('#rqPager');
       pager.hidden = count <= PAGE_SIZE;
       pager.innerHTML = `<span>${count} request${count === 1 ? '' : 's'} · page ${state.page} of ${pages}</span>
         <span class="row"><button class="btn btn--outline btn--sm" type="button" data-page="${state.page - 1}" ${state.page <= 1 ? 'disabled' : ''}>Previous</button>
         <button class="btn btn--outline btn--sm" type="button" data-page="${state.page + 1}" ${state.page >= pages ? 'disabled' : ''}>Next</button></span>`;
     } catch (error) {
-      $('#rqTable').innerHTML = `<div class="card-body"><p class="notice notice--danger">${esc(error.message)}</p></div>`;
+      if (table.isConnected) table.innerHTML = `<div class="card-body"><p class="notice notice--danger">${esc(error.message)}</p></div>`;
     }
   }
   $('#rqTable').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset.id) openRequest(e.target.dataset.id, load); });
@@ -104,7 +106,13 @@ async function exportCsv() {
     const cols = [['id', 'Request ID'], ['created_at', 'Received'], ['status', 'Status'], ['name', 'Name'], ['phone', 'Phone'], ['email', 'Email'],
       ['contact_by', 'Contact by'], ['preferred_date', 'Preferred day'], ['preferred_time', 'Preferred time'], ['design_name', 'Design'],
       ['design_ref', 'Ref'], ['setup', 'Custom setup'], ['notes', 'Customer notes'], ['source', 'Started from']];
-    const cell = v => { const s = String(v ?? ''); return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    // Text a customer typed that starts with = + - @ (or a tab) could run as a formula in Excel;
+    // a leading apostrophe keeps it as plain text.
+    const cell = v => {
+      let s = String(v ?? '');
+      if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+      return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
     const csv = [cols.map(c => c[1]).join(','), ...rows.map(r => cols.map(([k]) => cell(k === 'status' ? STATUS_LABEL[r[k]] : k === 'created_at' ? fmtDate(r[k]) : k === 'phone' ? "'" + r[k] : r[k])).join(','))].join('\r\n');
     // The byte-order mark lets Excel read Arabic and other non-Latin text correctly.
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });

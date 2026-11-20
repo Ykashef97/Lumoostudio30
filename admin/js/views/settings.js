@@ -1,6 +1,6 @@
 /* Settings: account and password, designer prices, booking link, Google Sheet copy, published versions. */
 import { sb, q, rpc, getContent, saveContent, ADMIN_LOGIN_EMAIL } from '../api.js';
-import { $, esc, icon, loading, toast, fail, fmtDate, timeAgo, setDirty, confirmDialog, fillForm, listenForm } from '../ui.js';
+import { $, esc, icon, loading, toast, fail, fmtDate, timeAgo, setDirty, confirmDialog, fillForm, listenForm, toggleField } from '../ui.js';
 
 const SIZES = [['19', 'Small shade (19 cm)'], ['33', 'Medium shade (33 cm)'], ['42', 'Large shade (42 cm)']];
 
@@ -39,9 +39,11 @@ export async function render(root) {
     <section class="card card-pad stack" id="siteSettings">
       <h2 class="card-title">${icon('sliders')}Lamp designer prices and booking</h2>
       <p class="hint">Used for the price estimate in the 3D lamp designer. Saved as a draft; publish to make them live.</p>
+      <div class="stack" style="gap:4px">${toggleField('Show these prices on the website', 'pricing.show')}
+        <small class="hint">Leave this off until the figures below are your real prices. While it is off, the designer shows “Price: On request” and no figures.</small></div>
       <div class="grid-3">${SIZES.map(([k, l]) => `<div class="field"><label for="pr${k}">${l}</label><input id="pr${k}" type="number" min="0" max="1000000" step="1" data-path="pricing.shade.${k}"></div>`).join('')}</div>
       <div class="grid-3">
-        <div class="field"><label for="prCord">Cord and ceiling fitting</label><input id="prCord" type="number" min="0" max="1000000" data-path="pricing.cord"></div>
+        <div class="field"><label for="prCord">Cord (wall lights and chandeliers)</label><input id="prCord" type="number" min="0" max="1000000" data-path="pricing.cord"></div>
         <div class="field"><label for="prBulbs">Bulbs</label><input id="prBulbs" type="number" min="0" max="1000000" data-path="pricing.bulbs"></div>
         <div class="field"><label for="prCur">Currency</label><input id="prCur" maxlength="5" data-path="pricing.currency"></div>
       </div>
@@ -110,6 +112,7 @@ export async function render(root) {
     SIZES.forEach(([k]) => { p.shade[k] = Math.round(Number(p.shade[k])); });
     p.cord = Math.round(Number(p.cord)); p.bulbs = Math.round(Number(p.bulbs));
     p.currency = String(p.currency || 'EGP').trim().toUpperCase() || 'EGP';
+    p.show = p.show === true;
     site.calendarUrl = String(site.calendarUrl || '').trim();
     if (site.calendarUrl && !/^https:\/\/\S+\.\S+$/.test(site.calendarUrl)) return toast('The booking link must start with https://', 'error');
     try {

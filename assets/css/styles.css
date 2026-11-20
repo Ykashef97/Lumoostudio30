@@ -528,6 +528,19 @@ html.js:not(.cms-ready) [data-cms] { opacity: 0; }
 .breadcrumb li + li::before { content: '›'; margin-right: 8px; }
 .breadcrumb a { display: inline-flex; align-items: center; min-height: 44px; color: var(--on-dark); text-decoration: underline; text-underline-offset: 3px; }
 .breadcrumb a:hover { color: var(--gold); }
+.breadcrumb--light ol { color: var(--muted); }
+.breadcrumb--light a { color: var(--ink); }
+.breadcrumb--light a:hover { color: var(--olive); }
+
+/* ---------- Privacy policy and other text pages ---------- */
+.legal { max-width: 760px; }
+.legal .breadcrumb { margin-bottom: 8px; }
+.legal-updated { margin: 8px 0 28px; font-size: 14px; color: var(--muted); }
+.legal h2 { margin: 36px 0 10px; font: 400 26px/1.2 var(--serif); letter-spacing: -.01em; }
+.legal h3 { margin: 20px 0 6px; font-size: 17px; font-weight: 600; }
+.legal p { margin-bottom: 12px; max-width: 68ch; font-size: 16px; line-height: 1.7; color: var(--ink); }
+.legal a { text-decoration: underline; text-underline-offset: 3px; }
+.fine a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
 /* ---------- Space pages ---------- */
 .space-switch { display: flex; gap: 8px; padding-block: 24px 4px; overflow-x: auto; scrollbar-width: none; }
@@ -650,7 +663,8 @@ html.js:not(.cms-ready) [data-cms] { opacity: 0; }
   .space-card { scroll-snap-align: start; }
   .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 
-  .builder { grid-template-columns: 1fr; gap: 20px; }
+  /* minmax(0, …) lets the designer shrink on very narrow phones instead of pushing the page wider. */
+  .builder { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   /* The 3D view stays in sight while the options scroll underneath it. */
   .builder-stage { top: var(--header); z-index: 5; height: clamp(300px, 46vh, 480px); min-height: 0; box-shadow: 0 10px 24px rgb(32 34 30 / .12); }
   .site-nav .nav-extra { display: flex; }
@@ -676,6 +690,7 @@ html.js:not(.cms-ready) [data-cms] { opacity: 0; }
 
   .brand-name { font-size: 20px; }
   .header-row { gap: 8px; }
+  .header-row > * { min-width: 0; }
 
   .hero { min-height: 600px; }
   .hero-slide { object-position: 66% center; }
@@ -725,8 +740,9 @@ html.js:not(.cms-ready) [data-cms] { opacity: 0; }
   .compare-col { padding: 24px 20px; }
   .cta-band { padding: 28px 22px; }
   .pull-quote { font-size: 22px; }
-  .builder-panel { padding: 20px 16px; gap: 24px; }
-  .field-row { grid-template-columns: 1fr; }
+  .builder-panel { grid-template-columns: minmax(0, 1fr); padding: 20px 16px; gap: 24px; }
+  .field-row { grid-template-columns: minmax(0, 1fr); }
+  .field-row > *, .field select { min-width: 0; max-width: 100%; }
   .picker { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 124px; max-height: none; overflow-x: auto; overflow-y: hidden; padding-bottom: 8px; }
   .picker-option { grid-template-columns: 1fr; justify-items: center; gap: 6px; padding: 6px 6px 8px; text-align: center; }
   .picker-option img { width: 100%; height: 96px; }
@@ -754,4 +770,18 @@ html.js:not(.cms-ready) [data-cms] { opacity: 0; }
   .cart-item { grid-template-columns: 52px 1fr; }
   .cart-item img { width: 52px; height: 52px; }
   .cart-item .qty { grid-column: 2; justify-self: start; }
+}
+
+/* Narrow phones (360 px and similar): keep the logo and the four header buttons on one line. */
+@media (max-width: 380px) {
+  :root { --gutter: 16px; }
+  .brand { gap: 6px; }
+  .brand-mark { width: 22px; height: 22px; }
+  .brand-name { font-size: 18px; }
+  .header-tools { gap: 0; }
+  .btn { white-space: normal; text-align: center; }
+}
+/* The smallest phones (320 px): the collection's own search box stays available below. */
+@media (max-width: 340px) {
+  #openProductSearch { display: none; }
 }

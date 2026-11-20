@@ -139,7 +139,9 @@ If the database cannot be reached when the customer presses Send, the form hands
 | Database kept awake | A daily GitHub job stops the free database from pausing (runs once both branches are pushed) |
 | Instagram and TikTok | Hidden until we add the links in the portal |
 | Email address, city, opening hours | Hidden until we add them |
-| Prices in the lamp designer | Sample figures from the earlier draft. Must be replaced with our real prices |
+| Prices in the lamp designer | Hidden ("Price: On request") until we enter our real prices in Settings and switch on "Show these prices on the website" |
+| Privacy policy | Page `privacy.html`, linked in every footer and under the consultation form. Read and approve it before launch |
+| Backups | Run `backup-database.bat` regularly; the free plan keeps none |
 | Price on each design | Shows "On request" until we add prices |
 
 **Not yet tested:** a real message arriving on our phone, real iPhones and Android phones in hand, screen-reader software, changing the admin password, and the optional Google Sheet copy (it can only be tested after it is set up).
@@ -218,7 +220,9 @@ The free Supabase plan includes a 500 MB database and 1 GB of photo storage, far
 - [x] Create the admin account and sign in to the portal
 - [ ] Push both branches (`git push origin refactor main`) so the portal and the daily keep-awake job go live
 - [ ] Optional: set up the Google Sheet copy of requests
-- [ ] Replace the sample lamp-designer prices with our real prices (portal: Settings)
+- [ ] Enter our real lamp-designer prices and switch on "Show these prices on the website" (portal: Settings), then Publish. Until then the designer shows "Price: On request"
+- [ ] Read and approve the privacy policy (`privacy.html`)
+- [ ] Make the first backup with `backup-database.bat`
 - [ ] Read and approve the About page, the room page introductions and the three promises
 - [ ] Add our Instagram and TikTok links (portal: Contact us)
 - [ ] Publish the new version, then send ourselves a test quote and a test consultation from a phone

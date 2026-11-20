@@ -19,6 +19,8 @@ export const LUMA_CONTACT = {
 };
 
 export const LUMA_PRICING = {
+  // Prices are shown only after the owners switch them on in Settings, so sample figures never appear.
+  show: pricing.show === true,
   currency: pricing.currency || 'EGP',
   shade: { 19: 0, 33: 0, 42: 0, ...(pricing.shade || {}) },
   cord: Number(pricing.cord) || 0,

@@ -63,9 +63,23 @@ Hide a design rather than deleting it if it may come back. Deleting removes it f
 
 ### Settings
 - **Change password:** enter the current password, then the new one twice (at least 12 characters, letters and numbers). Keep it in a password manager: with `admin@yourwebsite.com` there is no "forgot password" email.
-- **Lamp designer prices and booking:** the estimate in the 3D designer, and an optional online booking link shown after a request is sent.
+- **Lamp designer prices and booking:** the estimate in the 3D designer, and an optional online booking link shown after a request is sent. Prices appear on the website only when **Show these prices on the website** is switched on. Until then the designer shows "Price: On request" and no figures. Enter your real prices, switch it on, save, then **Publish**.
 - **Google Sheet copy of requests:** the two addresses, **Sync now**, **Rebuild the Sheet**, and a log of each copy.
 - **Published versions:** restore an earlier version of the website.
+
+## Backups
+
+The free database plan keeps no backups, so make your own regularly (for example every Friday):
+
+1. On the computer that has the `.env` file, double-click **`backup-database.bat`** in the project folder.
+2. It saves everything (requests, notes, history, content, settings and the photos uploaded in the portal) into a new folder `backups\<date-time>`.
+3. Copy that folder to a USB stick or a private cloud folder. It contains customers' names and phone numbers, so keep it private. It is never uploaded to GitHub.
+
+Restoring a backup is a developer task: each file in the folder is one database table.
+
+## Privacy
+
+The website has a privacy policy at `privacy.html`, linked in every footer and under the consultation form. If you start collecting anything new, or use a new service for requests, ask your developer to update it.
 
 ## Safety
 

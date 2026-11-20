@@ -119,6 +119,7 @@ button { cursor: pointer; }
 .publish-state[data-state="changed"] { color: var(--warn); font-weight: 600; }
 .publish-state[data-state="changed"]::before { background: var(--gold); }
 .content { padding: 28px; display: grid; gap: 24px; align-content: start; }
+.content > .page { display: grid; gap: 24px; align-content: start; min-width: 0; }
 
 /* ---------- Cards, stats, tables ---------- */
 .card { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); }
@@ -305,5 +306,11 @@ table.table { width: 100%; border-collapse: collapse; font-size: 14px; }
   .table .hide-sm { display: none; }
   .dialog-body { padding: 16px; }
   .backdrop { padding: 10px; align-items: end; }
+  /* Filters stack full width on phones, so long option names cannot push the page wider. */
+  .card-head > *, .toolbar { min-width: 0; max-width: 100%; }
+  .toolbar { width: 100%; }
+  .toolbar > * { flex: 1 1 100%; min-width: 0; max-width: 100%; }
+  .toolbar select, .toolbar .search { width: 100%; max-width: 100%; }
+  .toolbar label.row input { flex: 1; min-width: 0; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

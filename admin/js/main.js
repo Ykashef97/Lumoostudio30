@@ -106,7 +106,9 @@ function onHashChange() {
   route();
 }
 
+let routeSeq = 0;
 async function route() {
+  const seq = ++routeSeq;
   const { name, params } = parseHash();
   lastHash = location.hash || '#/dashboard';
   const [title, load] = ROUTES[name];
@@ -115,17 +117,23 @@ async function route() {
   $$('.side-nav a').forEach(a => a.toggleAttribute('aria-current', a.dataset.route === name) || a.setAttribute('aria-current', a.dataset.route === name ? 'page' : 'false'));
   $$('.side-nav a').forEach(a => { if (a.dataset.route === name) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   closeMenu();
-  const view = $('#view');
-  view.innerHTML = '<div class="loading"><div class="spinner" aria-label="Loading"></div></div>';
+  // Each visit draws into its own container, so a page that finishes loading after the admin
+  // has already moved on cannot overwrite the page now on screen.
+  const page = document.createElement('div');
+  page.className = 'page';
+  page.innerHTML = '<div class="loading"><div class="spinner" aria-label="Loading"></div></div>';
+  $('#view').replaceChildren(page);
   try {
     const mod = await load();
-    await mod.render(view, params);
+    if (seq !== routeSeq) return;
+    await mod.render(page, params);
   } catch (error) {
+    if (seq !== routeSeq || !page.isConnected) return;
     console.error(error);
-    view.innerHTML = `<div class="card card-pad"><p class="notice notice--danger">${icon('close')}<span>${esc(error.message || 'This page could not be loaded.')}</span></p>
+    page.innerHTML = `<div class="card card-pad"><p class="notice notice--danger">${icon('close')}<span>${esc(error.message || 'This page could not be loaded.')}</span></p>
       <p style="margin-top:12px"><button class="btn btn--outline" type="button" onclick="location.reload()">Reload</button></p></div>`;
   }
-  refreshStatus();
+  if (seq === routeSeq) refreshStatus();
 }
 
 /* ---------- Mobile menu ---------- */

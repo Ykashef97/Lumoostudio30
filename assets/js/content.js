@@ -7,7 +7,8 @@
    3. The live database (waits at most 2.5 seconds).
    4. An older copy saved in this browser, or SITE_DEFAULTS (shipped with the site). */
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from './backend.js';
-import { SITE_DEFAULTS } from './site-defaults.js';
+// The built-in copy (about 50 KB) is only downloaded when it is actually needed.
+const builtIn = () => import('./site-defaults.js').then(m => m.SITE_DEFAULTS);
 
 const CACHE_KEY = 'lumaSite';
 const FRESH_MS = 5 * 60 * 1000;
@@ -49,7 +50,7 @@ function adminToken() {
 }
 
 async function load() {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return { site: SITE_DEFAULTS, from: 'defaults' };
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return { site: await builtIn(), from: 'defaults' };
 
   if (wantsPreview) {
     const token = adminToken();
@@ -74,7 +75,7 @@ async function load() {
     const site = await Promise.race([live, new Promise(resolve => setTimeout(resolve, WAIT_MS, null))]);
     if (site) return { site, from: 'live' };
   } catch (e) { console.warn('LumaDesign: using the saved copy of the website content.', e); }
-  return cached ? { site: cached.site, from: 'saved copy' } : { site: SITE_DEFAULTS, from: 'defaults' };
+  return cached ? { site: cached.site, from: 'saved copy' } : { site: await builtIn(), from: 'defaults' };
 }
 
 const loaded = await load();
