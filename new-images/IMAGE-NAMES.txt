@@ -1,0 +1,71 @@
+WHICH FILE NAME BELONGS TO WHICH PHOTO
+======================================
+
+Name your new photo exactly like the name on the left (.jpg, .png or .webp).
+
+ROOM PHOTOS (home slideshow, "Shop by space" cards and room page banners)  -  wide photos, at least 1600 pixels wide
+  hero-bedroom      Bedroom
+  hero-dining       Dining room
+  hero-office       Home office
+  hero-balcony      Balcony / outdoor
+  hero-living       Living room (also the link-preview picture and the sample room)
+
+WALL LIGHTS  -  tall photos, plain background, lamp in the middle
+  sconces-01        Modern cylinder
+  sconces-02        Pleated shade arm
+  sconces-03        Black cone arm
+  sconces-04        Clear glass bell
+  sconces-05        Linen shade arm
+  sconces-06        Outdoor lantern
+  sconces-07        Vertical glass tube
+  sconces-08        Textured glass cylinder
+  sconces-09        Double globe
+
+CEILING LIGHTS  -  tall photos, plain background, lamp in the middle
+  ceiling-01        LED flush mount
+  ceiling-02        Square LED light
+  ceiling-03        Round LED light
+  ceiling-04        Drum semi-flush
+  ceiling-05        Crystal semi-flush
+  ceiling-06        Industrial cage
+  ceiling-07        Modern Sputnik
+  ceiling-08        Ring LED light
+  ceiling-09        Modern loop light
+  ceiling-10        Rattan semi-flush
+  ceiling-11        Tiered drum light
+  ceiling-12        Boho semi-flush
+  ceiling-13        Glass globe light
+  ceiling-14        Geometric cage
+  ceiling-15        Globe flush mount
+  ceiling-16        Linear LED light
+  ceiling-17        Geometric flush
+  ceiling-18        Mid-century light
+  ceiling-19        Surface mount
+  ceiling-20        Ribbed glass light
+  ceiling-21        Modern dish light
+  ceiling-22        Natural-fiber light
+  ceiling-23        Adjustable spotlight
+  ceiling-24        Crystal flush mount
+  ceiling-25        Sculptural flush mount
+
+CHANDELIERS  -  square photos, plain dark background, lamp in the middle
+  chandeliers-01    Crystal chandelier
+  chandeliers-02    Modern chandelier
+  chandeliers-03    Classic chandelier
+  chandeliers-04    Linear chandelier
+  chandeliers-05    Drum chandelier
+  chandeliers-06    Tiered chandelier
+  chandeliers-07    Cascading chandelier
+  chandeliers-08    Globe chandelier
+  chandeliers-09    Sputnik chandelier
+  chandeliers-10    Wagon-wheel chandelier
+  chandeliers-11    Mini chandelier
+  chandeliers-12    Industrial chandelier
+  chandeliers-13    Bohemian chandelier
+  chandeliers-14    Art Deco chandelier
+  chandeliers-15    Nature-inspired chandelier
+  chandeliers-16    Ring chandelier
+  chandeliers-17    Bubble chandelier
+  chandeliers-18    Disc chandelier
+  chandeliers-19    Canopy chandelier
+  chandeliers-20    Sculptural chandelier

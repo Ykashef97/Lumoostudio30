@@ -1,0 +1,35 @@
+# Keeps the free Supabase database from pausing: Supabase pauses free projects after a week
+# with no activity. Once a day this asks the database for the published website content,
+# exactly as a visitor's browser does. It uses only the public key (no secrets) and changes nothing.
+#
+# GitHub runs scheduled jobs from the repository's default branch, so this file is kept on both
+# main and refactor. To run it by hand: GitHub > Actions > Keep database awake > Run workflow.
+name: Keep database awake
+
+on:
+  schedule:
+    - cron: '17 6 * * *'   # every day at 06:17 UTC (08:17 in Cairo)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ask the database for the website content
+        env:
+          # The public address and public key from assets/js/backend.js (safe to share by design).
+          SUPABASE_URL: https://eqbnrbzxqpphsxrcmxhl.supabase.co
+          SUPABASE_PUBLIC_KEY: sb_publishable_a3I_RU5Rv8yCf6E29Le_gg_d7sIPNUR
+        run: |
+          status=$(curl -sS -o response.json -w '%{http_code}' --retry 3 --retry-delay 20 \
+            -X POST "$SUPABASE_URL/rest/v1/rpc/public_site" \
+            -H "apikey: $SUPABASE_PUBLIC_KEY" -H 'Content-Type: application/json' -d '{}')
+          echo "Database answered with status $status ($(wc -c < response.json) bytes)"
+          if [ "$status" != "200" ]; then
+            echo "::error::The database did not answer normally. If it is paused, open supabase.com, choose the project and press Restore project."
+            exit 1
+          fi

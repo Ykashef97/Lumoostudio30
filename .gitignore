@@ -1,0 +1,20 @@
+# Editor and local tool settings
+.idea/
+.claude/
+
+# Photos waiting to be processed and the owners' originals stay on the computer.
+# Only the two instruction files in this folder are shared.
+new-images/*
+!new-images/READ-ME-FIRST.txt
+!new-images/IMAGE-NAMES.txt
+
+# Python leftovers
+__pycache__/
+*.pyc
+
+# Secret keys and the local Python environment for the backend tools
+.env
+.venv/
+
+# Database backups contain customers' personal details: never commit them
+backups/

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#2b2724">
+<title>LumaDesign Admin</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Inter:wght@400..700&display=swap">
+<link rel="stylesheet" href="admin.css">
+<script type="importmap">{"imports":{"@supabase/supabase-js":"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm"}}</script>
+</head>
+<body>
+
+<!-- Signed out -->
+<main class="login" id="loginView" hidden>
+  <form class="login-card" id="loginForm" novalidate>
+    <div class="login-brand"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-lamp"/></svg>Luma<span>Design</span></div>
+    <div>
+      <h1>Admin sign in</h1>
+      <p>Manage the website, images and consultation requests.</p>
+    </div>
+    <p class="form-error" id="loginError" role="alert" hidden></p>
+    <div class="field">
+      <label for="loginUser">Username or email</label>
+      <input id="loginUser" autocomplete="username" required autocapitalize="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label for="loginPassword">Password</label>
+      <input id="loginPassword" type="password" autocomplete="current-password" required>
+    </div>
+    <button class="btn btn--primary btn--block" type="submit" id="loginSubmit">Sign in</button>
+    <p class="hint">Forgot the password? Reset it from the project computer with <code>create-admin.bat --reset</code>.</p>
+  </form>
+</main>
+
+<!-- Signed in -->
+<div class="shell" id="appView" hidden>
+  <aside class="sidebar" id="sidebar" aria-label="Admin menu">
+    <div class="side-brand"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-lamp"/></svg><div>LumaDesign<small>Admin</small></div></div>
+    <nav class="side-nav" aria-label="Sections">
+      <a href="#/dashboard" data-route="dashboard"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-grid"/></svg>Dashboard</a>
+      <a href="#/requests" data-route="requests"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-calendar"/></svg>Consultation requests<span class="badge" id="newRequestsBadge" hidden></span></a>
+      <p class="side-group">Website</p>
+      <a href="#/home" data-route="home"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-lamp"/></svg>Homepage</a>
+      <a href="#/spaces" data-route="spaces"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-sofa"/></svg>Shop by space</a>
+      <a href="#/collections" data-route="collections"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-layers"/></svg>Collections</a>
+      <a href="#/designs" data-route="designs"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-sparkle"/></svg>Designs</a>
+      <a href="#/about" data-route="about"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-chat"/></svg>About us</a>
+      <a href="#/contact" data-route="contact"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-phone"/></svg>Contact us</a>
+      <a href="#/media" data-route="media"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-image"/></svg>Media library</a>
+      <p class="side-group">Admin</p>
+      <a href="#/settings" data-route="settings"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-sliders"/></svg>Settings</a>
+    </nav>
+    <div class="side-foot">
+      <a href="../" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-arrow"/></svg>View website</a>
+      <button type="button" id="logoutButton"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-close"/></svg>Log out</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" type="button" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-menu"/></svg></button>
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="publish-bar">
+        <span class="publish-state" id="publishState" data-state="live">Website up to date</span>
+        <button class="btn btn--outline btn--sm" type="button" id="previewButton"><svg class="icon" aria-hidden="true"><use href="../assets/img/icons.svg#i-image"/></svg>Preview</button>
+        <button class="btn btn--primary btn--sm" type="button" id="publishButton">Publish</button>
+      </div>
+    </header>
+    <section class="content" id="view" aria-live="polite"></section>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

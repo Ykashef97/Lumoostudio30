@@ -1,0 +1,40 @@
+HOW TO CHANGE A PHOTO ON THE WEBSITE
+====================================
+
+1. Open IMAGE-NAMES.txt (in this folder) and find the photo you want to replace.
+   Example: the "Pleated shade arm" wall light is called  sconces-02
+
+2. Rename your new photo to that name and put it in this folder.
+   Example:  sconces-02.jpg
+   JPG, PNG and WEBP all work. You can add several photos at once.
+
+3. Go back to the main project folder and double-click  update-images.bat
+   It resizes the photo and puts it in the right place.
+   The first time, it installs a small free image tool (needs internet).
+
+4. Double-click  preview.bat  to see the website on this computer.
+   If the old photo still shows, press Ctrl+F5 in the browser.
+
+5. The website on the internet changes only after the files are published
+   (see "How to preview and publish" in the LumaDesign Website Guide).
+
+Your original photo is kept in the "done" folder here, with the date in its name.
+
+
+TIPS FOR GOOD PHOTOS
+--------------------
+- Lights: plain background, the lamp in the middle with some space around it.
+  Wall and ceiling lights look best as tall photos; chandeliers as square photos.
+- Room photos: wide (landscape), at least 1600 pixels wide. Keep the main subject
+  on the right side, because the headline text sits on the left.
+
+
+WHAT THIS DOES NOT DO
+---------------------
+It replaces existing photos. It does not add a new product or rename one.
+For that, the product list in  assets/js/app.js  has to be edited.
+
+
+NEEDS
+-----
+Python (free, from python.org) installed on this computer.
