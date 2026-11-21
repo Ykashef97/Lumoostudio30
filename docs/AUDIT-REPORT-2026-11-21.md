@@ -453,7 +453,7 @@ Complexity: S = hours, M = 1–3 days, L = a week or more.
 
 ### P0: critical (before any public promotion)
 
-*Status 21 Nov: P0-1 done (prices hidden until the owners switch them on), P0-2 done (privacy page; the Room Studio paragraph is approved, owners to approve the rest of the text), P0-3 done. P0-4 waits for the owners' push.*
+*Status 21 Nov: P0-1 done (prices hidden until the owners switch them on), P0-2 done (privacy page; the Room Studio and quote paragraphs are approved, owners to approve the rest of the text), P0-3 done. P0-4 waits for the owners' push.*
 
 | ID | Category | Affected | Problem | Solution | Impact | Complexity | Depends on |
 | --- | --- | --- | --- | --- | --- | --- | --- |
