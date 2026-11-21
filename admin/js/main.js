@@ -1,6 +1,7 @@
 /* Admin portal start-up: sign-in, the menu, page switching, and the Preview / Publish bar. */
 import { sb, configured, rpc, q, ADMIN_LOGIN_EMAIL } from './api.js';
 import { $, $$, esc, toast, fail, dialog, isDirty, setDirty, icon } from './ui.js';
+import { cleanTrash } from './upload.js';
 
 const ROUTES = {
   dashboard: ['Dashboard', () => import('./views/dashboard.js')],
@@ -197,6 +198,7 @@ $('#publishButton').addEventListener('click', () => {
       d.close();
       toast('Published. The website shows your changes now.');
       refreshStatus();
+      cleanTrash();
     } catch (error) { fail(error); e.currentTarget.disabled = false; }
   });
 });

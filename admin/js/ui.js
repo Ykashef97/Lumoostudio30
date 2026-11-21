@@ -44,8 +44,10 @@ export const fail = error => toast(error?.message || String(error), 'error');
 /* ---------- Dialogs ---------- */
 let openDialogs = [];
 
-// Opens a dialog. `body` is HTML; returns { el, close }. Focus is trapped and returned on close.
-export function dialog({ title, body, foot = '', size = '', onClose } = {}) {
+// Opens a dialog. `body` is HTML; returns { el, close, dismiss, changed }. Focus is trapped and returned on close.
+// With `guard`, typing in the body (or setDirty(true) while it is open) marks it changed, and closing it
+// with Cancel, the X, Esc or a click outside asks before throwing the changes away. Saving calls close().
+export function dialog({ title, body, foot = '', size = '', onClose, guard = false } = {}) {
   const opener = document.activeElement;
   const backdrop = document.createElement('div');
   backdrop.className = 'backdrop';
@@ -65,13 +67,31 @@ export function dialog({ title, body, foot = '', size = '', onClose } = {}) {
       if (!openDialogs.length) document.body.classList.remove('modal-open');
       if (opener && opener.isConnected) opener.focus();
       if (onClose) onClose(result);
+    },
+    guard,
+    changed: false,
+    // Closing without saving: asks first when a guarded dialog has changes.
+    async dismiss() {
+      if (api.guard && api.changed) {
+        if (api.asking) return;
+        api.asking = true;
+        const ok = await confirmDialog({ title: 'Discard your changes?', text: 'What you changed in this window has not been saved.', confirmLabel: 'Discard changes', danger: true });
+        api.asking = false;
+        if (!ok) return;
+      }
+      api.close();
     }
   };
   openDialogs.push(api);
+  if (guard) {
+    const mark = e => { if (e.target.closest('.dialog-body') && !e.target.matches('[type="search"], [data-no-dirty]')) api.changed = true; };
+    backdrop.addEventListener('input', mark);
+    backdrop.addEventListener('change', mark);
+  }
   backdrop.addEventListener('mousedown', e => { if (e.target === backdrop) api.pressedBackdrop = true; });
   backdrop.addEventListener('click', e => {
-    if (e.target.closest('[data-dialog-close]')) api.close();
-    else if (e.target === backdrop && api.pressedBackdrop) api.close();
+    if (e.target.closest('[data-dialog-close]')) api.dismiss();
+    else if (e.target === backdrop && api.pressedBackdrop) api.dismiss();
     api.pressedBackdrop = false;
   });
   const first = backdrop.querySelector('input, select, textarea, button:not([data-dialog-close])') || backdrop.querySelector('button');
@@ -82,7 +102,7 @@ export function dialog({ title, body, foot = '', size = '', onClose } = {}) {
 document.addEventListener('keydown', e => {
   const top = openDialogs.at(-1);
   if (!top) return;
-  if (e.key === 'Escape') { e.preventDefault(); top.close(); return; }
+  if (e.key === 'Escape') { e.preventDefault(); top.dismiss(); return; }
   if (e.key !== 'Tab') return;
   const items = $$('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled])', top.el).filter(x => x.offsetParent);
   if (!items.length) return;
@@ -110,9 +130,12 @@ export function setDirty(value) {
   dirty = value;
   const note = $('.dirty-note');
   if (note) note.hidden = !value;
+  // Image slots and design lists inside an editing dialog call setDirty(true): that dialog has changes.
+  const editing = openDialogs.filter(d => d.guard).at(-1);
+  if (value && editing) editing.changed = true;
 }
-export const isDirty = () => dirty;
-window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+export const isDirty = () => dirty || openDialogs.some(d => d.guard && d.changed);
+window.addEventListener('beforeunload', e => { if (isDirty()) { e.preventDefault(); e.returnValue = ''; } });
 
 /* ---------- Form binding: inputs with data-path="hero.title" read and write a working object ---------- */
 export function getPath(obj, path) {

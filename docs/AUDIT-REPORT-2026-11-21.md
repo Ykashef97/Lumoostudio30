@@ -2,6 +2,8 @@
 
 *21 November 2026. Audited code: branch `refactor`, commit `f7b2fef` (the live site runs the same code apart from the docs-only last commit). No code was changed during the audit.*
 
+*A separate audit of what the admin portal can and cannot manage, with its own roadmap, is in [ADMIN-PORTAL-AUDIT-2026-11-21.md](ADMIN-PORTAL-AUDIT-2026-11-21.md).*
+
 **How this audit was done**
 
 - Read the full codebase: 4 public pages, 13 public scripts, the admin portal (16 modules), the database schema (596 lines), setup tools and the Google Apps Script.

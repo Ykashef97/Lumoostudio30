@@ -1,5 +1,5 @@
 /* Preparing and storing images: resize to web sizes as WebP, clean SVG files, upload to the media bucket. */
-import { sb, q, uid, friendly } from './api.js';
+import { sb, q, rpc, uid, friendly } from './api.js';
 
 const TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
 const MAX_BYTES = 15 * 1024 * 1024;
@@ -112,12 +112,28 @@ export async function replaceFile(media, file) {
   const rows = await q(sb.from('media').update({
     ...paths, source: 'storage', mime: prepared.mime, width: prepared.width, height: prepared.height, bytes: prepared.bytes, tone: prepared.tone
   }).eq('id', media.id).select());
-  if (media.source === 'storage') await removeFiles(media);
+  await trashFiles(media);
   return rows[0];
 }
 
-export async function removeFiles(media) {
+// The live website, and versions that can still be restored, keep pointing at an image's old
+// files until the next publish. So old files are not deleted here: they are listed in
+// media_trash and removed by cleanTrash() once no recent published version uses them.
+export async function trashFiles(media) {
   if (media.source !== 'storage') return;
-  const list = [media.path, media.medium_path, media.thumb_path].filter(Boolean);
-  if (list.length) await sb.storage.from('media').remove([...new Set(list)]);
+  const list = [...new Set([media.path, media.medium_path, media.thumb_path].filter(Boolean))];
+  if (list.length) await q(sb.from('media_trash').upsert(list.map(path => ({ path })), { onConflict: 'path', ignoreDuplicates: true }));
+}
+
+// Deletes the old files no published version needs any more. Runs after Publish and Restore;
+// a failure is harmless (the files are simply tried again next time).
+export async function cleanTrash() {
+  try {
+    const due = (await rpc('media_trash_due')) || [];
+    if (!due.length) return 0;
+    const { error } = await sb.storage.from('media').remove(due);
+    if (error) return 0;
+    await q(sb.from('media_trash').delete().in('path', due));
+    return due.length;
+  } catch { return 0; }
 }

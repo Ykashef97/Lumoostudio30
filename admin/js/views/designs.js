@@ -84,6 +84,7 @@ async function openDesign(design, designs, onSaved) {
       </div></div>`,
     foot: `${isNew ? '' : `<button class="btn btn--danger left" type="button" data-delete>${icon('close')}Delete design</button>`}
       <button class="btn btn--outline" type="button" data-dialog-close>Cancel</button><button class="btn btn--primary" type="button" data-save>Save</button>`,
+    guard: true,
     onClose: () => setDirty(false)
   });
   const cat = $('#dsCat', d.el), model = $('#dsModel', d.el);

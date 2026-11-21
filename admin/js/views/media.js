@@ -1,7 +1,7 @@
 /* Media library: upload, organise, describe, replace and safely delete images. Also the image picker. */
 import { sb, q, rpc, img, mediaAll, foldersAll, usageMap, invalidate } from '../api.js';
 import { $, $$, esc, icon, empty, loading, toast, fail, dialog, confirmDialog, bytes, fmtDate } from '../ui.js';
-import { uploadNew, replaceFile, removeFiles, checkFile } from '../upload.js';
+import { uploadNew, replaceFile, trashFiles, checkFile } from '../upload.js';
 
 const state = { search: '', folder: '', usage: 'all' };
 
@@ -105,7 +105,8 @@ export async function openDetails(id, { onChange } = {}) {
         </div></div>`,
     foot: `<button class="btn btn--danger left" type="button" data-delete>${icon('close')}Delete</button>
       <label class="btn btn--outline">${icon('upload')}Replace image<input type="file" accept="image/jpeg,image/png,image/webp,image/svg+xml" hidden data-replace></label>
-      <button class="btn btn--primary" type="button" data-save>Save</button>`
+      <button class="btn btn--primary" type="button" data-save>Save</button>`,
+    guard: true
   });
   let focal = [m.focal_x, m.focal_y];
   const dot = $('#focalDot', d.el), box = $('#focalBox', d.el);
@@ -121,6 +122,7 @@ export async function openDetails(id, { onChange } = {}) {
     const r = $('img', box).getBoundingClientRect();
     focal = [Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))].map(n => Math.round(n * 100) / 100);
     placeDot();
+    d.changed = true;
   });
 
   $('[data-save]', d.el).addEventListener('click', async e => {
@@ -132,6 +134,7 @@ export async function openDetails(id, { onChange } = {}) {
       }).eq('id', m.id));
       invalidate('media');
       toast('Image details saved');
+      document.dispatchEvent(new Event('content-saved'));
       d.close();
       if (onChange) onChange();
     } catch (error) { fail(error); e.currentTarget.disabled = false; }
@@ -147,6 +150,7 @@ export async function openDetails(id, { onChange } = {}) {
       invalidate('media');
       $('img', box).src = img(m, 'medium');
       toast('Image replaced. Publish to show it on the website.');
+      document.dispatchEvent(new Event('content-saved'));
       if (onChange) onChange();
     } catch (error) { fail(error); }
   });
@@ -157,12 +161,13 @@ export async function openDetails(id, { onChange } = {}) {
       toast('This image is used in ' + where.map(w => w.kind + ' “' + w.label + '”').join(', ') + '. Replace or remove it there first.', 'error');
       return;
     }
-    if (!(await confirmDialog({ title: 'Delete this image?', text: 'It is not used anywhere. The file will be deleted permanently.', confirmLabel: 'Delete', danger: true }))) return;
+    if (!(await confirmDialog({ title: 'Delete this image?', text: 'It is not used in your drafts. It leaves the library now. If the live website still shows it, it stays there until you publish; the file itself is deleted after that.', confirmLabel: 'Delete', danger: true }))) return;
     try {
       await q(sb.from('media').delete().eq('id', m.id));
-      await removeFiles(m);
+      await trashFiles(m);
       invalidate('media');
       toast('Image deleted');
+      document.dispatchEvent(new Event('content-saved'));
       d.close();
       if (onChange) onChange();
     } catch (error) { fail(error); }

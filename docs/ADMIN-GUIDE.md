@@ -60,6 +60,8 @@ Hide a design rather than deleting it if it may come back. Deleting removes it f
 - Drag photos onto the page, or click **Upload**. JPG, PNG, WebP and SVG are accepted, up to 15 MB each. Photos are resized and converted automatically (a full, a medium and a small version).
 - Click a photo to edit its title, **ALT text**, description, folder and focal point, to **replace** the file (every place that uses it updates), or to delete it.
 - A photo that is still used somewhere cannot be deleted; the portal lists where it is used.
+- After a replace or a delete, the live website keeps showing the old photo until you publish. The old file is removed automatically later, once no recent published version (the ones you can restore) needs it.
+- Closing an edit window (design, room, collection or photo details) with unsaved changes asks before throwing them away.
 - Use folders and the search box to keep things tidy. The photos that came with the website are in the library too.
 
 ### Settings

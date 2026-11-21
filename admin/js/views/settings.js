@@ -1,6 +1,7 @@
 /* Settings: account and password, designer prices, booking link, Google Sheet copy, published versions. */
 import { sb, q, rpc, getContent, saveContent, ADMIN_LOGIN_EMAIL } from '../api.js';
 import { $, esc, icon, loading, toast, fail, fmtDate, timeAgo, setDirty, confirmDialog, fillForm, listenForm, toggleField } from '../ui.js';
+import { cleanTrash } from '../upload.js';
 
 const SIZES = [['19', 'Small shade (19 cm)'], ['33', 'Medium shade (33 cm)'], ['42', 'Large shade (42 cm)']];
 
@@ -165,6 +166,7 @@ export async function render(root) {
       await rpc('republish_snapshot', { snapshot_id: Number(b.dataset.restore) });
       toast('Version restored on the website.');
       document.dispatchEvent(new Event('content-saved'));
+      cleanTrash();
       render(root);
     } catch (error) { fail(error); }
   };
