@@ -2,7 +2,7 @@
    reply. Every figure comes from what the website really records (consultation requests, their
    status history, and hearts). Sales, costs and visits are not recorded yet, and the page says so. */
 import { rpc } from '../api.js';
-import { esc, icon, loading, empty, timeAgo, statusBadge, STATUS_LABEL } from '../ui.js';
+import { esc, icon, loading, empty, timeAgo, statusBadge, requestLabel, STATUS_LABEL } from '../ui.js';
 import { columnChart, hBars, stackedBar } from '../charts.js';
 import { CATEGORY } from './designs.js';
 
@@ -18,9 +18,9 @@ const PERIODS = [
 const PERIOD_KEY = 'lumaBizPeriod';
 const STATUSES = ['new', 'contacted', 'meeting_scheduled', 'in_progress', 'completed', 'cancelled'];
 // Where on the website the customer pressed the button that opened the request form.
-const SOURCE = {
+export const SOURCE = {
   details: "From a design's details", shortlist: 'From the shortlist', like: 'After hearting a design',
-  designer: 'From the 3D lamp designer', 'room-studio': 'From Room Studio', notice: 'From the notice bar',
+  designer: 'From the 3D lamp designer', selection: 'From Your selection (quote)', quote: 'A "Request a quote" button', 'room-studio': 'From Room Studio', notice: 'From the notice bar',
   contact: 'From the Contact page', 'about-hero': 'From the About page', 'about-cta': 'From the About page',
   'home-about': 'From the About section', 'space-hero': 'From a Shop by space page', 'space-cta': 'From a Shop by space page',
   page: 'General booking button', general: 'General booking button', '': 'General booking button'
@@ -32,7 +32,7 @@ const monthLabel = dateFmt({ month: 'short', year: 'numeric' });
 const longDay = dateFmt({ weekday: 'short', day: 'numeric', month: 'short' });
 const isoDay = new Intl.DateTimeFormat('en-CA', { timeZone: TZ }); // YYYY-MM-DD
 
-// A link to Consultation requests showing exactly the requests behind a figure.
+// A link to Requests and quotes showing exactly the requests behind a figure.
 function requestsLink(filters, p) {
   const q = new URLSearchParams();
   if (p && p.key !== 'all') {
@@ -127,7 +127,7 @@ function page(d) {
   const a = d.attention;
 
   const kpis = `<div class="stats kpis">
-    ${stat(requestsLink({}, p), '', `<span>New inquiries</span><b>${k.inquiries}</b><small>${esc(changeText(k.inquiries, k.prevInquiries, compareWith))}</small>`)}
+    ${stat(requestsLink({}, p), '', `<span>New inquiries</span><b>${k.inquiries}</b><small>${esc(changeText(k.inquiries, k.prevInquiries, compareWith))}${k.quotes ? ` · ${plural(k.quotes, 'quote request')}` : ''}</small>`)}
     ${stat('#/requests?status=new', oldWait ? ' stat--warn' : '', `<span>Waiting for a reply</span><b>${k.waiting}</b>
       <small>${k.waiting ? 'Oldest sent ' + esc(age(k.oldestWaiting)) + ' ago' : 'Every request has had a reply'}</small>`)}
     ${stat('', '', `<span>Average first reply</span><b>${duration(k.avgReplyHours)}</b>
@@ -164,9 +164,9 @@ function page(d) {
   const latest = `<div class="card">
     <div class="card-head"><div><h2>Latest inquiries</h2><p>The newest requests, whatever the period</p></div><a class="btn btn--outline btn--sm" href="#/requests">All requests</a></div>
     ${d.latest.length ? `<div class="table-wrap"><table class="table"><tbody>${d.latest.map(x => `
-      <tr class="clickable" data-href="#/requests?id=${encodeURIComponent(x.id)}"><td><span class="cell-main">${esc(x.name)}</span><span class="cell-sub">${esc(x.design_name || 'General consultation')} · prefers ${esc(x.contact_by === 'Phone call' ? 'a call' : x.contact_by)}</span></td>
+      <tr class="clickable" data-href="#/requests?id=${encodeURIComponent(x.id)}"><td><span class="cell-main">${esc(x.name)}</span><span class="cell-sub">${esc(requestLabel(x))} · prefers ${esc(x.contact_by === 'Phone call' ? 'a call' : x.contact_by)}</span></td>
       <td>${statusBadge(x.status)}</td><td class="muted hide-sm">${timeAgo(x.created_at)}</td></tr>`).join('')}</tbody></table></div>`
-      : empty('No consultation requests yet. They appear here as soon as a customer sends one.', 'calendar')}
+      : empty('No requests yet. They appear here as soon as a customer sends a consultation or quote request.', 'calendar')}
   </div>`;
 
   const items = [
@@ -181,7 +181,7 @@ function page(d) {
   const attention = `<div class="card">
     <div class="card-head"><div><h2>Needs attention</h2><p>New for 2+ days, unchanged for 7+ days, meetings in the next 3 days</p></div></div>
     ${items.length ? `<ul class="list">${items.map(([href, ic, text, sub]) => `<li><a class="list-item attn" href="${href}">${icon(ic)}<span><span>${text}</span><small>${esc(sub)}</small></span></a></li>`).join('')}</ul>
-      ${more ? `<p class="hint card-foot">And ${more} more in <a href="#/requests">Consultation requests</a>.</p>` : ''}`
+      ${more ? `<p class="hint card-foot">And ${more} more in <a href="#/requests">Requests and quotes</a>.</p>` : ''}`
       : empty('Nothing needs attention right now.', 'check')}
   </div>`;
 

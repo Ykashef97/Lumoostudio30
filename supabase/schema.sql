@@ -183,6 +183,12 @@ create index if not exists requests_status_idx on public.consultation_requests (
 create index if not exists requests_updated_idx on public.consultation_requests (updated_at);
 -- Room Studio designs sent with a request: { image: storage path or null, lamps: [...] }.
 alter table public.consultation_requests add column if not exists room jsonb;
+-- Quote requests ("Request a quote") share this table: kind 'quote', with the pieces in items
+-- ([{ ref, key, name, category, qty }], at most 30). The pieces are also summed up in setup.
+alter table public.consultation_requests add column if not exists kind text not null default 'consultation'
+  check (kind in ('consultation', 'quote'));
+alter table public.consultation_requests add column if not exists items jsonb;
+create index if not exists requests_kind_idx on public.consultation_requests (kind);
 
 create table if not exists public.request_notes (
   id uuid primary key default gen_random_uuid(),
@@ -444,7 +450,8 @@ begin
     'spaces', (select count(*) from spaces where status = 'published'),
     'collections', (select count(*) from collections where status = 'published'),
     'latestRequests', coalesce((select jsonb_agg(r) from (
-        select id, name, design_name, status, created_at from consultation_requests order by created_at desc limit 6) r), '[]'::jsonb),
+        select id, name, design_name, kind, jsonb_array_length(coalesce(items, '[]'::jsonb)) as pieces, status, created_at
+        from consultation_requests order by created_at desc limit 6) r), '[]'::jsonb),
     'recentMedia', coalesce((select jsonb_agg(m) from (
         select id, title, source, path, thumb_path, created_at from media order by created_at desc limit 6) m), '[]'::jsonb),
     'recentActivity', coalesce((select jsonb_agg(a) from (
@@ -490,6 +497,15 @@ begin
   ),
   cur as (select * from r where created_at >= v_from and created_at < v_to),
   prev as (select * from r where v_shift is not null and created_at >= v_from - v_shift and created_at < v_to - v_shift),
+  -- Every design a request asks about: the design of a consultation, or each piece of a quote
+  -- (a custom lamp counts as the design it is based on). A design counts once per request.
+  asks as (
+    select c.id, c.design_ref as ref, c.dname as name, c.cat from cur c where c.kind <> 'quote' and c.design_ref is not null
+    union
+    select c.id, i ->> 'ref', coalesce(d.name, i ->> 'name'), coalesce(d.category, nullif(i ->> 'category', ''))
+    from cur c cross join lateral jsonb_array_elements(coalesce(c.items, '[]'::jsonb)) i
+    left join designs d on d.ref = i ->> 'ref'
+    where c.kind = 'quote' and i ->> 'ref' is not null),
   b as (select g as s, greatest(g, v_from) as lo, least(g + v_step, v_to) as hi
         from generate_series(v_start, v_to - interval '1 microsecond', v_step) g)
   select jsonb_build_object(
@@ -498,6 +514,8 @@ begin
     'kpis', jsonb_build_object(
       'inquiries', (select count(*) from cur),
       'prevInquiries', case when v_shift is null then null else (select count(*) from prev) end,
+      'quotes', (select count(*) from cur where kind = 'quote'),
+      'prevQuotes', case when v_shift is null then null else (select count(*) from prev where kind = 'quote') end,
       'waiting', (select count(*) from r where status = 'new'),
       'oldestWaiting', (select min(created_at) from r where status = 'new'),
       'replied', (select count(*) from cur where first_reply is not null),
@@ -507,7 +525,8 @@ begin
                             from prev where first_reply is not null),
       'completed', (select count(*) from cur where status = 'completed'),
       'cancelled', (select count(*) from cur where status = 'cancelled'),
-      'custom', (select count(*) from cur where setup <> '' or room is not null),
+      'custom', (select count(*) from cur where room is not null or (kind <> 'quote' and setup <> '')
+                 or (kind = 'quote' and items::text ~ '"key": "(build|saved):')),
       'rooms', (select count(*) from cur where room is not null)),
     'series', coalesce((select jsonb_agg(jsonb_build_object('start', b.s,
         'count', (select count(*) from cur where created_at >= b.lo and created_at < b.hi),
@@ -516,11 +535,11 @@ begin
         order by b.s) from b), '[]'::jsonb),
     'statuses', coalesce((select jsonb_object_agg(status, n) from (select status, count(*) n from cur group by status) x), '{}'::jsonb),
     'topDesigns', coalesce((select jsonb_agg(x) from (
-        select design_ref as ref, max(dname) as name, count(*) as count from cur
-        where design_ref is not null group by design_ref order by count(*) desc, design_ref limit 5) x), '[]'::jsonb),
-    'general', (select count(*) from cur where design_ref is null),
+        select ref, max(name) as name, count(*) as count from asks
+        group by ref order by count(*) desc, ref limit 5) x), '[]'::jsonb),
+    'general', (select count(*) from cur c where not exists (select 1 from asks a where a.id = c.id)),
     'categories', coalesce((select jsonb_agg(x) from (
-        select cat as key, count(*) as count from cur where cat is not null group by cat order by count(*) desc) x), '[]'::jsonb),
+        select cat as key, count(distinct id) as count from asks where cat is not null group by cat order by count(distinct id) desc) x), '[]'::jsonb),
     'sources', coalesce((select jsonb_agg(x) from (
         select source as key, count(*) as count from cur group by source order by count(*) desc) x), '[]'::jsonb),
     'contactBy', coalesce((select jsonb_agg(x) from (
@@ -544,7 +563,8 @@ begin
           where status = 'meeting_scheduled' and preferred_date between current_date and current_date + 3
           order by preferred_date limit 5) x), '[]'::jsonb)),
     'latest', coalesce((select jsonb_agg(x) from (
-        select id, name, dname as design_name, design_ref, status, contact_by, created_at from r
+        select id, name, dname as design_name, design_ref, kind, jsonb_array_length(coalesce(items, '[]'::jsonb)) as pieces,
+               status, contact_by, created_at from r
         order by created_at desc limit 8) x), '[]'::jsonb),
     'site', public.site_status()));
 end $$;
@@ -565,6 +585,9 @@ declare
   v_design public.designs%rowtype;
   v_room jsonb := null;
   v_image text;
+  v_kind text := case when p ->> 'type' = 'quote' then 'quote' else 'consultation' end;
+  v_items jsonb := null;
+  v_setup text := left(coalesce(p ->> 'setup', ''), 200);
 begin
   -- A person never fills the hidden "website" field; automated spam does.
   if coalesce(p ->> 'website', '') <> '' then return jsonb_build_object('ok', true, 'id', v_id); end if;
@@ -580,6 +603,7 @@ begin
     v_date := nullif(p ->> 'preferredDate', '')::date;
   exception when others then v_date := null; end;
   if v_date is not null and (v_date < current_date or v_date > current_date + 120) then v_date := null; end if;
+  if v_kind = 'quote' then v_date := null; end if;   -- a quote asks for no meeting time
 
   if (select count(*) from consultation_requests
       where regexp_replace(phone, '\D', '', 'g') = v_digits and created_at > now() - interval '10 minutes') >= 3 then
@@ -592,6 +616,27 @@ begin
   end if;
 
   select * into v_design from designs where ref = (p -> 'design' ->> 'ref') limit 1;
+
+  -- A quote: keep only known fields of at most 30 pieces. The ref comes from the cart key
+  -- ("W-02", or "build:W-02:42:brass:white" for a custom lamp; "saved:<name>" has none).
+  if v_kind = 'quote' then
+    if jsonb_typeof(p -> 'items') = 'array' and octet_length((p -> 'items')::text) <= 20000 then
+      select coalesce(jsonb_agg(jsonb_build_object(
+          'ref', x.ref, 'key', left(x.l ->> 'key', 80), 'name', left(btrim(x.l ->> 'name'), 120),
+          'category', left(coalesce(x.l ->> 'category', ''), 40),
+          'qty', case when x.l ->> 'qty' ~ '^[0-9]{1,3}$' then least(99, greatest(1, (x.l ->> 'qty')::int)) else 1 end)
+          order by x.n), '[]'::jsonb)
+        into v_items
+      from (select t.l, t.n, substring(t.l ->> 'key' from '^(?:build:)?([A-Z]{1,3}-[0-9]{1,3})(?::|$)') as ref
+            from jsonb_array_elements(p -> 'items') with ordinality as t(l, n)
+            where jsonb_typeof(t.l) = 'object' and btrim(coalesce(t.l ->> 'name', '')) <> ''
+            order by t.n limit 30) x;
+    else
+      v_items := '[]'::jsonb;
+    end if;
+    v_setup := left(coalesce((select string_agg(case when (i ->> 'qty')::int > 1 then (i ->> 'qty') || ' × ' else '' end || (i ->> 'name'), '; ')
+                              from jsonb_array_elements(v_items) i), ''), 200);
+  end if;
 
   -- A Room Studio design: keep only known fields, at most 8 lights, and only a picture that was
   -- really uploaded to the private room-designs bucket under the expected name.
@@ -611,13 +656,14 @@ begin
   end if;
 
   insert into consultation_requests (id, name, phone, email, contact_by, preferred_date, preferred_time, notes,
-    design_id, design_ref, design_name, design_category, design_image, setup, source, page, room)
+    design_id, design_ref, design_name, design_category, design_image, setup, source, page, room, kind, items)
   values (v_id, v_name, left(v_phone, 24), v_email, left(coalesce(nullif(p ->> 'contactBy', ''), 'WhatsApp'), 20),
     v_date, left(coalesce(p ->> 'preferredTime', ''), 40), v_notes,
     v_design.id, coalesce(v_design.ref, left(p -> 'design' ->> 'ref', 10)), coalesce(v_design.name, left(p -> 'design' ->> 'name', 80)),
     left(p -> 'design' ->> 'category', 40), left(p -> 'design' ->> 'image', 500),
-    left(coalesce(p ->> 'setup', ''), 200), left(coalesce(p ->> 'source', ''), 40), left(coalesce(p ->> 'page', ''), 300), v_room);
-  insert into request_events (request_id, kind, detail, actor) values (v_id, 'created', 'Received from the website', null);
+    v_setup, left(coalesce(p ->> 'source', ''), 40), left(coalesce(p ->> 'page', ''), 300), v_room, v_kind, v_items);
+  insert into request_events (request_id, kind, detail, actor)
+  values (v_id, 'created', case when v_kind = 'quote' then 'Quote request received from the website' else 'Received from the website' end, null);
   return jsonb_build_object('ok', true, 'id', v_id);
 end $$;
 

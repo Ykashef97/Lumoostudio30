@@ -381,26 +381,37 @@ const B = {
     else rod(k.parts.link, k.mat.metal, v(0, -top, 0), v(0, y0, 0), 0.016);
     let profile;
     if (p.shape === 'round') profile = Array.from({ length: 13 }, (_, i) => { const t = 0.12 + (i / 12) * 0.76; return [0.5 * Math.sin(t * Math.PI), y0 - 0.5 + 0.5 * Math.cos(t * Math.PI)]; });
+    else if (p.shape === 'drum') profile = [[0.34, y0], [0.43, y0 - 0.05], [0.49, y0 - 0.13], [0.5, y0 - 0.2], [0.47, y0 - 0.28], [0.43, y0 - 0.33]];
     else if (p.shape === 'wide') profile = Array.from({ length: 11 }, (_, i) => { const t = i / 10; return [0.06 + 0.46 * Math.sin(t * Math.PI / 2), y0 - 0.3 * (1 - Math.cos(t * Math.PI / 2))]; });
     else profile = Array.from({ length: 11 }, (_, i) => { const t = i / 10; return [0.06 + 0.44 * Math.sin(t * Math.PI / 2), y0 - 0.46 * (1 - Math.cos(t * Math.PI / 2))]; });
     lathe(k.parts.body, k.mat.rattan, profile, 72);
-    hoop(k.parts.body, k.mat.rattanSolid, profile.at(-1)[0], 0.012, profile.at(-1)[1]);
+    if (p.shape === 'drum') {
+      // Squat woven drum: woven top, brass band round the open bottom.
+      lathe(k.parts.body, k.mat.rattan, [[0.05, y0 + 0.001], [0.34, y0]], 72);
+      hoop(k.parts.body, k.mat.metal, profile.at(-1)[0], 0.016, profile.at(-1)[1]);
+    } else hoop(k.parts.body, k.mat.rattanSolid, profile.at(-1)[0], 0.012, profile.at(-1)[1]);
     sockets(k, [v(0, y0 - 0.04, 0)]);
     bulbs(k, [v(0, y0 - 0.16, 0)], 'round', 0.07);
   },
 
   tieredDrum(k) {
     const top = canopy(k, 0.13);
-    rod(k.parts.link, k.mat.metal, v(0, -top, 0), v(0, -0.14, 0), 0.016);
+    rod(k.parts.link, k.mat.metal, v(0, -top, 0), v(0, -0.1, 0), 0.016);
     const g = k.parts.body;
-    [[0.5, 0.17, -0.14], [0.4, 0.15, -0.31], [0.3, 0.13, -0.46]].forEach(([r, h, yTop]) => {
+    // A wide white drum with a narrower one hanging out below it, both lit from inside.
+    [[0.5, 0.26, -0.1], [0.37, 0.2, -0.3]].forEach(([r, h, yTop]) => {
       add(g, new THREE.CylinderGeometry(r, r, h, 72, 1, true), k.mat.fabric, 0, yTop - h / 2, 0);
-      hoop(g, k.mat.metal, r, 0.007, yTop);
-      hoop(g, k.mat.metal, r, 0.007, yTop - h);
+      hoop(g, k.mat.metal, r, 0.006, yTop);
+      hoop(g, k.mat.metal, r, 0.006, yTop - h);
     });
-    const diffuser = add(k.parts.light, new THREE.CircleGeometry(0.29, 48), k.mat.opal, 0, -0.585, 0);
+    const lid = add(g, new THREE.RingGeometry(0.02, 0.5, 72), k.mat.fabric, 0, -0.1, 0);
+    lid.rotation.x = Math.PI / 2;
+    const under = add(k.parts.light, new THREE.RingGeometry(0.37, 0.5, 72), k.mat.opal, 0, -0.359, 0);
+    under.rotation.x = Math.PI / 2;
+    const diffuser = add(k.parts.light, new THREE.CircleGeometry(0.36, 64), k.mat.opal, 0, -0.49, 0);
     diffuser.rotation.x = Math.PI / 2;
-    bulbs(k, [v(0, -0.32, 0)], 'round', 0.06);
+    add(g, new THREE.SphereGeometry(0.025, 16, 12), k.mat.metal, 0, -0.515, 0);
+    bulbs(k, [v(-0.1, -0.3, 0), v(0.1, -0.3, 0)], 'round', 0.055);
   },
 
   globe(k, p) {
@@ -590,35 +601,43 @@ const B = {
 
   linearGlass(k) {
     const y = -DROP + 0.05;
-    [-0.46, 0.46].forEach(x => {
-      add(k.parts.mount, new THREE.CylinderGeometry(0.04, 0.045, 0.03, 20), k.mat.metal, x, -0.015, 0);
-      rod(k.parts.link, k.mat.metal, v(x, -0.03, 0), v(x, y, 0), 0.008);
-    });
-    add(k.parts.body, new THREE.BoxGeometry(1.15, 0.03, 0.04), k.mat.metal, 0, y, 0);
-    const xs = [-0.46, -0.23, 0, 0.23, 0.46];
-    sockets(k, xs.map(x => v(x, y - 0.04, 0)));
-    instances(k.parts.body, new THREE.CylinderGeometry(0.075, 0.075, 0.22, 32, 1, true), k.mat.glass, xs.map(x => ({ p: [x, y - 0.17, 0] })));
-    bulbs(k, xs.map(x => v(x, y - 0.15, 0)), 'edison', 0.04);
+    add(k.parts.mount, new THREE.BoxGeometry(0.95, 0.03, 0.08), k.mat.metal, 0, -0.015, 0);
+    [-0.4, 0.4].forEach(x => rod(k.parts.link, k.mat.metal, v(x, -0.03, 0), v(x, y, 0), 0.008));
+    const g = k.parts.body;
+    add(g, new THREE.BoxGeometry(1.2, 0.035, 0.05), k.mat.metal, 0, y, 0);
+    // Five upright clear glass tubes with brass rims, each on a brass cup with a bulb inside.
+    const xs = [-0.48, -0.24, 0, 0.24, 0.48], h = 0.24, r = 0.065, base = y + 0.06;
+    instances(g, new THREE.CylinderGeometry(0.045, 0.03, 0.045, 20), k.mat.metal, xs.map(x => ({ p: [x, y + 0.04, 0] })));
+    instances(g, new THREE.CylinderGeometry(r, r, h, 32, 1, true), k.mat.clearGlass, xs.map(x => ({ p: [x, base + h / 2, 0] })));
+    instances(g, new THREE.TorusGeometry(r, 0.007, 8, 40), k.mat.metal,
+      xs.flatMap(x => [{ p: [x, base, 0], r: [Math.PI / 2, 0, 0] }, { p: [x, base + h, 0], r: [Math.PI / 2, 0, 0] }]));
+    sockets(k, xs.map(x => v(x, base + 0.03, 0)));
+    bulbs(k, xs.map(x => v(x, base + 0.11, 0)), 'edison', 0.042);
   },
 
   drumCandles(k) {
-    canopy(k, 0.14);
-    const top = -DROP + 0.08;
-    [0, 1, 2].forEach(i => { const a = i * TAU / 3; rod(k.parts.link, k.mat.cord, v(Math.cos(a) * 0.05, -0.03, Math.sin(a) * 0.05), v(Math.cos(a) * 0.45, top, Math.sin(a) * 0.45), 0.005); });
-    const g = k.parts.body, R = 0.48, h = 0.34;
-    hoop(g, k.mat.metal, R, 0.012, top);
-    hoop(g, k.mat.metal, R, 0.012, top - h);
-    const rods = [];
-    for (let i = 0; i < 96; i++) { const a = (i / 96) * TAU; rods.push({ p: [Math.cos(a) * R, top - h / 2, Math.sin(a) * R] }); }
-    instances(g, new THREE.CylinderGeometry(0.007, 0.007, h, 6), k.mat.crystal, rods);
-    rod(g, k.mat.metal, v(0, top, 0), v(0, top - h + 0.05, 0), 0.015);
-    const cups = [];
+    canopy(k, 0.1);
+    const top = -DROP + 0.12, g = k.parts.body, R = 0.5, h = 0.32;
+    rod(k.parts.link, k.mat.metal, v(0, -0.04, 0), v(0, top, 0), 0.014);
+    // Crystal drum: a faint glowing sleeve behind dense crystal strands.
+    add(g, new THREE.CylinderGeometry(R - 0.012, R - 0.012, h, 72, 1, true), k.mat.veil, 0, top - h / 2, 0);
+    hoop(g, k.mat.metal, R, 0.01, top);
+    hoop(g, k.mat.metal, R, 0.01, top - h);
+    const strands = [];
+    for (let i = 0; i < 150; i++) { const a = (i / 150) * TAU; strands.push({ p: [Math.cos(a) * R, top - h / 2, Math.sin(a) * R] }); }
+    instances(g, new THREE.CylinderGeometry(0.009, 0.009, h, 6), k.mat.crystal, strands);
+    for (let i = 0; i < 4; i++) { const a = i * TAU / 4 + 0.4; rod(g, k.mat.metal, v(0, top, 0), v(Math.cos(a) * R, top, Math.sin(a) * R), 0.006); }
+    rod(g, k.mat.metal, v(0, top, 0), v(0, top - h - 0.03, 0), 0.015);
+    // Six curved candle arms inside, dipping just below the drum.
+    const cups = [], yArm = top - h + 0.02;
     for (let i = 0; i < 6; i++) {
-      const a = (i / 6) * TAU;
-      rod(g, k.mat.metal, v(0, top - h + 0.08, 0), v(Math.cos(a) * 0.28, top - h + 0.1, Math.sin(a) * 0.28), 0.01);
-      cups.push(v(Math.cos(a) * 0.28, top - h + 0.11, Math.sin(a) * 0.28));
+      const a = (i / 6) * TAU, c = Math.cos(a), sn = Math.sin(a);
+      const end = v(c * 0.32, yArm + 0.04, sn * 0.32);
+      tube(g, k.mat.metal, [v(0, yArm - 0.03, 0), v(c * 0.17, yArm - 0.06, sn * 0.17), v(c * 0.29, yArm - 0.02, sn * 0.29), end], 0.01, false, 24);
+      cups.push(end);
     }
     candles(k, cups, 0.1);
+    add(g, new THREE.SphereGeometry(0.03, 14, 10), k.mat.metal, 0, top - h - 0.06, 0);
   },
 
   tieredRods(k, p) {
@@ -626,10 +645,14 @@ const B = {
     const top = -DROP + 0.12;
     cordsUp(k, [v(0, top, 0)], 0.012);
     const g = k.parts.body;
-    rod(g, k.mat.metal, v(0, top, 0), v(0, top - 0.75, 0), 0.014);
-    const tiers = [[0.48, top - 0.02, 0.22, 56], [0.38, top - 0.27, 0.2, 44], [0.27, top - 0.5, 0.18, 32]];
+    // [radius, top of the tier, height]: panels have three tiers, crystal rods four, like the photos.
+    const tiers = p.panels
+      ? [[0.48, top - 0.02, 0.22], [0.38, top - 0.27, 0.2], [0.27, top - 0.5, 0.18]]
+      : [[0.5, top - 0.02, 0.22], [0.42, top - 0.21, 0.2], [0.33, top - 0.38, 0.18], [0.23, top - 0.53, 0.17]];
+    const last = tiers.at(-1);
+    rod(g, k.mat.metal, v(0, top, 0), v(0, last[1] - last[2] - 0.03, 0), 0.014);
     const items = [], glowPts = [];
-    tiers.forEach(([R, y, h, n], t) => {
+    tiers.forEach(([R, y, h], t) => {
       hoop(g, k.mat.metal, R, 0.012, y);
       rod(g, k.mat.metal, v(0, y, 0), v(R, y, 0), 0.006);
       rod(g, k.mat.metal, v(0, y, 0), v(-R, y, 0), 0.006);
@@ -640,12 +663,18 @@ const B = {
           items.push({ p: [Math.cos(a) * R * 0.94, y - h / 2, Math.sin(a) * R * 0.94], r: [0, -a + Math.PI / 2, 0] });
         }
       } else {
-        for (let i = 0; i < n; i++) { const a = (i / n) * TAU; items.push({ p: [Math.cos(a) * R, y - h / 2, Math.sin(a) * R] }); }
+        // Dense crystal rods of slightly uneven length in front of a faint glowing sleeve.
+        add(g, new THREE.CylinderGeometry(R - 0.015, R - 0.015, h * 0.96, 64, 1, true), k.mat.veil, 0, y - h * 0.48, 0);
+        const n = Math.round(R * 300);
+        for (let i = 0; i < n; i++) {
+          const a = (i / n) * TAU, len = h * (0.92 + ((i * 7) % 5) * 0.025);
+          items.push({ p: [Math.cos(a) * R, y - len / 2, Math.sin(a) * R], s: [1, len, 1] });
+        }
       }
       glowPts.push(v(0.1, y - h / 2, 0), v(-0.1, y - h / 2, 0));
     });
     if (p.panels) instances(g, new THREE.BoxGeometry(0.2, 0.2, 0.012), k.mat.opal, items.map((it, i) => ({ ...it, s: [i < 10 ? 1.2 : i < 18 ? 1 : 0.8, 1, 1] })));
-    else instances(g, new THREE.CylinderGeometry(0.008, 0.008, 0.22, 6), k.mat.crystal, items);
+    else instances(g, new THREE.CylinderGeometry(0.01, 0.01, 1, 6), k.mat.crystal, items);
     bulbs(k, glowPts, 'round', 0.04);
   },
 
@@ -653,29 +682,37 @@ const B = {
     const mode = p.mode || 'cascade';
     const random = rng(mode === 'cluster' ? 11 : mode === 'canopy' ? 23 : 7);
     add(k.parts.mount, new THREE.CylinderGeometry(0.48, 0.5, 0.035, 64), k.mat.metal, 0, -0.018, 0);
-    const pts = [];
     if (mode === 'cluster') {
-      rod(k.parts.link, k.mat.cord, v(0, -0.03, 0), v(0, -DROP + 0.05, 0), 0.01);
-      for (let i = 0; i < 34; i++) {
-        const u = random() * 2 - 1, a = random() * TAU, r = 0.12 + random() * 0.26;
-        const s = Math.sqrt(1 - u * u);
-        pts.push({ p: [Math.cos(a) * s * r, -DROP - 0.28 + u * r, Math.sin(a) * s * r], s: 0.7 + random() * 0.9 });
+      // Large clear glass bubbles on thin brass rods of different lengths, packed into a loose rounded cluster.
+      const globes = [];
+      for (let tries = 0; globes.length < 20 && tries < 6000; tries++) {
+        const r = 0.085 + random() * 0.075;
+        const u = random() * 2 - 1, a = random() * TAU, d = Math.cbrt(random()), sq = Math.sqrt(1 - u * u);
+        const c = v(Math.cos(a) * sq * d * 0.36, -0.66 + u * d * 0.26, Math.sin(a) * sq * d * 0.36);
+        if (globes.every(gl => gl.c.distanceTo(c) > gl.r + r + 0.012)) globes.push({ c, r });
       }
-      instances(k.parts.body, new THREE.SphereGeometry(0.08, 28, 20), k.mat.bubble, pts);
-      bulbs(k, [v(0, -DROP - 0.28, 0), v(0.08, -DROP - 0.2, 0.05), v(-0.08, -DROP - 0.36, -0.04)], 'round', 0.045);
+      instances(k.parts.link, new THREE.CylinderGeometry(0.003, 0.003, 1, 4), k.mat.metal, globes.map(({ c, r }) => {
+        const len = -0.035 - (c.y + r);
+        return { p: [c.x, -0.035 - len / 2, c.z], s: [1, len, 1] };
+      }));
+      instances(k.parts.body, new THREE.CylinderGeometry(0.018, 0.024, 0.035, 14), k.mat.metal, globes.map(({ c, r }) => ({ p: [c.x, c.y + r + 0.008, c.z] })));
+      instances(k.parts.body, new THREE.SphereGeometry(1, 32, 24), k.mat.clearGlass, globes.map(({ c, r }) => ({ p: [c.x, c.y, c.z], s: r })));
+      bulbs(k, globes.map(gl => gl.c), 'round', 0.028);
       return;
     }
-    const n = mode === 'canopy' ? 72 : 15;
+    const canopyMode = mode === 'canopy';
+    const n = canopyMode ? 160 : 15, R = canopyMode ? 0.47 : 0.44, pts = [];
     for (let i = 0; i < n; i++) {
-      // Sunflower spread across the plate, then a random drop length.
-      const r = Math.sqrt((i + 0.5) / n) * 0.44, a = i * 2.39996;
-      const drop = mode === 'canopy' ? 0.25 + random() * 0.7 : 0.35 + random() * 0.75;
+      // Sunflower spread across the plate, then the drop length.
+      const t = Math.sqrt((i + 0.5) / n), r = t * R, a = i * 2.39996;
+      // Canopy (H-19): wires longest in the middle, so the many small bulbs form a full rounded cascade.
+      const drop = canopyMode ? Math.max(0.12, 0.18 + 0.74 * Math.pow(1 - t * t, 0.7) + (random() - 0.5) * 0.2) : 0.35 + random() * 0.75;
       pts.push(v(Math.cos(a) * r, -drop, Math.sin(a) * r));
     }
-    instances(k.parts.link, new THREE.CylinderGeometry(0.003, 0.003, 1, 4), k.mat.cord,
+    instances(k.parts.link, new THREE.CylinderGeometry(canopyMode ? 0.0025 : 0.003, canopyMode ? 0.0025 : 0.003, 1, 4), k.mat.cord,
       pts.map(pt => ({ p: [pt.x, (pt.y - 0.035) / 2, pt.z], s: [1, -pt.y - 0.035, 1] })));
-    if (mode === 'canopy') {
-      bulbs(k, pts, 'tiny', 0.016);
+    if (canopyMode) {
+      bulbs(k, pts, 'tiny', 0.02);
     } else {
       instances(k.parts.body, new THREE.SphereGeometry(0.085, 28, 20), k.mat.amber, pts.map(pt => ({ p: [pt.x, pt.y - 0.08, pt.z] })));
       bulbs(k, pts.map(pt => v(pt.x, pt.y - 0.08, pt.z)), 'round', 0.03);
@@ -715,23 +752,66 @@ const B = {
   },
 
   branches(k) {
-    canopy(k, 0.12);
-    const top = -DROP + 0.1, random = rng(31), g = k.parts.body;
-    cordsUp(k, [v(0, top, 0)], 0.01);
-    rod(g, k.mat.metal, v(0, top, 0), v(0, top - 0.42, 0), 0.016);
-    const leaves = [];
-    for (let i = 0; i < 9; i++) {
-      const a = (i / 9) * TAU + random() * 0.3, y = top - 0.06 - (i % 3) * 0.14;
-      const len = 0.38 + random() * 0.14, c = Math.cos(a), s = Math.sin(a);
-      const pts = [v(0, y, 0), v(c * len * 0.4, y + 0.02, s * len * 0.4), v(c * len * 0.8, y + 0.08 - random() * 0.1, s * len * 0.8), v(c * len, y + 0.1 - random() * 0.2, s * len)];
-      tube(g, k.mat.metal, pts, 0.008, false, 24);
-      pts.slice(1).forEach((pt, j) => {
-        const dir = v(c, 0.4 + random() * 0.6, s);
-        leaves.push({ p: [pt.x + (random() - 0.5) * 0.04, pt.y + 0.03, pt.z + (random() - 0.5) * 0.04], q: aim(dir), s: [0.5, 1, 0.16] });
-        if (j === 2) leaves.push({ p: [pt.x, pt.y - 0.03, pt.z], q: aim(v(c, -0.5, s)), s: [0.5, 1, 0.16] });
+    canopy(k, 0.1);
+    const c = v(0, -DROP - 0.1, 0), random = rng(31), g = k.parts.body;
+    rod(k.parts.link, k.mat.metal, v(0, -0.04, 0), v(0, c.y + 0.03, 0), 0.012);
+    add(g, new THREE.SphereGeometry(0.035, 16, 12), k.mat.metal, c.x, c.y, c.z);
+    // Fourteen brass branches bursting out in every direction, each with glowing leaves along it and at its tip.
+    const leaves = [], n = 14;
+    for (let i = 0; i < n; i++) {
+      const yy = 0.55 - ((i + 0.5) / n) * 1.2, a = i * 2.39996, rr = Math.sqrt(1 - yy * yy);
+      const dir = v(Math.cos(a) * rr, yy * 0.8, Math.sin(a) * rr).normalize();
+      const side = v(-dir.z, 0, dir.x).normalize();
+      const len = 0.5 + random() * 0.14;
+      const p1 = c.clone().addScaledVector(dir, len * 0.35);
+      const p2 = c.clone().addScaledVector(dir, len * 0.7).addScaledVector(side, (random() - 0.5) * 0.08);
+      const p3 = c.clone().addScaledVector(dir, len).addScaledVector(side, (random() - 0.5) * 0.1);
+      tube(g, k.mat.metal, [c.clone(), p1, p2, p3], 0.007, false, 20);
+      [p1, p2, p3].forEach((pt, j) => {
+        const count = j + 1;
+        for (let m = 0; m < count; m++) {
+          const ld = dir.clone().addScaledVector(side, (m - (count - 1) / 2) * 1.1 + (random() - 0.5) * 0.4).add(v(0, 0.3 + random() * 0.3, 0)).normalize();
+          leaves.push({ p: [pt.x + ld.x * 0.07, pt.y + ld.y * 0.07, pt.z + ld.z * 0.07], q: aim(ld), s: [0.5, 1, 0.2] });
+        }
       });
     }
-    instances(k.parts.light, new THREE.SphereGeometry(0.07, 16, 12), k.mat.opal, leaves);
+    instances(k.parts.light, new THREE.SphereGeometry(0.075, 16, 12), k.mat.opal, leaves);
+  },
+
+  beadBasket(k) {
+    canopy(k, 0.1);
+    const top = -DROP + 0.2, g = k.parts.body;
+    cordsUp(k, [v(0, top + 0.06, 0)], 0.01);
+    // Crown on top of a basket of wooden bead strands: out from the crown to a wide brass band, then in to a point.
+    add(k.parts.link, new THREE.CylinderGeometry(0.05, 0.08, 0.06, 24), k.mat.metal, 0, top + 0.03, 0);
+    const yBand = top - 0.5, bottom = top - 0.86;
+    hoop(g, k.mat.metal, 0.17, 0.012, top);
+    hoop(g, k.mat.metal, 0.47, 0.016, yBand);
+    const meridian = new THREE.CatmullRomCurve3([
+      v(0.17, top, 0), v(0.3, top - 0.15, 0), v(0.42, top - 0.33, 0), v(0.47, yBand, 0),
+      v(0.37, yBand - 0.14, 0), v(0.2, yBand - 0.27, 0), v(0.035, bottom, 0)
+    ]);
+    const along = meridian.getSpacedPoints(34), strands = 30, beads = [];
+    for (let i = 0; i < strands; i++) {
+      const a = (i / strands) * TAU, ca = Math.cos(a), sa = Math.sin(a);
+      along.forEach(pt => beads.push({ p: [ca * pt.x, pt.y, sa * pt.x], s: 1 }));
+      // A short swag of beads under the band, to the next strand.
+      const b = ((i + 1) / strands) * TAU;
+      for (let j = 1; j < 6; j++) {
+        const t = j / 6, ang = a + (b - a) * t, dip = Math.sin(t * Math.PI) * 0.06;
+        beads.push({ p: [Math.cos(ang) * 0.465, yBand - 0.02 - dip, Math.sin(ang) * 0.465], s: 1 });
+      }
+    }
+    instances(g, new THREE.IcosahedronGeometry(0.016, 1), k.mat.wood, beads);
+    add(g, new THREE.SphereGeometry(0.035, 16, 12), k.mat.wood, 0, bottom - 0.03, 0);
+    rod(g, k.mat.metal, v(0, top, 0), v(0, yBand + 0.02, 0), 0.012);
+    const cups = [];
+    for (let i = 0; i < 5; i++) {
+      const a = (i / 5) * TAU;
+      rod(g, k.mat.metal, v(0, yBand + 0.02, 0), v(Math.cos(a) * 0.22, yBand + 0.05, Math.sin(a) * 0.22), 0.009);
+      cups.push(v(Math.cos(a) * 0.22, yBand + 0.05, Math.sin(a) * 0.22));
+    }
+    candles(k, cups, 0.09);
   },
 
   flowing(k) {
@@ -761,14 +841,14 @@ export const RECIPES = {
   ceiling: [
     ['flushDisc', { h: 0.14, rim: true }], ['squarePanel'], ['flushDisc', { h: 0.06 }], ['drumSemi'], ['crystalSemi', {}],
     ['cage', { shape: 'cyl' }], ['sputnik', { arms: 8, stem: 0.3, len: 0.42 }], ['ring', {}], ['loops', { count: 2 }], ['domeWoven', { shape: 'dome' }],
-    ['tieredDrum'], ['domeWoven', { shape: 'round' }], ['globe', { glass: 'clear' }], ['cage', { shape: 'cube' }], ['globe', { glass: 'opal', flush: true }],
+    ['tieredDrum'], ['domeWoven', { shape: 'drum' }], ['globe', { glass: 'clear' }], ['cage', { shape: 'cube' }], ['globe', { glass: 'opal', flush: true }],
     ['linearBar'], ['faceted'], ['multiGlobe', { arms: 6 }], ['surfaceCylinder'], ['ribbedGlass'],
     ['dishes', { count: 4 }], ['domeWoven', { shape: 'wide' }], ['spots'], ['crystalSemi', { flush: true }], ['loops', { count: 3 }]
   ],
   chandeliers: [
     ['crystalChandelier'], ['spiralRings'], ['classicArms', { arms: 6, crystals: true }], ['linearGlass'], ['drumCandles'],
     ['tieredRods', {}], ['cascadeGlobes', { mode: 'cascade' }], ['multiGlobe', { arms: 10 }], ['sputnik', { arms: 18, len: 0.5 }], ['wagonWheel', { style: 'wagon' }],
-    ['classicArms', { arms: 5, crystals: false, small: true }], ['wagonWheel', { style: 'industrial' }], ['domeWoven', { shape: 'round' }], ['tieredRods', { panels: true }], ['branches'],
+    ['classicArms', { arms: 5, crystals: false, small: true }], ['wagonWheel', { style: 'industrial' }], ['beadBasket'], ['tieredRods', { panels: true }], ['branches'],
     ['ring', {}], ['cascadeGlobes', { mode: 'cluster' }], ['dishes', { flat: true }], ['cascadeGlobes', { mode: 'canopy' }], ['flowing']
   ]
 };

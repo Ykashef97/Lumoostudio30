@@ -13,6 +13,32 @@ export const FINISHES = {
 };
 export const CORDS = { white: 0xe9e5da, black: 0x242420 };
 
+// Rows of bright crystal beads on warm gaps, for crystal drums (reads on light and dark backgrounds).
+let crystal = null;
+function crystalTexture() {
+  if (crystal) return crystal;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#8a6a3c';
+  ctx.fillRect(0, 0, 128, 128);
+  for (let x = 0; x < 128; x += 8) {
+    for (let y = 0; y < 128; y += 10) {
+      const grad = ctx.createRadialGradient(x + 4, y + 5, 0, x + 4, y + 5, 5);
+      grad.addColorStop(0, '#fffaf0');
+      grad.addColorStop(0.5, '#f1d6a2');
+      grad.addColorStop(1, '#8a6a3c');
+      ctx.fillStyle = grad;
+      ctx.fillRect(x, y, 8, 10);
+    }
+  }
+  crystal = new THREE.CanvasTexture(canvas);
+  crystal.colorSpace = THREE.SRGBColorSpace;
+  crystal.wrapS = crystal.wrapT = THREE.RepeatWrapping;
+  crystal.repeat.set(8, 2);
+  return crystal;
+}
+
 let lattice = null;
 function latticeTexture() {
   if (lattice) return lattice;
@@ -50,6 +76,11 @@ export function makeMaterials() {
     glassTextured: new THREE.MeshPhysicalMaterial({ ...glass, roughness: 0.3, opacity: 0.38, flatShading: true }),
     amber: new THREE.MeshPhysicalMaterial({ ...glass, color: 0xe9a75a, opacity: 0.45, roughness: 0.15 }),
     bubble: new THREE.MeshPhysicalMaterial({ ...glass, color: 0xf6efe2, opacity: 0.42, roughness: 0.04, envMapIntensity: 2.6 }),
+    // Clear glass that still shows its outline (glass tubes, large bubbles).
+    clearGlass: new THREE.MeshPhysicalMaterial({ ...glass, color: 0xfbf6ec, opacity: 0.3, roughness: 0.03, envMapIntensity: 2.8 }),
+    // Glowing beaded sleeve behind crystal rods, so a crystal drum reads as one shimmering band.
+    veil: new THREE.MeshStandardMaterial({ map: crystalTexture(), emissiveMap: crystalTexture(), color: 0xffffff, emissive: 0xffd6a0, emissiveIntensity: 0.55, transparent: true, opacity: 0.85, roughness: 0.3, metalness: 0.1, side: THREE.DoubleSide, depthWrite: false }),
+    wood: new THREE.MeshStandardMaterial({ color: 0xb08350, roughness: 0.6, emissive: 0x3a1e05, emissiveIntensity: 0.15 }),
     crystal: new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0.2, roughness: 0.02, transparent: true, opacity: 0.6, envMapIntensity: 3, flatShading: true }),
     rattan: new THREE.MeshStandardMaterial({ color: 0xc89b5f, roughness: 0.9, alphaMap: latticeTexture(), alphaTest: 0.5, side: THREE.DoubleSide, emissive: 0x6b3d0e, emissiveIntensity: 0.35 }),
     rattanSolid: new THREE.MeshStandardMaterial({ color: 0xb4874f, roughness: 0.85 }),

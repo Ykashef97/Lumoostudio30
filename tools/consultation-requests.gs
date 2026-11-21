@@ -25,7 +25,7 @@ const STATUS_LABEL = {
 const HEADERS = [
   'Received', 'Status', 'Request ID', 'Name', 'Phone', 'Email', 'Contact by',
   'Preferred day', 'Preferred time', 'Design', 'Ref', 'Category', 'Photo',
-  'Custom setup', 'Notes', 'Started from', 'Page'
+  'Custom setup or pieces', 'Notes', 'Started from', 'Page', 'Type'
 ];
 const ID_COLUMN = 3, STATUS_COLUMN = 2;
 
@@ -140,7 +140,8 @@ function toRow(r) {
   return [
     new Date(r.created_at), STATUS_LABEL[r.status] || r.status, r.id, r.name, "'" + String(r.phone || ''), r.email || '',
     r.contact_by || '', r.preferred_date || '', r.preferred_time || '', r.design_name || '', r.design_ref || '',
-    r.design_category || '', r.design_image || '', r.setup || '', r.notes || '', r.source || '', r.page || ''
+    r.design_category || '', r.design_image || '', r.setup || '', r.notes || '', r.source || '', r.page || '',
+    r.kind === 'quote' ? 'Quote' : 'Consultation'
   ].map(safe);
 }
 

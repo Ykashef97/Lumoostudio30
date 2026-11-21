@@ -1,6 +1,6 @@
 # LumaDesign admin portal: how to use it
 
-The admin portal is where you change the website and handle consultation requests, without touching any code.
+The admin portal is where you change the website and handle consultation and quote requests, without touching any code.
 
 - **Address:** `https://ykashef97.github.io/Lumoostudio30/admin/` (on your computer while testing: `http://localhost:8123/admin/`)
 - **Username:** `admin` (or the email `admin@yourwebsite.com`)
@@ -25,23 +25,25 @@ Visitors may see the old version for up to 5 minutes after you publish, because 
 ## Sections
 
 ### Business dashboard
-The first page after signing in (menu group **Business**). Choose a period at the top (last 7 or 30 days, this or last month, 90 days, 12 months, all time). Each figure is compared with the period just before, and dates are Cairo time. Every figure comes from consultation requests and hearts; nothing is estimated.
+The first page after signing in (menu group **Business**). Choose a period at the top (last 7 or 30 days, this or last month, 90 days, 12 months, all time). Each figure is compared with the period just before, and dates are Cairo time. Every figure comes from consultation and quote requests and hearts; nothing is estimated.
 
-- **New inquiries:** requests received in the period.
+- **New inquiries:** requests received in the period, quote requests included (their number is shown under the figure).
 - **Waiting for a reply:** requests still marked *New*. The card turns orange when one has waited more than 2 days. Click it to see them.
 - **Average first reply:** the time from a request arriving until you first change its status. Change the status as soon as you contact the customer, so this stays accurate.
 - **Completed share:** of the requests that are finished, the share marked *Completed* rather than *Cancelled*.
 - **With a custom lamp or room:** the share of requests that included a lamp designed in the 3D designer or a Room Studio picture.
-- **Charts and lists:** requests over time, where they stand today, the most requested designs and types, the most hearted designs (all time, because hearts have no date), which button customers used, and WhatsApp or call preference.
+- **Charts and lists:** requests over time, where they stand today, the most requested designs and types (every piece in a quote counts), the most hearted designs (all time, because hearts have no date), which button customers used, and WhatsApp or call preference.
 - **Needs attention:** requests new for 2+ days, requests unchanged for 7+ days, meetings whose preferred date is in the next 3 days, and unpublished website changes.
-- **What you can click:** anything with a small arrow (›) opens the requests behind it: *New inquiries* (that period), *Waiting for a reply*, *Completed share*, each status under *Where inquiries stand*, and each of the *Most requested designs*. Latest inquiries and Needs attention items open the request itself. Boxes without an arrow only show information. Filters set by a dashboard link apply to that visit only; opening Consultation requests from the menu shows every request again.
+- **What you can click:** anything with a small arrow (›) opens the requests behind it: *New inquiries* (that period), *Waiting for a reply*, *Completed share*, each status under *Where inquiries stand*, and each of the *Most requested designs*. Latest inquiries and Needs attention items open the request itself. Boxes without an arrow only show information. Filters set by a dashboard link apply to that visit only; opening Requests and quotes from the menu shows every request again.
 - **Not recorded yet:** sales, expenses, profit and website visits. The website does not collect these today; `docs/BUSINESS-DASHBOARD-PROPOSAL.md` explains how they could be added.
 
 ### Website overview
 Counts of requests by status, the latest requests, recent uploads, the most-liked designs (hearts), the last Google Sheet copy and recent changes in the portal. (This was called "Dashboard" before.)
 
-### Consultation requests
-- Search by name, phone or reference. Filter by status and date. Sort newest or oldest first.
+### Requests and quotes
+(Called "Consultation requests" before.) Consultation requests and quote requests are in one list. A quote request has a **Quote** tag.
+- **Quote requests** come from every **Request a quote** button. The customer gives a name and phone number (email and notes are optional); there is no meeting time. Open one to see each piece with its quantity, category and reference ("customised by the customer" marks a lamp from the 3D designer). Reply with the price, lead time and delivery, then change the status as usual.
+- Search by name, phone, reference or design name (it also finds designs inside quotes). Filter by type (consultations or quotes), status and date. Sort newest or oldest first.
 - Click a row to open it: contact details, the design and custom setup, the customer's notes, history and your **private notes** (customers never see these).
 - Change the **status**: New → Contacted → Meeting scheduled → In progress → Completed (or Cancelled). Every change is recorded in the history.
 - **WhatsApp** opens a chat with the customer. **Copy** copies their details.
@@ -61,7 +63,7 @@ Each room has its own page (`space.html?room=…`). Add, edit, reorder, show or 
 The filters above the product grid ("Wall lights", "Ceiling lights", "Chandeliers"). Add your own, for example "New arrivals". A design can be in several collections.
 
 ### Designs
-Every product: name, reference (W-02 style, shown to customers), type, description, price, size, material, lead time, photo, **3D model** (the shape used in the lamp designer; a new design reuses the closest existing shape), order and Show/Hide. Leave the price empty to show "On request".
+Every product: name, reference (W-02 style, shown to customers), type, description, price, size, material, lead time, photo, **3D model** (the shape used in the lamp designer; a new design reuses the closest existing shape), **3D starting finish** (warm brass, matte black or soft ivory: choose the finish in the product photo, so the 3D model opens looking like it; customers can still change it), order and Show/Hide. Leave the price empty to show "On request".
 
 Hide a design rather than deleting it if it may come back. Deleting removes it from every collection and room.
 

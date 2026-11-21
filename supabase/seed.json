@@ -1047,7 +1047,10 @@
    "model": "sconces:0",
    "image_id": "acbdec83-61eb-56c3-b73b-19424635ebc2",
    "status": "published",
-   "position": 0
+   "position": 0,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "d3b3bd45-68bf-5315-bc10-552b38fff601",
@@ -1059,7 +1062,10 @@
    "model": "sconces:1",
    "image_id": "480b24c1-4750-5610-b060-e5a3dac1cdca",
    "status": "published",
-   "position": 1
+   "position": 1,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "8af5bedc-3ec3-5756-9e38-4c261bdf692b",
@@ -1071,7 +1077,10 @@
    "model": "sconces:2",
    "image_id": "638f6e07-b52b-52bd-b090-f4da51643036",
    "status": "published",
-   "position": 2
+   "position": 2,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "21bc2f06-bfc9-5dba-a4b1-c976c2a6ca88",
@@ -1083,7 +1092,10 @@
    "model": "sconces:3",
    "image_id": "42e08a07-1304-5e13-8c11-77df410b33da",
    "status": "published",
-   "position": 3
+   "position": 3,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "c1a2b3fd-81e7-51ca-bdfe-7586ba3f2361",
@@ -1095,7 +1107,10 @@
    "model": "sconces:4",
    "image_id": "7ad051fd-c7bb-5c02-a66a-2d103d22073a",
    "status": "published",
-   "position": 4
+   "position": 4,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "38b29260-91f4-51dc-b139-f9eab6ec7db4",
@@ -1107,7 +1122,10 @@
    "model": "sconces:5",
    "image_id": "a0b992d2-f24e-5d4f-a123-256c6c5e0f6a",
    "status": "published",
-   "position": 5
+   "position": 5,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "737f774b-41bb-5658-bfdd-66e703dd7048",
@@ -1119,7 +1137,10 @@
    "model": "sconces:6",
    "image_id": "c61ffbac-2ec3-53d6-9e7a-6b55041eb937",
    "status": "published",
-   "position": 6
+   "position": 6,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "b491f64d-d297-534a-b649-8ce2d4e4efa2",
@@ -1131,7 +1152,10 @@
    "model": "sconces:7",
    "image_id": "093483b4-8f99-5ea5-85cd-61ec6b204217",
    "status": "published",
-   "position": 7
+   "position": 7,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "3a391bbb-06d1-5bd6-af0a-6d32a57dc1b0",
@@ -1143,7 +1167,10 @@
    "model": "sconces:8",
    "image_id": "ea73d457-705e-5cbc-908d-8b58de7e732f",
    "status": "published",
-   "position": 8
+   "position": 8,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "443984a3-0243-54a8-accb-6cc32f2e9cef",
@@ -1155,7 +1182,10 @@
    "model": "ceiling:0",
    "image_id": "5454f8f5-6cfe-53e2-ac15-7e45c24f13c7",
    "status": "published",
-   "position": 100
+   "position": 100,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "5b832b99-3d93-5fc6-87c9-391f4906eee3",
@@ -1167,7 +1197,10 @@
    "model": "ceiling:1",
    "image_id": "37e8401f-95d7-505b-9e7c-aa70d0523429",
    "status": "published",
-   "position": 101
+   "position": 101,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "5f3da872-4d31-571a-8b25-c1abf2e77d89",
@@ -1179,7 +1212,10 @@
    "model": "ceiling:2",
    "image_id": "c94f4268-b74f-57cb-a5d4-5fe8f1020841",
    "status": "published",
-   "position": 102
+   "position": 102,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "38e60c2d-e397-52e2-84e7-ad01aa398f16",
@@ -1191,7 +1227,10 @@
    "model": "ceiling:3",
    "image_id": "90d740c7-f5e6-5b2c-b793-27aebe247e78",
    "status": "published",
-   "position": 103
+   "position": 103,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "024cb495-11d4-58da-9e73-6b7b46d553ae",
@@ -1203,7 +1242,10 @@
    "model": "ceiling:4",
    "image_id": "81007ad4-052d-5b4c-bd61-80993ba938a5",
    "status": "published",
-   "position": 104
+   "position": 104,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "2e4efbbc-cfcb-5cd5-a4b7-a451d1480855",
@@ -1215,7 +1257,10 @@
    "model": "ceiling:5",
    "image_id": "cff05e54-3f8f-51bd-9ebf-4f7c20d20a45",
    "status": "published",
-   "position": 105
+   "position": 105,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "318d8897-8243-51c0-8405-6e858735f098",
@@ -1227,7 +1272,10 @@
    "model": "ceiling:6",
    "image_id": "058f663a-463e-54f3-b45b-a5ad3c2cad7b",
    "status": "published",
-   "position": 106
+   "position": 106,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "862c3513-b6c0-51e6-aa0e-de581a6f5f6a",
@@ -1239,7 +1287,10 @@
    "model": "ceiling:7",
    "image_id": "a25ea21b-c5c8-5edd-8b75-26d68db351ca",
    "status": "published",
-   "position": 107
+   "position": 107,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "7543a967-3bf7-5f3a-a072-8a5cf1a12843",
@@ -1251,7 +1302,10 @@
    "model": "ceiling:8",
    "image_id": "db5825e1-2462-5383-9247-6e313f3bdbb9",
    "status": "published",
-   "position": 108
+   "position": 108,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "260f4a6d-958e-5faf-a364-c9f0dbdb36d6",
@@ -1263,7 +1317,10 @@
    "model": "ceiling:9",
    "image_id": "158f3b9e-027f-5970-b8be-509238154353",
    "status": "published",
-   "position": 109
+   "position": 109,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "995f907a-8d91-54dd-9e2c-fb78a6f928c4",
@@ -1275,7 +1332,10 @@
    "model": "ceiling:10",
    "image_id": "7b0bebd2-6e66-5b02-9237-6427ecbd881c",
    "status": "published",
-   "position": 110
+   "position": 110,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "d51a6466-2176-55d9-a4dc-2bfa38e48649",
@@ -1287,7 +1347,10 @@
    "model": "ceiling:11",
    "image_id": "82d647e4-e024-52e1-8c15-531017f58141",
    "status": "published",
-   "position": 111
+   "position": 111,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "a5ce76f5-0339-5df2-a141-8a6c9be263d1",
@@ -1299,7 +1362,10 @@
    "model": "ceiling:12",
    "image_id": "184edb3e-0c35-5ddc-acc0-328c2393e05d",
    "status": "published",
-   "position": 112
+   "position": 112,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "64830b3c-a058-5b09-902a-c9c3a067407e",
@@ -1311,7 +1377,10 @@
    "model": "ceiling:13",
    "image_id": "10796547-bb77-55d2-8a70-24b89c90e695",
    "status": "published",
-   "position": 113
+   "position": 113,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "134bbd14-d74b-5a39-aa12-ebbb13b95953",
@@ -1323,7 +1392,10 @@
    "model": "ceiling:14",
    "image_id": "d5b6e940-3c61-53c5-aebd-1ea644f8ab7f",
    "status": "published",
-   "position": 114
+   "position": 114,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "4bb89af5-eeda-57be-86fd-5ba5d39800a8",
@@ -1335,7 +1407,10 @@
    "model": "ceiling:15",
    "image_id": "92c1d034-2803-5293-9fb3-d115639bac6b",
    "status": "published",
-   "position": 115
+   "position": 115,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "2e089d71-819b-5124-aa3a-68cfed801782",
@@ -1347,7 +1422,10 @@
    "model": "ceiling:16",
    "image_id": "73d0a149-8f07-54c0-b854-e0ef7d450b61",
    "status": "published",
-   "position": 116
+   "position": 116,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "015b9eee-c9b8-5405-9532-d8822c6a6a13",
@@ -1359,7 +1437,10 @@
    "model": "ceiling:17",
    "image_id": "e5db07a0-4c4a-50de-9c02-1282a4d47ca9",
    "status": "published",
-   "position": 117
+   "position": 117,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "5f521c34-5475-5538-9831-31e378fd0029",
@@ -1371,7 +1452,10 @@
    "model": "ceiling:18",
    "image_id": "114bbf31-7df1-5abc-9480-7b33a449c4c7",
    "status": "published",
-   "position": 118
+   "position": 118,
+   "specs": {
+    "finish": "white"
+   }
   },
   {
    "id": "abbf86e4-7893-588b-baba-f04af08554d6",
@@ -1383,7 +1467,10 @@
    "model": "ceiling:19",
    "image_id": "fff46559-a4f4-5c97-886d-0ca2c659d9fc",
    "status": "published",
-   "position": 119
+   "position": 119,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "1839482d-a772-5803-aeae-4577e6624e8d",
@@ -1395,7 +1482,10 @@
    "model": "ceiling:20",
    "image_id": "eba9bb2a-ecba-525e-9422-553a0a930d71",
    "status": "published",
-   "position": 120
+   "position": 120,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "fdac256d-b31c-5fd9-abd5-9c65c2e72872",
@@ -1407,7 +1497,10 @@
    "model": "ceiling:21",
    "image_id": "d636ccbb-034d-5c73-8094-25a64e900bf5",
    "status": "published",
-   "position": 121
+   "position": 121,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "e9ab370a-b8ee-58bd-81be-e6a9b8c0919e",
@@ -1419,7 +1512,10 @@
    "model": "ceiling:22",
    "image_id": "ca7bb122-66d7-52b0-81bc-5b69881a2d22",
    "status": "published",
-   "position": 122
+   "position": 122,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "35f3bdbb-ab0f-5b6d-9051-054fee6ea1d8",
@@ -1431,7 +1527,10 @@
    "model": "ceiling:23",
    "image_id": "ed56f3d8-2228-59ed-aaf3-0c7807693cb1",
    "status": "published",
-   "position": 123
+   "position": 123,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "7ad36afe-411e-50fe-996a-630fb9ccb830",
@@ -1443,7 +1542,10 @@
    "model": "ceiling:24",
    "image_id": "373abe5a-017b-5056-99b5-da6e22c21240",
    "status": "published",
-   "position": 124
+   "position": 124,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "49c01ac6-d205-5239-9277-8556b4d0ec6c",
@@ -1455,7 +1557,10 @@
    "model": "chandeliers:0",
    "image_id": "1121b0fd-20fb-5d8b-8486-959a5fc9ebf7",
    "status": "published",
-   "position": 200
+   "position": 200,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "dbce86f8-da91-5bbf-a412-1cf2b802856f",
@@ -1467,7 +1572,10 @@
    "model": "chandeliers:1",
    "image_id": "58f4daa4-c58c-51af-ae88-ae7802853501",
    "status": "published",
-   "position": 201
+   "position": 201,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "3d89a2b1-dc17-50c1-8831-1374197030d4",
@@ -1479,7 +1587,10 @@
    "model": "chandeliers:2",
    "image_id": "cb2c9301-17e8-5fb1-9ac4-e041bd688f95",
    "status": "published",
-   "position": 202
+   "position": 202,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "d0e761ef-f4ad-5046-93b8-e8d96a51d683",
@@ -1491,7 +1602,10 @@
    "model": "chandeliers:3",
    "image_id": "a5a7b96e-3a9b-5bf3-bbbc-33b5508f55b6",
    "status": "published",
-   "position": 203
+   "position": 203,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "79138199-8791-5cbf-bdbc-e8f3011eff76",
@@ -1503,7 +1617,10 @@
    "model": "chandeliers:4",
    "image_id": "a90f95f3-94fc-550b-9a71-b238f02997e2",
    "status": "published",
-   "position": 204
+   "position": 204,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "95ff26a7-2fa0-5762-a99c-9e0bacdf9011",
@@ -1515,7 +1632,10 @@
    "model": "chandeliers:5",
    "image_id": "da254ad5-c013-5eea-b947-520e8c70ef40",
    "status": "published",
-   "position": 205
+   "position": 205,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "72fae2c2-6a0b-5a5d-8992-be018fe4d915",
@@ -1527,7 +1647,10 @@
    "model": "chandeliers:6",
    "image_id": "2cd049a2-8281-5a77-ae49-b3ee4d211ca5",
    "status": "published",
-   "position": 206
+   "position": 206,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "aef5620e-455e-56b8-8120-a360b1aa7df7",
@@ -1539,7 +1662,10 @@
    "model": "chandeliers:7",
    "image_id": "827fecb0-589e-5845-bfe0-ba97715caa75",
    "status": "published",
-   "position": 207
+   "position": 207,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "3ead1267-8cc2-539a-98f2-9857b932befd",
@@ -1551,7 +1677,10 @@
    "model": "chandeliers:8",
    "image_id": "d8672068-b8df-567e-a19d-07c81218e3d0",
    "status": "published",
-   "position": 208
+   "position": 208,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "4c04977c-a973-5e13-a8a0-70d1e5cac156",
@@ -1563,7 +1692,10 @@
    "model": "chandeliers:9",
    "image_id": "7bb81401-0cfc-563b-9519-8ab32e1c8ce6",
    "status": "published",
-   "position": 209
+   "position": 209,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "4d0b2bd4-11c9-588f-91a6-5e531d82f047",
@@ -1575,7 +1707,10 @@
    "model": "chandeliers:10",
    "image_id": "275c268e-d0bd-5fb6-8d1d-9c659836a197",
    "status": "published",
-   "position": 210
+   "position": 210,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "5c4afade-a4c7-532f-9cdd-87180866cebf",
@@ -1587,7 +1722,10 @@
    "model": "chandeliers:11",
    "image_id": "d6de4f1b-99c5-5436-8ff3-223c730a0cf6",
    "status": "published",
-   "position": 211
+   "position": 211,
+   "specs": {
+    "finish": "black"
+   }
   },
   {
    "id": "65d7b263-9bea-56df-a130-d4b3186fa308",
@@ -1599,7 +1737,10 @@
    "model": "chandeliers:12",
    "image_id": "9b777444-64ba-58c1-b359-4b2a5d2bda0f",
    "status": "published",
-   "position": 212
+   "position": 212,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "eafffb11-48fd-5c9a-98eb-08c1aa270aed",
@@ -1611,7 +1752,10 @@
    "model": "chandeliers:13",
    "image_id": "9037963e-ccff-56fe-9d80-65e8ba26aa31",
    "status": "published",
-   "position": 213
+   "position": 213,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "f76e36a5-b431-55a9-9b29-6e27cd3c7070",
@@ -1623,7 +1767,10 @@
    "model": "chandeliers:14",
    "image_id": "4b16c684-3525-5527-b791-e7ac4d7a2a39",
    "status": "published",
-   "position": 214
+   "position": 214,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "62b42c0f-acae-5585-a4ea-f709f71b9039",
@@ -1635,7 +1782,10 @@
    "model": "chandeliers:15",
    "image_id": "87d9f99a-d0d5-5b5f-9f01-8e9d201b889b",
    "status": "published",
-   "position": 215
+   "position": 215,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "f6154ff2-2993-5a68-a50d-915213ff62ae",
@@ -1647,7 +1797,10 @@
    "model": "chandeliers:16",
    "image_id": "ddac6b81-8d77-5dc0-a256-542f2096cb85",
    "status": "published",
-   "position": 216
+   "position": 216,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "0a820ae7-1452-5746-a3bb-9c005b951195",
@@ -1659,7 +1812,10 @@
    "model": "chandeliers:17",
    "image_id": "ff00a781-5377-5818-81a5-4e7eede42b65",
    "status": "published",
-   "position": 217
+   "position": 217,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "e587550a-4cb8-5830-9bce-ecef02488ec1",
@@ -1671,7 +1827,10 @@
    "model": "chandeliers:18",
    "image_id": "049ad32f-745d-5d55-9359-3a770ddc8686",
    "status": "published",
-   "position": 218
+   "position": 218,
+   "specs": {
+    "finish": "brass"
+   }
   },
   {
    "id": "abde4043-da1d-54c4-8376-4a1ddd4bf29a",
@@ -1683,7 +1842,10 @@
    "model": "chandeliers:19",
    "image_id": "845fe627-afff-55c4-958d-aee10d5be2e8",
    "status": "published",
-   "position": 219
+   "position": 219,
+   "specs": {
+    "finish": "brass"
+   }
   }
  ],
  "collections": [

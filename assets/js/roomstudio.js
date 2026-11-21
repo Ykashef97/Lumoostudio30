@@ -15,13 +15,16 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { makeMaterials, applyFinish, buildLampModel, disposeGroup } from './lamp3d.js';
-import { CATEGORY, CATEGORY_ORDER, styleCatalog, fixtureImage, fixtureModel, refCode, parsePick, FINISH } from './catalog.js';
+import { CATEGORY, CATEGORY_ORDER, styleCatalog, fixtureImage, fixtureModel, fixtureFinish, cordFor, refCode, parsePick, FINISH } from './catalog.js';
 import { $, $$, icon, escapeLuma, toast, openConsultation } from './core.js';
 import { LUMA_ROOM } from './config.js';
 
 const MAX_LAMPS = 8;
 const SIZES = [19, 33, 42];
 const KELVINS = [[2700, 'Warm'], [3000, 'Soft white'], [4000, 'Neutral']];
+/* How a white wall looks under each light colour (sRGB). Slightly further apart than the true colours,
+   so the choice reads on a phone screen; 4000 K looks close to white, as the eye adapts to it. */
+const LIGHT_TINT = { 2700: '#ffb46b', 3000: '#ffcb8e', 4000: '#ffeedd' };
 const LENSES = { normal: 26, wide: 14 };      // 35 mm-equivalent focal lengths of phone cameras
 const SAMPLE = {
   src: 'assets/img/hero/living.webp',
@@ -36,12 +39,14 @@ const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) 
    ===================================================================== */
 
 // Colour of a light source at a colour temperature (approximation, good from 1,000 to 10,000 K).
+// Values are display (sRGB) colours, converted to the renderer's linear colour space.
 function kelvinColor(k) {
+  if (LIGHT_TINT[k]) return new THREE.Color(LIGHT_TINT[k]);
   const t = k / 100;
   let r, g, b;
   if (t <= 66) { r = 255; g = 99.47 * Math.log(t) - 161.12; b = t <= 19 ? 0 : 138.52 * Math.log(t - 10) - 305.04; }
   else { r = 329.7 * Math.pow(t - 60, -0.1332); g = 288.12 * Math.pow(t - 60, -0.0755); b = 255; }
-  return new THREE.Color(clamp(r, 0, 255) / 255, clamp(g, 0, 255) / 255, clamp(b, 0, 255) / 255);
+  return new THREE.Color().setRGB(clamp(r, 0, 255) / 255, clamp(g, 0, 255) / 255, clamp(b, 0, 255) / 255, THREE.SRGBColorSpace);
 }
 
 // 35 mm-equivalent focal length from a JPEG's EXIF data (tag 0xA405), or null.
@@ -139,6 +144,7 @@ uniform vec3 uCam;
 uniform float uYaw;
 uniform vec3 uNormal;
 uniform float uEvening;
+uniform vec3 uAmbient;
 uniform int uCount;
 uniform vec3 uLampPos[${MAX_LAMPS}];
 uniform vec3 uLampColor[${MAX_LAMPS}];
@@ -172,7 +178,8 @@ vec3 photoColour() {
 
 void main() {
   vec3 albedo = photoColour();
-  vec3 light = vec3(1.0 - uEvening * 0.8);
+  // Daylight, dimmed in the evening and tinted by the lamps' colour as their light fills the room.
+  vec3 light = vec3(1.0 - uEvening * 0.8) * uAmbient;
   for (int i = 0; i < ${MAX_LAMPS}; i++) {
     if (i >= uCount) break;
     vec3 L = uLampPos[i] - vWorld;
@@ -181,8 +188,8 @@ void main() {
     float ndl = max(dot(uNormal, l), 0.0);
     // Hanging and ceiling lights send most light down; wall lights wash up and down the wall.
     float dirW = uLampKind[i] > 0.5 ? 0.25 + 0.75 * max(l.y, 0.0) : 0.45 + 0.55 * abs(l.y);
-    float fall = 1.0 / (1.0 + d * d * 1.8);
-    light += uLampColor[i] * uLampPower[i] * ndl * fall * dirW * (0.3 + uEvening * 1.6);
+    float fall = 1.0 / (1.0 + d * d * 0.35);
+    light += uLampColor[i] * uLampPower[i] * ndl * fall * dirW * (0.6 + uEvening * 1.4);
     // A soft contact shadow where the fitting touches the ceiling or wall.
     float m = length(vWorld - uMountPos[i]);
     light *= 1.0 - 0.18 * (1.0 - smoothstep(0.0, uMountR[i], m));
@@ -248,7 +255,7 @@ function createStudio(root) {
 
   const shared = {
     uPhoto: { value: null }, uPhotoVP: { value: new THREE.Matrix4() }, uMode: { value: 0 }, uCam: { value: new THREE.Vector3() },
-    uYaw: { value: 0 }, uEvening: { value: 0.35 }, uCount: { value: 0 },
+    uYaw: { value: 0 }, uEvening: { value: 0.35 }, uAmbient: { value: new THREE.Color(1, 1, 1) }, uCount: { value: 0 },
     uLampPos: { value: Array.from({ length: MAX_LAMPS }, () => new THREE.Vector3()) },
     uLampColor: { value: Array.from({ length: MAX_LAMPS }, () => new THREE.Color()) },
     uLampPower: { value: new Array(MAX_LAMPS).fill(0) },
@@ -271,6 +278,7 @@ function createStudio(root) {
   };
   let lamps = [];            // [{ id, ref, key, index, name, mount, size, finish, cord, pos:{x,y,z}, normal:{x,z}, rot, drop, kelvin, brightness, obj }]
   let selected = null, armed = null;
+  let selTab = 'style';    // open tab of the selected light's settings (style, place, light)
   const view = { yaw: 0, pitch: 0, zoom: 1 };
   const history = [], future = [];
 
@@ -533,12 +541,13 @@ function createStudio(root) {
     applyFinish(o.mat, lamp.finish, lamp.cord);
     const col = kelvinColor(lamp.kelvin);
     const strength = lamp.brightness * (0.55 + room.evening * 0.9);
-    ['bulb', 'led', 'opal', 'fabric', 'rattan'].forEach(k => { if (o.mat[k] && o.mat[k].emissive) o.mat[k].emissive.copy(col); });
+    ['bulb', 'led', 'opal', 'fabric', 'rattan', 'veil'].forEach(k => { if (o.mat[k] && o.mat[k].emissive) o.mat[k].emissive.copy(col); });
     o.mat.bulb.emissiveIntensity = 2.4 * strength;
     o.mat.led.emissiveIntensity = 1.7 * strength;
     o.mat.opal.emissiveIntensity = 0.9 * strength;
     o.mat.fabric.emissiveIntensity = 0.32 * strength;
     o.mat.rattan.emissiveIntensity = 0.35 * strength;
+    o.mat.veil.emissiveIntensity = 0.5 * strength;
     o.glow.material.color.copy(col);
     o.glow.material.opacity = clamp(0.15 + room.evening * 0.6, 0, 0.8) * lamp.brightness;
     o.point.color.copy(col);
@@ -585,16 +594,25 @@ function createStudio(root) {
   function updateLights() {
     const n = Math.min(lamps.length, MAX_LAMPS);
     shared.uCount.value = n;
+    const mix = new THREE.Color(0, 0, 0); let total = 0;
     for (let i = 0; i < n; i++) {
       const l = lamps[i], o = l.obj; if (!o) continue;
+      // Evens out brightness between colours (warm light should not look much dimmer), so mainly the tint changes.
+      const col = kelvinColor(l.kelvin), lum = col.r * 0.2126 + col.g * 0.7152 + col.b * 0.0722;
+      col.multiplyScalar(1 / Math.sqrt(Math.max(lum, 0.05)));
+      const power = l.brightness * (0.5 + l.size / 84);
       shared.uLampPos.value[i].copy(o.lightCenter);
-      shared.uLampColor.value[i].copy(kelvinColor(l.kelvin));
-      shared.uLampPower.value[i] = l.brightness * (0.5 + l.size / 84);
+      shared.uLampColor.value[i].copy(col);
+      shared.uLampPower.value[i] = power;
+      mix.add(col.clone().multiplyScalar(power)); total += power;
       shared.uLampKind.value[i] = l.mount === 'wall' ? 0 : 1;
       shared.uMountPos.value[i].set(l.pos.x, l.mount === 'wall' ? l.pos.y : room.box.H, l.pos.z);
       shared.uMountR.value[i] = o.mountR;
     }
     shared.uEvening.value = room.evening;
+    // The more the lamps light the room (evening, brightness), the more their colour shows everywhere.
+    const amount = total ? (0.12 + room.evening * 0.6) * Math.min(1, total / 0.7) : 0;
+    shared.uAmbient.value.setRGB(1, 1, 1).lerp(total ? mix.multiplyScalar(1 / total) : new THREE.Color(1, 1, 1), amount);
     hemi.intensity = 0.9 * (1 - room.evening * 0.7);
     scene.environmentIntensity = 0.8 * (1 - room.evening * 0.6);
     lamps.forEach(styleLamp);
@@ -674,8 +692,9 @@ function createStudio(root) {
     const info = designInfo(arm);
     const at = positionFor(info.mount, hit);
     if (!at) { toast('Tap a wall for a wall light'); return false; }
+    const finish = arm.finish || fixtureFinish(info.key, info.index);
     const lamp = {
-      id: uid(), ...info, size: arm.size || 42, finish: arm.finish || 'brass', cord: arm.cord || 'white',
+      id: uid(), ...info, size: arm.size || 42, finish, cord: arm.cord || cordFor(finish),
       pos: at.pos, normal: at.normal, rot: 0, drop: info.mount === 'pendant' ? 0.35 : 0, kelvin: 2700, brightness: 0.8
     };
     makeLampObject(lamp);
@@ -746,7 +765,13 @@ function createStudio(root) {
   function resize() {
     if (!room.image) return;
     const box = stageBox.getBoundingClientRect();
-    const maxH = Math.min(window.innerHeight * (window.innerWidth < 960 ? 0.62 : 0.78), 820);
+    // The photo stays in view while the settings scroll (styles.css: .rs-stage is sticky), so it must
+    // fit the window: under the header on wide screens, about half the screen on phones and tablets.
+    const full = root.classList.contains('is-full');
+    const header = full ? 0 : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header')) || 64;
+    const maxH = window.innerWidth < 960
+      ? Math.max(200, Math.min(window.innerHeight * (full ? 0.56 : 0.5), 520))
+      : Math.max(320, Math.min(window.innerHeight - header - 40, 820));
     let w = box.width, h;
     if (room.mode === 'photo') {
       const aspect = room.image.width / room.image.height;
@@ -758,6 +783,7 @@ function createStudio(root) {
     host.style.width = Math.round(w) + 'px';
     host.style.height = Math.round(h) + 'px';
     stageBox.style.height = Math.round(h) + 'px';
+    root.style.setProperty('--rs-stage-h', Math.round(h) + 'px');
     renderer.setSize(Math.round(w), Math.round(h), false);
     guides.setAttribute('viewBox', `0 0 ${Math.round(w)} ${Math.round(h)}`);
     guides.style.width = Math.round(w) + 'px';
@@ -765,6 +791,8 @@ function createStudio(root) {
     applyView();
   }
   new ResizeObserver(() => resize()).observe(stageBox);
+  let resizeTimer = 0;     // the height limit depends on the window height too
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { resize(); requestRender(); }, 150); });
 
   /* =====================================================================
      CALIBRATION GUIDES (photo mode)
@@ -1002,10 +1030,12 @@ function createStudio(root) {
   }
 
   function select(lamp) {
+    const changed = lamp !== selected;
     selected = lamp;
     lamps.forEach(l => { if (l.obj) l.obj.holder.userData.selected = l === lamp; });
     renderSelected();
     renderLampList();
+    if (lamp && changed) $('#rsSelected', work).scrollIntoView({ block: 'nearest', behavior: reduced() ? 'auto' : 'smooth' });
   }
 
   function renderSelected() {
@@ -1018,18 +1048,25 @@ function createStudio(root) {
     if (m && l.mount !== 'wall') readout = `Lowest point ${(m.bottom).toFixed(2)} m above the floor · ${cm(H - m.bottom)} cm below the ceiling`;
     else if (m) readout = `Centre ${(m.centre).toFixed(2)} m above the floor`;
     const clash = overlaps(l);
+    const tabs = [['style', 'Style'], ...(l.mount !== 'wall' ? [['place', 'Position']] : []), ['light', 'Light']];
+    if (!tabs.some(([k]) => k === selTab)) selTab = 'style';
+    const pane = {
+      style: `<div class="rs-field"><span>Size</span><div class="rs-seg">${SIZES.map(s => `<button type="button" data-rs-size="${s}" aria-pressed="${l.size === s}">${s} cm</button>`).join('')}</div></div>
+      <div class="rs-field"><span>Finish</span><div class="rs-seg">${Object.keys(FINISH).map(f => `<button type="button" data-rs-finish="${f}" aria-pressed="${l.finish === f}">${FINISH[f].replace(/^\w/, c => c.toUpperCase())}</button>`).join('')}</div></div>
+      ${l.mount !== 'ceiling' ? `<div class="rs-field"><span>Cord</span><div class="rs-seg">${['white', 'black'].map(c => `<button type="button" data-rs-cord="${c}" aria-pressed="${l.cord === c}">${c[0].toUpperCase() + c.slice(1)}</button>`).join('')}</div></div>` : ''}`,
+      place: `${l.mount === 'pendant' ? `<label class="rs-field"><span>Hang lower <output>${cm(l.drop)} cm</output></span><input type="range" min="0" max="150" step="5" value="${cm(l.drop)}" data-rs-drop></label>` : ''}
+      ${l.mount !== 'wall' ? `<label class="rs-field"><span>Turn <output>${Math.round(l.rot)}°</output></span><input type="range" min="0" max="355" step="5" value="${Math.round(l.rot)}" data-rs-rot></label>` : ''}
+        <p class="rs-help">Drag the light in the photo to move it; arrow keys move it too.</p>`,
+      light: `<div class="rs-field"><span>Light colour</span><div class="rs-seg">${KELVINS.map(([k, label]) => `<button type="button" data-rs-kelvin="${k}" aria-pressed="${l.kelvin === k}"><span class="rs-kelvin-name"><i class="rs-swatch" style="--swatch:${LIGHT_TINT[k]}" aria-hidden="true"></i>${label}</span><small>${k} K</small></button>`).join('')}</div></div>
+      <label class="rs-field"><span>Brightness <output>${Math.round(l.brightness * 100)}%</output></span><input type="range" min="10" max="100" step="5" value="${Math.round(l.brightness * 100)}" data-rs-bright></label>`
+    };
     box.innerHTML = `
       <div class="rs-sel-head"><div><b>${escapeLuma(l.name)}</b><small>${CATEGORY[l.key].singular} · ${escapeLuma(l.ref)}</small></div>
         <button class="icon-btn" type="button" data-rs="deselect" aria-label="Close">${icon('close')}</button></div>
       <p class="rs-readout">${readout}</p>
       ${clash.length ? `<p class="rs-warning">${icon('close')}Touches ${escapeLuma(clash[0].name)}. Move one of them a little.</p>` : ''}
-      <div class="rs-field"><span>Size</span><div class="rs-seg">${SIZES.map(s => `<button type="button" data-rs-size="${s}" aria-pressed="${l.size === s}">${s} cm</button>`).join('')}</div></div>
-      <div class="rs-field"><span>Finish</span><div class="rs-seg">${Object.keys(FINISH).map(f => `<button type="button" data-rs-finish="${f}" aria-pressed="${l.finish === f}">${FINISH[f].replace(/^\w/, c => c.toUpperCase())}</button>`).join('')}</div></div>
-      ${l.mount !== 'ceiling' ? `<div class="rs-field"><span>Cord</span><div class="rs-seg">${['white', 'black'].map(c => `<button type="button" data-rs-cord="${c}" aria-pressed="${l.cord === c}">${c[0].toUpperCase() + c.slice(1)}</button>`).join('')}</div></div>` : ''}
-      ${l.mount === 'pendant' ? `<label class="rs-field"><span>Hang lower <output>${cm(l.drop)} cm</output></span><input type="range" min="0" max="150" step="5" value="${cm(l.drop)}" data-rs-drop></label>` : ''}
-      ${l.mount !== 'wall' ? `<label class="rs-field"><span>Turn <output>${Math.round(l.rot)}°</output></span><input type="range" min="0" max="355" step="5" value="${Math.round(l.rot)}" data-rs-rot></label>` : ''}
-      <div class="rs-field"><span>Light colour</span><div class="rs-seg">${KELVINS.map(([k, label]) => `<button type="button" data-rs-kelvin="${k}" aria-pressed="${l.kelvin === k}">${label}<small>${k} K</small></button>`).join('')}</div></div>
-      <label class="rs-field"><span>Brightness <output>${Math.round(l.brightness * 100)}%</output></span><input type="range" min="10" max="100" step="5" value="${Math.round(l.brightness * 100)}" data-rs-bright></label>
+      <div class="rs-tabs" role="tablist" aria-label="Light settings">${tabs.map(([k, label]) => `<button type="button" role="tab" id="rsTab-${k}" data-rs-tab="${k}" aria-controls="rsPane" aria-selected="${k === selTab}" tabindex="${k === selTab ? 0 : -1}">${label}</button>`).join('')}</div>
+      <div class="rs-pane" id="rsPane" role="tabpanel" aria-labelledby="rsTab-${selTab}">${pane[selTab]}</div>
       <div class="rs-sel-actions">
         <button class="btn btn--outline btn--sm" type="button" data-rs="duplicate">Duplicate</button>
         <button class="btn btn--outline btn--sm" type="button" data-rs="remove">${icon('close')}Remove</button>
@@ -1057,6 +1094,7 @@ function createStudio(root) {
     const t = e.target.closest('button'); if (!t) return;
     if (t.dataset.arm) { const [key, index] = t.dataset.arm.split(':'); if (armed && armed.key === key && armed.index === +index) disarm(); else arm({ key, index: +index }); return; }
     if (t.dataset.rsPick) { select(lamps.find(l => l.id === t.dataset.rsPick)); return; }
+    if (t.dataset.rsTab) { selTab = t.dataset.rsTab; renderSelected(); $('#rsTab-' + selTab, work).focus(); return; }
     if (t.dataset.rsFilter) { lib.type = t.dataset.rsFilter; $$('[data-rs-filter]', work).forEach(b => b.setAttribute('aria-pressed', String(b === t))); renderLibrary(); return; }
     const l = selected;
     if (l && t.dataset.rsSize) { l.size = +t.dataset.rsSize; placeObject(l); updateLights(); renderSelected(); commit(); return; }
@@ -1074,6 +1112,13 @@ function createStudio(root) {
       else { copy.pos.x += b.u.x * shift; copy.pos.z += b.u.z * shift; }
       makeLampObject(copy); lamps.push(copy); commit(); select(copy); updateLights();
     }
+  });
+  work.addEventListener('keydown', e => {
+    const t = e.target;
+    if (!t.matches('[role="tab"]') || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    const all = $$('[role="tab"]', t.parentElement), i = all.indexOf(t);
+    const next = e.key === 'Home' ? all[0] : e.key === 'End' ? all[all.length - 1] : all[(i + (e.key === 'ArrowRight' ? 1 : -1) + all.length) % all.length];
+    e.preventDefault(); next.click();
   });
   work.addEventListener('input', e => {
     const t = e.target, l = selected;
@@ -1367,13 +1412,13 @@ function workMarkup() {
 
       <div data-rs-step="design" hidden>
         <div id="rsSelected" class="rs-selected" hidden></div>
+        <label class="rs-field"><span>Evening light <output class="rs-note">whole room</output></span><input type="range" id="rsEvening" min="0" max="100" step="5" value="35"></label>
         <h3 class="rs-title"><span class="step-badge">2</span>Add lights</h3>
         <div class="rs-filters" role="group" aria-label="Type">${filters.map(([k, l], i) => `<button class="chip" type="button" data-rs-filter="${k}" aria-pressed="${i === 0}">${l}</button>`).join('')}</div>
         <label class="search-field rs-search"><span class="visually-hidden">Search designs</span>${icon('search')}<input id="rsSearch" type="search" placeholder="Search designs" autocomplete="off"></label>
         <div class="rs-library" id="rsLibrary"></div>
         <h3 class="rs-title">Your lights <span id="rsCount"></span></h3>
         <ul class="rs-lamps" id="rsLamps"></ul>
-        <label class="rs-field"><span>Evening light</span><input type="range" id="rsEvening" min="0" max="100" step="5" value="35"></label>
         <div class="rs-actions">
           <button class="btn btn--primary btn--block" type="button" id="rsSend" disabled>${icon('calendar')}Send my design to LumaDesign</button>
           <button class="btn btn--outline" type="button" id="rsSave">${icon('heart')}Save on this device</button>

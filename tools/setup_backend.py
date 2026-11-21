@@ -61,7 +61,7 @@ def site_from_seed(seed):
         'content': content,
         'settings': {'pricing': seed['content']['settings']['pricing'], 'calendarUrl': seed['content']['settings']['calendarUrl']},
         'designs': [{'id': d['id'], 'slug': d['slug'], 'ref': d['ref'], 'name': d['name'], 'category': d['category'],
-                     'description': d['description'], 'model': d['model'], 'image': d['image_id'], 'specs': {}} for d in designs],
+                     'description': d['description'], 'model': d['model'], 'image': d['image_id'], 'specs': d.get('specs') or {}} for d in designs],
         'collections': [{'id': c['id'], 'slug': c['slug'], 'name': c['name'], 'description': c['description'], 'cover': c['cover_id'],
                          'designs': [x for x in c['designs'] if x in live]} for c in collections],
         'spaces': [{'id': s['id'], 'slug': s['slug'], 'name': s['name'], 'title': s['title'], 'label': s['label'], 'intro': s['intro'],
@@ -88,7 +88,7 @@ def seed_database(conn, seed):
 
         insert('media_folders', seed['folders'], ['id', 'name', 'position'])
         insert('media', seed['media'], ['id', 'folder_id', 'source', 'path', 'medium_path', 'thumb_path', 'mime', 'width', 'height', 'title', 'alt', 'tone'])
-        insert('designs', seed['designs'], ['id', 'slug', 'ref', 'name', 'category', 'description', 'model', 'image_id', 'status', 'position'])
+        insert('designs', seed['designs'], ['id', 'slug', 'ref', 'name', 'category', 'description', 'model', 'image_id', 'status', 'position', 'specs'])
         new_collections = insert('collections', seed['collections'], ['id', 'slug', 'name', 'description', 'cover_id', 'status', 'position'])
         new_spaces = insert('spaces', seed['spaces'], ['id', 'slug', 'name', 'title', 'label', 'intro', 'icon', 'image_id', 'status', 'position'])
         # Links only for collections and rooms created just now, so later edits in the portal are never undone.

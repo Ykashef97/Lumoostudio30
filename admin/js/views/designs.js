@@ -75,6 +75,9 @@ async function openDesign(design, designs, onSaved) {
         </div>
         <div class="grid-2">
           <div class="field"><label for="dsModel">3D model</label><select id="dsModel"></select><small>The shape used in the 3D lamp designer.</small></div>
+          <div class="field"><label for="dsFinish">3D starting finish</label><select id="dsFinish"><option value="brass">Warm brass</option><option value="black">Matte black</option><option value="white">Soft ivory</option></select><small>Choose the finish in the product photo. Customers can still change it.</small></div>
+        </div>
+        <div class="grid-2">
           <div class="field"><label for="dsSlug">Short code</label><input id="dsSlug" maxlength="80" value="${esc(d0.slug)}"></div>
         </div>
       </div><div class="stack">
@@ -92,6 +95,7 @@ async function openDesign(design, designs, onSaved) {
   model.innerHTML = modelOptions(d0.category);
   model.value = d0.model;
   $('#dsStatus', d.el).value = d0.status;
+  $('#dsFinish', d.el).value = ['white', 'black', 'brass'].includes(d0.specs?.finish) ? d0.specs.finish : 'brass';
   cat.addEventListener('change', () => {
     model.innerHTML = modelOptions(cat.value);
     if (isNew) $('#dsRef', d.el).value = nextRef(designs, cat.value);
@@ -101,7 +105,7 @@ async function openDesign(design, designs, onSaved) {
   bindImageSlots(d.el, (name, media) => { d0[name] = media ? media.id : null; });
 
   $('[data-save]', d.el).addEventListener('click', async e => {
-    const specs = { ...d0.specs, price: $('#dsPrice', d.el).value.trim(), size: $('#dsSize', d.el).value.trim(), material: $('#dsMaterial', d.el).value.trim(), leadTime: $('#dsLead', d.el).value.trim() };
+    const specs = { ...d0.specs, price: $('#dsPrice', d.el).value.trim(), size: $('#dsSize', d.el).value.trim(), material: $('#dsMaterial', d.el).value.trim(), leadTime: $('#dsLead', d.el).value.trim(), finish: $('#dsFinish', d.el).value };
     Object.keys(specs).forEach(k => { if (!specs[k]) delete specs[k]; });
     const row = {
       name: $('#dsName', d.el).value.trim(), category: cat.value, ref: $('#dsRef', d.el).value.trim().toUpperCase(),
