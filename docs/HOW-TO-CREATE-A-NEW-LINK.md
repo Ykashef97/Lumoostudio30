@@ -1,6 +1,6 @@
 # How to create a new public link for the website
 
-*Updated 20 November 2026 for the owners. No coding knowledge needed for Options A, C and D.*
+*Updated 21 November 2026 for the owners. No coding knowledge needed for Options A, C and D.*
 
 The website is hosted free on **GitHub Pages**. GitHub builds the link from two names:
 
@@ -14,14 +14,14 @@ Today that is `https://ykashef97.github.io/Lumoostudio30/`. To get a different l
 
 | Option | New link looks like | Old link | Cost | Best when |
 | --- | --- | --- | --- | --- |
-| **A. New project on GitHub** | `ykashef97.github.io/lumadesign/` | Keeps working, shows the old site | Free | You want a new link and want to keep the old site as it is |
-| **B. Same link, new version** | `ykashef97.github.io/Lumoostudio30/` | Same link, shows the new site | Free | You only want the new design live, the link does not matter |
+| **A. New project on GitHub** | `ykashef97.github.io/lumadesign/` | Keeps working as a second copy | Free | You want a new link and want the old one to keep working too |
+| **B. Same link** | `ykashef97.github.io/Lumoostudio30/` | Same link | Free | Already done: the current link shows the current site |
 | **C. Rename the project** | `ykashef97.github.io/lumadesign/` | Stops working | Free | You want one site only, with a better name |
 | **D. Your own domain** | `www.your-brand.com` | Can stay or go | Yearly domain fee | You are ready to print the address on cards and ads |
 
 Recommended path: **Option A now**, to get a clean LumaDesign link today. Add **Option D** when you have chosen a domain name.
 
-The new version of the website is saved on GitHub in a copy called `refactor`, and since 14 November 2026 the current public link already shows it. The old version is in the copy called `main`. The steps below say which copy to use.
+The website is saved on GitHub in the copy (branch) called `main`, and the public link shows that copy. New work is prepared in a separate copy and merged into `main` when it is ready.
 
 ---
 
@@ -34,12 +34,12 @@ You need to be signed in to GitHub as the account that should own the site.
 3. Choose **Public**. Leave every tick box empty (no README, no .gitignore, no license).
 4. Press **Create repository**. GitHub shows an empty project page. Keep it open.
 5. Copy the new version into it. Choose one way:
-   - **Ask Claude:** say "push the refactor branch to the new project `lumadesign` as main". Claude runs the two commands for you.
+   - **Ask Claude:** say "push the main branch to the new project `lumadesign`". Claude runs the two commands for you.
    - **Do it yourself:** open a terminal in the project folder and run these two lines, replacing the account and name with yours:
 
      ```
      git remote add newsite https://github.com/Ykashef97/lumadesign.git
-     git push newsite refactor:main
+     git push newsite main
      ```
 
 6. On the new project page, open **Settings**, then **Pages** in the left menu.
@@ -50,16 +50,13 @@ You need to be signed in to GitHub as the account that should own the site.
 
 ---
 
-## Option B: same link, new version
+## Option B: same link
 
-Already done: the current link shows the `refactor` branch. Two ways to keep it that way:
-
-- **Simplest:** keep pushing changes to `refactor`. In GitHub's **Settings → Pages**, the branch stays set to `refactor`.
-- **Tidier, optional:** merge `refactor` into `main`, then set the Pages branch back to `main`, as below.
+Already done. The current link shows the `main` branch (GitHub **Settings → Pages**, branch `main`). To publish a change, merge it into `main`:
 
 1. Open [github.com/Ykashef97/Lumoostudio30](https://github.com/Ykashef97/Lumoostudio30) while signed in.
 2. Open the **Pull requests** tab and press **New pull request**.
-3. Set **base** to `main` and **compare** to `refactor`.
+3. Set **base** to `main` and **compare** to the branch with the new work.
 4. Press **Create pull request**, then **Create pull request** again.
 5. Press **Merge pull request**, then **Confirm merge**.
 6. Wait one or two minutes, then open the link and press Ctrl+F5.
@@ -69,8 +66,6 @@ Nothing else is needed. The address inside the files already matches this link.
 ---
 
 ## Option C: rename the project
-
-Do Option B first, so the new version is the one being shown.
 
 1. Open the project on GitHub, then **Settings**.
 2. At the top, under **Repository name**, type the new name, for example `lumadesign`, and press **Rename**.
@@ -84,7 +79,7 @@ Do Option B first, so the new version is the one being shown.
 
 Works on top of Option A, B or C.
 
-1. Buy a domain from any registrar (for example Namecheap, GoDaddy or Google Domains).
+1. Buy a domain from any domain registrar.
 2. On GitHub, open the project, then **Settings**, then **Pages**.
 3. Under **Custom domain**, type `www.your-brand.com` and press **Save**.
 4. In your domain registrar's **DNS settings**, add these records:
@@ -106,16 +101,16 @@ Works on top of Option A, B or C.
 
 ## After the link changes
 
-The public address is written inside seven files, for search engines and for the preview picture that appears when the link is shared on WhatsApp or Facebook:
+The public address is written inside eight files, for search engines and for the preview picture that appears when the link is shared on WhatsApp or Facebook:
 
-- `index.html`, `space.html`, `about.html`, `contact.html`
-- `404.html`
+- `index.html`, `space.html`, `about.html`, `contact.html`, `privacy.html`
+- `404.html` (its links include the project name)
 - `robots.txt`
 - `sitemap.xml`
 
 They still say `ykashef97.github.io/Lumoostudio30`. The site works without this change, but link previews and search results will point to the old address.
 
-The easy way: tell Claude "the new address is `https://…`" and it updates all seven and publishes them.
+The easy way: tell Claude "the new address is `https://…`" and it updates all eight and prepares them for publishing.
 
 Two more things move with the link:
 
@@ -135,7 +130,7 @@ Then check:
 ## Words used here
 
 - **Repository (repo) / project:** the folder of website files stored on GitHub.
-- **Branch:** a named copy of the files inside the project. `main` is the old site, `refactor` is the new one.
+- **Branch:** a named copy of the files inside the project. `main` is the one the public link shows.
 - **Commit:** saving a set of changes into the project's history.
 - **Push:** uploading saved changes from a computer to GitHub.
 - **GitHub Pages:** GitHub's free service that turns a project into a public website.

@@ -1,6 +1,6 @@
 # LumaDesign: what the website can do
 
-*Reference list of features, as of 20 November 2026. For how to use them, see [ADMIN-GUIDE.md](ADMIN-GUIDE.md) (admin) and [WEBSITE-GUIDE.md](WEBSITE-GUIDE.md) (the website and the visitor journey).*
+*Reference list of features, as of 21 November 2026. For how to use them, see [ADMIN-GUIDE.md](ADMIN-GUIDE.md) (admin) and [WEBSITE-GUIDE.md](WEBSITE-GUIDE.md) (the website and the visitor journey).*
 
 The website has two sides:
 
@@ -18,7 +18,16 @@ The website has two sides:
 - Change the password in **Settings**. Log out from the sidebar.
 - A forgotten password is reset on the owner's computer with `create-admin.bat --reset`. There is no reset by email.
 
-### Dashboard
+### Business dashboard
+
+- The first page after signing in. Pick a period (7 days to all time); figures are compared with the period before.
+- Cards: new inquiries, requests waiting for a reply (with the oldest), average time to first reply, share completed vs cancelled, and share with a custom lamp or Room Studio design.
+- Charts: inquiries over time, where requests stand, most requested designs and types, most hearted designs, which button customers used, and WhatsApp or call preference.
+- A **Needs attention** list: requests waiting 2+ days, requests unchanged for 7+ days, meetings in the next 3 days, unpublished changes.
+- Figures marked with a small arrow open the matching list of requests (for example, all new inquiries in the chosen period).
+- Sales, expenses, profit and visits are shown as **not recorded yet**: the website does not collect them.
+
+### Website overview (formerly Dashboard)
 
 - Counts of consultation requests: new, in progress and completed.
 - The latest requests, the most-liked designs (hearts), recent uploads and recent changes in the portal.
@@ -138,6 +147,12 @@ No account is needed. It works on phones, tablets and computers.
 - Order or pay online.
 - Choose a confirmed meeting time online (an optional booking calendar link can be added in Settings).
 - Walk around their room in 3D from a normal photo (only a slight turn is possible; a 360° photo allows looking all the way round).
+
+---
+
+## Planned (not built yet)
+
+**Sales, costs and profit in the Business dashboard.** The first Business dashboard (inquiries only) is built. Still proposed: recording orders, payments, product costs and expenses, with sales, profit and anonymous website figures, all on free plans only ($0 a month). The proposal is in [BUSINESS-DASHBOARD-PROPOSAL.md](BUSINESS-DASHBOARD-PROPOSAL.md), and the questions for the first meeting are in [OWNER-DISCOVERY-QUESTIONNAIRE.md](OWNER-DISCOVERY-QUESTIONNAIRE.md). Nothing more is built until the owner approves it.
 
 ---
 

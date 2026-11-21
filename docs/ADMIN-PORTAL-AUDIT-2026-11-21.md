@@ -80,6 +80,7 @@ Developers: the file references are in the appendix.
 ## 2. What the admin can do today
 
 ### Dashboard
+*Update, 21 November 2026 (after this audit): this page is now called **Website overview**, and a new **Business dashboard** (inquiry figures, charts, Needs attention) is the first page after signing in. See ADMIN-GUIDE.md.*
 - **Request counts:** by status and for the last 7 days.
 - **Latest:** the latest requests and recent uploads.
 - **Most liked:** the most-hearted designs.

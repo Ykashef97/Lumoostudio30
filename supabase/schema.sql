@@ -455,6 +455,100 @@ begin
     'site', public.site_status());
 end $$;
 
+-- Business dashboard: inquiry figures for a period, all from data the website really records.
+-- p_period: '7d', '30d', 'month' (this month so far), 'lastmonth', '90d', '12m' or 'all'.
+-- The previous period is the same span shifted back, so "this month" compares with the same
+-- days of last month. Days and months are counted in Cairo time.
+create or replace function public.business_dashboard(p_period text default '30d') returns jsonb
+language plpgsql stable security definer set search_path = public set timezone to 'Africa/Cairo' as $$
+declare
+  v_today timestamptz := date_trunc('day', now());
+  v_month timestamptz := date_trunc('month', now());
+  v_from timestamptz; v_to timestamptz := now(); v_shift interval; v_step interval; v_start timestamptz;
+  v_bucket text;
+begin
+  if not public.is_admin() then raise exception 'permission denied' using errcode = '42501'; end if;
+  case p_period
+    when '7d' then v_from := v_today - interval '6 days'; v_shift := interval '7 days';
+    when 'month' then v_from := v_month; v_shift := interval '1 month';
+    when 'lastmonth' then v_from := v_month - interval '1 month'; v_to := v_month; v_shift := interval '1 month';
+    when '90d' then v_from := v_today - interval '89 days'; v_shift := interval '90 days';
+    when '12m' then v_from := v_month - interval '11 months'; v_shift := interval '12 months';
+    when 'all' then v_from := coalesce((select date_trunc('month', min(created_at)) from consultation_requests), v_month);
+    else p_period := '30d'; v_from := v_today - interval '29 days'; v_shift := interval '30 days';
+  end case;
+  if v_to - v_from <= interval '45 days' then v_bucket := 'day'; v_step := interval '1 day'; v_start := v_from;
+  elsif v_to - v_from <= interval '200 days' then v_bucket := 'week'; v_step := interval '7 days'; v_start := v_from;
+  else v_bucket := 'month'; v_step := interval '1 month'; v_start := date_trunc('month', v_from);
+  end if;
+
+  return (
+  with r as (
+    select c.*, coalesce(d.category, c.design_category) as cat, coalesce(d.name, c.design_name) as dname,
+           (select min(e.at) from request_events e where e.request_id = c.id and e.kind = 'status') as first_reply
+    from consultation_requests c left join designs d on d.id = c.design_id
+  ),
+  cur as (select * from r where created_at >= v_from and created_at < v_to),
+  prev as (select * from r where v_shift is not null and created_at >= v_from - v_shift and created_at < v_to - v_shift),
+  b as (select g as s, greatest(g, v_from) as lo, least(g + v_step, v_to) as hi
+        from generate_series(v_start, v_to - interval '1 microsecond', v_step) g)
+  select jsonb_build_object(
+    'period', jsonb_build_object('key', p_period, 'from', v_from, 'to', v_to, 'bucket', v_bucket,
+      'prevFrom', v_from - v_shift, 'prevTo', v_to - v_shift),
+    'kpis', jsonb_build_object(
+      'inquiries', (select count(*) from cur),
+      'prevInquiries', case when v_shift is null then null else (select count(*) from prev) end,
+      'waiting', (select count(*) from r where status = 'new'),
+      'oldestWaiting', (select min(created_at) from r where status = 'new'),
+      'replied', (select count(*) from cur where first_reply is not null),
+      'avgReplyHours', (select round((avg(extract(epoch from first_reply - created_at)) / 3600)::numeric, 1)
+                        from cur where first_reply is not null),
+      'prevAvgReplyHours', (select round((avg(extract(epoch from first_reply - created_at)) / 3600)::numeric, 1)
+                            from prev where first_reply is not null),
+      'completed', (select count(*) from cur where status = 'completed'),
+      'cancelled', (select count(*) from cur where status = 'cancelled'),
+      'custom', (select count(*) from cur where setup <> '' or room is not null),
+      'rooms', (select count(*) from cur where room is not null)),
+    'series', coalesce((select jsonb_agg(jsonb_build_object('start', b.s,
+        'count', (select count(*) from cur where created_at >= b.lo and created_at < b.hi),
+        'prev', case when v_shift is null then null
+                     else (select count(*) from prev where created_at >= b.lo - v_shift and created_at < b.hi - v_shift) end)
+        order by b.s) from b), '[]'::jsonb),
+    'statuses', coalesce((select jsonb_object_agg(status, n) from (select status, count(*) n from cur group by status) x), '{}'::jsonb),
+    'topDesigns', coalesce((select jsonb_agg(x) from (
+        select design_ref as ref, max(dname) as name, count(*) as count from cur
+        where design_ref is not null group by design_ref order by count(*) desc, design_ref limit 5) x), '[]'::jsonb),
+    'general', (select count(*) from cur where design_ref is null),
+    'categories', coalesce((select jsonb_agg(x) from (
+        select cat as key, count(*) as count from cur where cat is not null group by cat order by count(*) desc) x), '[]'::jsonb),
+    'sources', coalesce((select jsonb_agg(x) from (
+        select source as key, count(*) as count from cur group by source order by count(*) desc) x), '[]'::jsonb),
+    'contactBy', coalesce((select jsonb_agg(x) from (
+        select contact_by as key, count(*) as count from cur group by contact_by order by count(*) desc) x), '[]'::jsonb),
+    'topLiked', coalesce((select jsonb_agg(x) from (
+        select d.name, d.ref, l.count from design_likes l join designs d on d.id = l.design_id
+        where l.count > 0 order by l.count desc limit 5) x), '[]'::jsonb),
+    'attention', jsonb_build_object(
+      'waitingLong', coalesce((select jsonb_agg(x) from (
+          select id, name, created_at from r where status = 'new' and created_at < now() - interval '2 days'
+          order by created_at limit 5) x), '[]'::jsonb),
+      'waitingLongCount', (select count(*) from r where status = 'new' and created_at < now() - interval '2 days'),
+      'stale', coalesce((select jsonb_agg(x) from (
+          select id, name, status, status_changed_at from r
+          where status in ('contacted', 'meeting_scheduled', 'in_progress') and status_changed_at < now() - interval '7 days'
+          order by status_changed_at limit 5) x), '[]'::jsonb),
+      'staleCount', (select count(*) from r where status in ('contacted', 'meeting_scheduled', 'in_progress')
+                     and status_changed_at < now() - interval '7 days'),
+      'meetingsSoon', coalesce((select jsonb_agg(x) from (
+          select id, name, preferred_date, preferred_time from r
+          where status = 'meeting_scheduled' and preferred_date between current_date and current_date + 3
+          order by preferred_date limit 5) x), '[]'::jsonb)),
+    'latest', coalesce((select jsonb_agg(x) from (
+        select id, name, dname as design_name, design_ref, status, contact_by, created_at from r
+        order by created_at desc limit 8) x), '[]'::jsonb),
+    'site', public.site_status()));
+end $$;
+
 -- ---------------------------------------------------------------------
 -- Consultation requests: the website's only write, checked again here
 -- ---------------------------------------------------------------------
@@ -609,10 +703,10 @@ grant execute on function public.sheet_sync_pending(int), public.sheet_mark_sync
 grant select, insert, update on public.consultation_requests, public.sync_runs to service_role;
 grant usage, select on all sequences in schema public to service_role;
 revoke execute on function public.preview_site(), public.publish_site(text), public.republish_snapshot(bigint),
-  public.site_status(), public.media_usage(uuid), public.media_trash_due(), public.admin_dashboard(),
+  public.site_status(), public.media_usage(uuid), public.media_trash_due(), public.admin_dashboard(), public.business_dashboard(text),
   public.set_request_status(text, text), public.add_request_note(text, text) from public, anon;
 grant execute on function public.preview_site(), public.publish_site(text), public.republish_snapshot(bigint),
-  public.site_status(), public.media_usage(uuid), public.media_trash_due(), public.admin_dashboard(),
+  public.site_status(), public.media_usage(uuid), public.media_trash_due(), public.admin_dashboard(), public.business_dashboard(text),
   public.set_request_status(text, text), public.add_request_note(text, text) to authenticated;
 
 -- ---------------------------------------------------------------------

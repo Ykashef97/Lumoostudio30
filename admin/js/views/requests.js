@@ -26,7 +26,15 @@ function buildQuery(base) {
 }
 
 export async function render(root, params) {
-  if (params.get('status')) state.status = params.get('status');
+  // A link from a dashboard (status, from, to, q) shows exactly that list, replacing earlier filters.
+  // Those filters last for that visit only: opening the page from the menu afterwards shows everything.
+  if (['status', 'from', 'to', 'q'].some(k => params.has(k))) {
+    const day = v => (/^\d{4}-\d{2}-\d{2}$/.test(v || '') ? v : '');
+    Object.assign(state, { status: params.get('status') || '', from: day(params.get('from')), to: day(params.get('to')),
+      search: (params.get('q') || '').slice(0, 80), page: 1, fromLink: true });
+  } else if (state.fromLink && !params.has('id')) {
+    Object.assign(state, { status: '', from: '', to: '', search: '', page: 1, fromLink: false });
+  }
   root.innerHTML = `
     <div class="card">
       <div class="card-head">
@@ -46,7 +54,7 @@ export async function render(root, params) {
   $('#rqSort').value = state.sort;
 
   let timer;
-  const refilter = () => { state.page = 1; load(); };
+  const refilter = () => { state.page = 1; state.fromLink = false; load(); };
   $('#rqSearch').addEventListener('input', e => { state.search = e.target.value; clearTimeout(timer); timer = setTimeout(refilter, 300); });
   $('#rqStatus').addEventListener('change', e => { state.status = e.target.value; refilter(); });
   $('#rqFrom').addEventListener('change', e => { state.from = e.target.value; refilter(); });

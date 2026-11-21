@@ -24,8 +24,21 @@ Visitors may see the old version for up to 5 minutes after you publish, because 
 
 ## Sections
 
-### Dashboard
-Counts of requests by status, the latest requests, recent uploads, the most-liked designs (hearts), the last Google Sheet copy and recent changes in the portal.
+### Business dashboard
+The first page after signing in (menu group **Business**). Choose a period at the top (last 7 or 30 days, this or last month, 90 days, 12 months, all time). Each figure is compared with the period just before, and dates are Cairo time. Every figure comes from consultation requests and hearts; nothing is estimated.
+
+- **New inquiries:** requests received in the period.
+- **Waiting for a reply:** requests still marked *New*. The card turns orange when one has waited more than 2 days. Click it to see them.
+- **Average first reply:** the time from a request arriving until you first change its status. Change the status as soon as you contact the customer, so this stays accurate.
+- **Completed share:** of the requests that are finished, the share marked *Completed* rather than *Cancelled*.
+- **With a custom lamp or room:** the share of requests that included a lamp designed in the 3D designer or a Room Studio picture.
+- **Charts and lists:** requests over time, where they stand today, the most requested designs and types, the most hearted designs (all time, because hearts have no date), which button customers used, and WhatsApp or call preference.
+- **Needs attention:** requests new for 2+ days, requests unchanged for 7+ days, meetings whose preferred date is in the next 3 days, and unpublished website changes.
+- **What you can click:** anything with a small arrow (›) opens the requests behind it: *New inquiries* (that period), *Waiting for a reply*, *Completed share*, each status under *Where inquiries stand*, and each of the *Most requested designs*. Latest inquiries and Needs attention items open the request itself. Boxes without an arrow only show information. Filters set by a dashboard link apply to that visit only; opening Consultation requests from the menu shows every request again.
+- **Not recorded yet:** sales, expenses, profit and website visits. The website does not collect these today; `docs/BUSINESS-DASHBOARD-PROPOSAL.md` explains how they could be added.
+
+### Website overview
+Counts of requests by status, the latest requests, recent uploads, the most-liked designs (hearts), the last Google Sheet copy and recent changes in the portal. (This was called "Dashboard" before.)
 
 ### Consultation requests
 - Search by name, phone or reference. Filter by status and date. Sort newest or oldest first.
