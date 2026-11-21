@@ -15,6 +15,7 @@ export async function render(root) {
   ]);
   const site = structuredClone(settings);
   site.pricing = site.pricing || { currency: 'EGP', shade: {}, cord: 0, bulbs: 0 };
+  site.roomStudio = { enabled: true, evening: '0.35', ...(site.roomStudio || {}) };
   const sheet = { webAppUrl: '', sheetUrl: '', ...(sheetRows[0]?.value || {}) };
 
   root.innerHTML = `
@@ -37,7 +38,7 @@ export async function render(root) {
     </section>
 
     <section class="card card-pad stack" id="siteSettings">
-      <h2 class="card-title">${icon('sliders')}Lamp designer prices and booking</h2>
+      <h2 class="card-title">${icon('sliders')}Prices, booking and Room Studio</h2>
       <p class="hint">Used for the price estimate in the 3D lamp designer. Saved as a draft; publish to make them live.</p>
       <div class="stack" style="gap:4px">${toggleField('Show these prices on the website', 'pricing.show')}
         <small class="hint">Leave this off until the figures below are your real prices. While it is off, the designer shows “Price: On request” and no figures.</small></div>
@@ -47,6 +48,10 @@ export async function render(root) {
         <div class="field"><label for="prBulbs">Bulbs</label><input id="prBulbs" type="number" min="0" max="1000000" data-path="pricing.bulbs"></div>
         <div class="field"><label for="prCur">Currency</label><input id="prCur" maxlength="5" data-path="pricing.currency"></div>
       </div>
+      <div class="stack" style="gap:4px">${toggleField('Show the Room Studio on the homepage', 'roomStudio.enabled')}
+        <small class="hint">Customers place our 3D lights in a photo of their own room. When off, the homepage shows the simple photo preview instead.</small></div>
+      <div class="field"><label for="rsEveningDefault">Room Studio starting light</label>
+        <select id="rsEveningDefault" data-path="roomStudio.evening"><option value="0.15">Daytime</option><option value="0.35">Early evening</option><option value="0.65">Evening</option></select></div>
       <div class="field"><label for="calUrl">Online booking link (optional)</label><input id="calUrl" type="url" maxlength="300" data-path="calendarUrl" placeholder="https://…"><small>If you use a booking calendar, customers see a “Pick a time online” link after sending a request.</small></div>
       <div class="row"><button class="btn btn--primary" type="button" id="saveSite">Save draft</button></div>
     </section>

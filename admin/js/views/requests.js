@@ -75,7 +75,7 @@ export async function render(root, params) {
         <tbody>${data.map(r => `<tr class="clickable" data-id="${esc(r.id)}" tabindex="0">
           <td><span class="cell-main">${esc(r.id)}</span><span class="cell-sub">${fmtDate(r.created_at)}</span></td>
           <td><span class="cell-main">${esc(r.name)}</span><span class="cell-sub">${esc(r.phone)}</span></td>
-          <td><div class="row" style="flex-wrap:nowrap">${r.design_image ? `<img class="thumb" src="${esc(r.design_image)}" alt="">` : ''}<span><span class="cell-main">${esc(r.design_name || 'General consultation')}</span><span class="cell-sub">${esc(r.setup || r.design_ref || '')}</span></span></div></td>
+          <td><div class="row" style="flex-wrap:nowrap">${r.design_image ? `<img class="thumb" src="${esc(r.design_image)}" alt="">` : ''}<span><span class="cell-main">${esc(r.design_name || (r.room ? 'Room design' : 'General consultation'))}</span><span class="cell-sub">${esc(r.setup || r.design_ref || '')}</span></span></div></td>
           <td>${statusBadge(r.status)}</td>
           <td class="hide-sm">${esc(r.contact_by)}</td></tr>`).join('')}</tbody></table></div>`
         : empty(state.search || state.status || state.from || state.to ? 'No requests match these filters.' : 'No consultation requests yet.', 'calendar');
@@ -129,6 +129,7 @@ async function openRequest(id, onChange) {
     [r] = await q(sb.from('consultation_requests').select('*').eq('id', id).limit(1));
   } catch (error) { return fail(error); }
   if (!r) return toast('Request ' + id + ' was not found.', 'error');
+  const room = r.room && Array.isArray(r.room.lamps) ? r.room : null;
   const wa = whatsappNumber(r.phone);
   const greeting = encodeURIComponent(`Hello ${r.name.split(/\s+/)[0]}, this is LumaDesign about your consultation request ${r.id}${r.design_name ? ' (' + r.design_name + ')' : ''}.`);
   const d = dialog({
@@ -154,9 +155,14 @@ async function openRequest(id, onChange) {
           <h3 class="section-title">Design</h3>
           ${r.design_name ? `<div class="row" style="align-items:flex-start;flex-wrap:nowrap">${r.design_image ? `<img src="${esc(r.design_image)}" alt="" style="width:140px;border-radius:12px;background:var(--sand)">` : ''}
             <dl class="kv"><dt>Design</dt><dd>${esc(r.design_name)}</dd><dt>Reference</dt><dd>${esc(r.design_ref || '—')}</dd><dt>Category</dt><dd>${esc(r.design_category || '—')}</dd>
-            <dt>Custom setup</dt><dd>${esc(r.setup || 'Not customised')}</dd></dl></div>` : '<p class="muted">General consultation, not about a specific design.</p>'}
+            <dt>Custom setup</dt><dd>${esc(r.setup || 'Not customised')}</dd></dl></div>` : room ? '<p class="muted">Sent from the Room Studio: see the room design below.</p>' : '<p class="muted">General consultation, not about a specific design.</p>'}
           <div class="field"><span class="field-label">Customer's notes</span><p>${r.notes ? esc(r.notes) : '<span class="muted">No notes</span>'}</p></div>
         </div>
+        ${room ? `<div class="card card-pad stack">
+          <h3 class="section-title">Room design · ${room.lamps.length} ${room.lamps.length === 1 ? 'light' : 'lights'}</h3>
+          <div id="rqRoomImg">${room.image ? loading() : '<p class="muted">The customer did not attach the picture of their room.</p>'}</div>
+          <ul class="room-lamps">${room.lamps.map(l => `<li><b>${esc(l.name)}</b> (${esc(l.ref)}) · ${esc(l.size)} cm · ${esc(l.finish)}${l.cord ? ' · ' + esc(l.cord) + ' cord' : ''}${+l.drop ? ' · hangs ' + esc(l.drop) + ' cm lower' : ''} · ${esc(l.kelvin)} K · brightness ${esc(l.brightness)}%</li>`).join('')}</ul>
+        </div>` : ''}
       </div>
       <div class="stack">
         <div class="card card-pad stack">
@@ -172,6 +178,16 @@ async function openRequest(id, onChange) {
         <div class="card card-pad stack"><h3 class="section-title">History</h3><ul class="timeline" id="rqHistory"></ul></div>
       </div></div>`
   });
+
+  // The room picture is private: a link valid for one hour is created for the signed-in admin.
+  if (room && room.image) {
+    sb.storage.from('room-designs').createSignedUrl(room.image, 3600).then(({ data, error }) => {
+      const box = $('#rqRoomImg', d.el);
+      if (!box) return;
+      box.innerHTML = error || !data ? '<p class="muted">The picture could not be loaded.</p>'
+        : `<a href="${esc(data.signedUrl)}" target="_blank" rel="noopener"><img src="${esc(data.signedUrl)}" alt="The customer's room with the chosen lights" style="width:100%;border-radius:12px;background:var(--sand)"></a><small class="hint">Click to open full size.</small>`;
+    });
+  }
 
   const drawSide = async () => {
     const [notes, events] = await Promise.all([

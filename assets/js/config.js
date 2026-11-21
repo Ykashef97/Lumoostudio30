@@ -27,6 +27,13 @@ export const LUMA_PRICING = {
   bulbs: Number(pricing.bulbs) || 0
 };
 
+// Room Studio (3D lights in the customer's room photo): on unless switched off in Settings.
+const roomSettings = settings.roomStudio || {};
+export const LUMA_ROOM = {
+  enabled: roomSettings.enabled !== false,
+  evening: Number.isFinite(Number(roomSettings.evening)) && roomSettings.evening !== '' ? Number(roomSettings.evening) : 0.35
+};
+
 export const LUMA_REQUESTS = {
   calendarUrl: settings.calendarUrl || ''
 };
