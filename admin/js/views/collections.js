@@ -59,6 +59,7 @@ async function openCollection(col, onSaved) {
       <div data-designs></div>`,
     foot: `${isNew ? '' : `<button class="btn btn--danger left" type="button" data-delete>${icon('close')}Delete collection</button>`}
       <button class="btn btn--outline" type="button" data-dialog-close>Cancel</button><button class="btn btn--primary" type="button" data-save>Save</button>`,
+    guard: true,
     onClose: () => setDirty(false)
   });
   $('#coStatus', d.el).value = c.status;

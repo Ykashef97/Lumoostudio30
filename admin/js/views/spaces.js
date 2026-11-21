@@ -50,7 +50,6 @@ async function openSpace(space, onSaved) {
   const isNew = !space;
   const s = space ? { ...space } : { name: '', slug: '', title: '', label: '', intro: '', icon: 'lamp', image_id: null, mobile_image_id: null, focal_x: 0.5, focal_y: 0.5, status: 'hidden' };
   const selected = isNew ? [] : (await q(sb.from('space_designs').select('design_id, position').eq('space_id', s.id).order('position'))).map(x => x.design_id);
-  let changed = false;
   const d = dialog({
     title: isNew ? 'Add a room' : 'Edit ' + s.name,
     size: 'wide',
@@ -74,11 +73,12 @@ async function openSpace(space, onSaved) {
       <div data-designs></div>`,
     foot: `${isNew ? '' : `<button class="btn btn--danger left" type="button" data-delete>${icon('close')}Delete room</button>`}
       <button class="btn btn--outline" type="button" data-dialog-close>Cancel</button><button class="btn btn--primary" type="button" data-save>Save</button>`,
+    guard: true,
     onClose: () => setDirty(false)
   });
   $('#spStatus', d.el).value = s.status;
-  designList($('[data-designs]', d.el), selected, designs, mmap, { label: 'Designs in this room', onChange: () => { changed = true; } });
-  bindImageSlots(d.el, (name, media) => { s[name] = media ? media.id : null; changed = true; });
+  designList($('[data-designs]', d.el), selected, designs, mmap, { label: 'Designs in this room', onChange: () => { d.changed = true; } });
+  bindImageSlots(d.el, (name, media) => { s[name] = media ? media.id : null; d.changed = true; });
   const nameInput = $('#spName', d.el), slugInput = $('#spSlug', d.el);
   let slugTouched = !isNew;
   slugInput.addEventListener('input', () => { slugTouched = true; $('[data-slug-show]', d.el).textContent = slugify(slugInput.value) || '…'; });
@@ -105,7 +105,7 @@ async function openSpace(space, onSaved) {
       const r = image.getBoundingClientRect();
       s.focal_x = Math.round(Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * 100) / 100;
       s.focal_y = Math.round(Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)) * 100) / 100;
-      place(); changed = true;
+      place(); d.changed = true;
       $('[data-focal-show]', d.el).textContent = `${Math.round(s.focal_x * 100)}% across, ${Math.round(s.focal_y * 100)}% down`;
     });
   });

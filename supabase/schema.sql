@@ -233,6 +233,14 @@ create table if not exists public.design_likes (
   updated_at timestamptz not null default now()
 );
 
+-- Photo files that were replaced or deleted in the portal. The live website (or a version
+-- that can still be restored) may still show them, so they are only removed from storage
+-- once no recent published version uses them (see media_trash_due).
+create table if not exists public.media_trash (
+  path text primary key,
+  created_at timestamptz not null default now()
+);
+
 -- ---------------------------------------------------------------------
 -- Triggers: updated_at and the activity log
 -- ---------------------------------------------------------------------
@@ -273,7 +281,7 @@ declare t text;
 begin
   foreach t in array array['media_folders', 'media', 'designs', 'collections', 'collection_designs', 'spaces', 'space_designs',
                            'site_content', 'site_snapshots', 'admin_settings', 'consultation_requests', 'request_notes',
-                           'request_events', 'admin_activity', 'sync_runs', 'design_likes'] loop
+                           'request_events', 'admin_activity', 'sync_runs', 'design_likes', 'media_trash'] loop
     execute format('alter table public.%I enable row level security', t);
     execute format('drop policy if exists admin_all on public.%I', t);
     execute format('create policy admin_all on public.%I for all to authenticated using (public.is_admin()) with check (public.is_admin())', t);
@@ -401,6 +409,17 @@ language sql stable security definer set search_path = public as $$
     union all select 'Room', name from spaces where image_id = media_id or mobile_image_id = media_id
     union all select 'Page', initcap(area) from site_content where position(media_id::text in data::text) > 0
   ) u
+$$;
+
+-- Old photo files that can now be deleted: no image record uses them and none of the
+-- 15 most recent published versions (the ones Settings can restore) mentions them.
+create or replace function public.media_trash_due() returns setof text
+language sql stable security definer set search_path = public as $$
+  select t.path from media_trash t
+  where public.is_admin()
+    and not exists (select 1 from media m where t.path in (m.path, m.medium_path, m.thumb_path))
+    and not exists (select 1 from (select data from site_snapshots order by id desc limit 15) s
+                    where position(t.path in s.data::text) > 0)
 $$;
 
 create or replace function public.admin_dashboard() returns jsonb
@@ -590,10 +609,10 @@ grant execute on function public.sheet_sync_pending(int), public.sheet_mark_sync
 grant select, insert, update on public.consultation_requests, public.sync_runs to service_role;
 grant usage, select on all sequences in schema public to service_role;
 revoke execute on function public.preview_site(), public.publish_site(text), public.republish_snapshot(bigint),
-  public.site_status(), public.media_usage(uuid), public.admin_dashboard(),
+  public.site_status(), public.media_usage(uuid), public.media_trash_due(), public.admin_dashboard(),
   public.set_request_status(text, text), public.add_request_note(text, text) from public, anon;
 grant execute on function public.preview_site(), public.publish_site(text), public.republish_snapshot(bigint),
-  public.site_status(), public.media_usage(uuid), public.admin_dashboard(),
+  public.site_status(), public.media_usage(uuid), public.media_trash_due(), public.admin_dashboard(),
   public.set_request_status(text, text), public.add_request_note(text, text) to authenticated;
 
 -- ---------------------------------------------------------------------
