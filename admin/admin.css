@@ -28,6 +28,16 @@
   --shadow: 0 10px 30px rgb(32 34 30 / .08);
   --shadow-lg: 0 24px 64px rgb(20 18 15 / .28);
   --side: 248px;
+  /* Business dashboard charts: one colour for a single series, and one per request status
+     (alternating dark and light so neighbours stay apart; every part is also named in a legend). */
+  --chart: var(--olive);
+  --chart-hover: var(--espresso-soft);
+  --st-new: #2f5f86;
+  --st-contacted: #8a6fc4;
+  --st-meeting: #d29a2e;
+  --st-progress: #3f9a8f;
+  --st-completed: #596147;
+  --st-cancelled: #cbc6b8;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -143,6 +153,89 @@ button { cursor: pointer; }
 .stat span { font-size: 13px; color: var(--muted); }
 a.stat:hover { border-color: var(--line-strong); box-shadow: var(--shadow); }
 .dash-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+
+/* ---------- Business dashboard ---------- */
+.biz-body { display: grid; gap: 24px; min-width: 0; }
+.biz-body[aria-busy="true"] { cursor: progress; }
+.biz-body .card + .card { margin-top: 0; } /* cards sit side by side in grids here */
+.biz-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+.biz-period { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+/* The browser's own arrow sat squeezed against the rounded edge, so it is replaced by our icon. */
+.select-pill { position: relative; display: inline-flex; }
+.select-pill select { appearance: none; -webkit-appearance: none; min-height: 44px; width: 100%; padding: 0 44px 0 18px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--surface); color: var(--ink); font-size: 14px; font-weight: 500; cursor: pointer; }
+.select-pill select:hover { border-color: var(--muted); }
+.select-pill select:focus-visible { outline: none; border-color: var(--olive); box-shadow: 0 0 0 3px rgb(89 97 71 / .18); }
+.select-pill .icon { position: absolute; top: 50%; right: 16px; width: 16px; height: 16px; color: var(--muted); transform: translateY(-50%) rotate(90deg); pointer-events: none; }
+.kpis { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.kpis .stat { align-content: start; }
+.kpis .stat small { font-size: 12px; line-height: 1.4; color: var(--muted); }
+/* Cards that open a list carry a small arrow; cards without one are information only. */
+.kpis a.stat { position: relative; padding-right: 40px; }
+.kpis a.stat > .icon { position: absolute; top: 18px; right: 16px; width: 16px; height: 16px; color: var(--muted); transition: transform .15s ease; }
+.kpis a.stat:hover > .icon { color: var(--ink); transform: translateX(2px); }
+.stat--warn { border-color: var(--warn); background: var(--warn-soft); }
+.stat--warn > .icon { color: var(--warn) !important; }
+.stat--warn span, .stat--warn b, .stat--warn small { color: var(--warn); }
+.biz-three { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 20px; align-items: start; }
+.card--dashed { border-style: dashed; border-color: var(--line-strong); background: transparent; }
+.card-foot { padding: 12px 22px; border-top: 1px solid var(--line); }
+.sub-head { margin-top: 6px; font: 600 14px/1.3 var(--sans); }
+
+.colchart, .stackbar { display: grid; gap: 10px; margin: 0; min-width: 0; }
+.colchart-plot { position: relative; height: 180px; margin: 8px 0 0 34px; }
+.grid-line { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--line); }
+.grid-line--base { border-top: 1px solid var(--line-strong); }
+.grid-line b { position: absolute; right: calc(100% + 8px); top: -9px; font-size: 12px; font-weight: 400; line-height: 16px; color: var(--muted); }
+.colchart-bars { position: absolute; inset: 0; display: flex; gap: var(--gap, 2px); }
+.colchart-bars .col { display: flex; flex: 1 1 0; min-width: 0; align-items: flex-end; }
+.colchart-bars .col i { display: block; width: 100%; max-width: 40px; margin: 0 auto; border-radius: 4px 4px 0 0; background: var(--chart); }
+.colchart-bars .col:hover i { background: var(--chart-hover); }
+.colchart-prev { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.colchart-prev polyline { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 4 4; stroke-linejoin: round; }
+.colchart-x { display: flex; justify-content: space-between; gap: 8px; margin-left: 34px; font-size: 12px; color: var(--muted); }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); }
+.chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.chart-legend b { font-weight: 600; color: var(--ink); }
+.chart-legend--wrap { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 4px 16px; font-size: 13px; }
+.chart-legend--wrap > span { min-height: 44px; }
+.legend-link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--muted); text-decoration: none; }
+.legend-link .icon { width: 14px; height: 14px; }
+.legend-link:hover { color: var(--ink); }
+.legend-link:hover b { text-decoration: underline; }
+.key { display: inline-block; flex: none; width: 12px; height: 12px; border-radius: 3px; }
+.key--bar { background: var(--chart); }
+.key--line { width: 16px; height: 0; border-top: 2px dashed var(--muted); border-radius: 0; }
+.stackbar-bar { display: flex; gap: 2px; height: 20px; border-radius: 6px; overflow: hidden; background: var(--sand); }
+.stackbar-bar .seg { flex-basis: 0; min-width: 6px; }
+.seg--new { background: var(--st-new); }
+.seg--contacted { background: var(--st-contacted); }
+.seg--meeting_scheduled { background: var(--st-meeting); }
+.seg--in_progress { background: var(--st-progress); }
+.seg--completed { background: var(--st-completed); }
+.seg--cancelled { background: var(--st-cancelled); }
+
+.hbars { display: grid; gap: 12px; }
+.hbar { display: grid; gap: 6px; color: inherit; text-decoration: none; }
+a.hbar { min-height: 44px; align-content: center; }
+a.hbar:hover .hbar-label { text-decoration: underline; }
+.hbar-text { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 14px; }
+.hbar-label { min-width: 0; overflow-wrap: anywhere; }
+.hbar-label small { font-size: 12px; color: var(--muted); }
+.hbar-text b { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.hbar-text b .icon { width: 14px; height: 14px; color: var(--muted); }
+a.hbar:hover .hbar-text b .icon { color: var(--ink); }
+.hbar-track { height: 8px; border-radius: 4px; overflow: hidden; background: var(--sand); }
+.hbar-track i { display: block; height: 100%; border-radius: 4px; background: var(--chart); }
+
+.list > li:not(:last-child) > .list-item { border-bottom: 1px solid var(--line); }
+.attn { min-height: 44px; color: inherit; text-decoration: none; }
+.attn:hover { background: var(--paper); }
+.attn .icon { flex: none; width: 18px; height: 18px; color: var(--muted); }
+.attn > span { display: grid; gap: 2px; min-width: 0; overflow-wrap: anywhere; }
+.attn small { font-size: 12px; color: var(--muted); }
+.missing { display: grid; gap: 12px; font-size: 14px; }
+.missing li { display: flex; align-items: flex-start; gap: 12px; }
+.missing .icon { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--muted); }
 
 .table-wrap { overflow-x: auto; }
 table.table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -305,6 +398,12 @@ table.table { width: 100%; border-collapse: collapse; font-size: 14px; }
   .kv dd { margin-bottom: 8px; }
   .media-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .table .hide-sm { display: none; }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .kpis .stat { padding: 14px; }
+  .kpis .stat b { font-size: 26px; }
+  .kpis .stat:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .biz-period { width: 100%; }
+  .biz-period .select-pill { flex: 1; min-width: 0; }
   .dialog-body { padding: 16px; }
   .backdrop { padding: 10px; align-items: end; }
   /* Filters stack full width on phones, so long option names cannot push the page wider. */

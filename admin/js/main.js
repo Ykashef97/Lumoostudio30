@@ -4,7 +4,8 @@ import { $, $$, esc, toast, fail, dialog, isDirty, setDirty, icon } from './ui.j
 import { cleanTrash } from './upload.js';
 
 const ROUTES = {
-  dashboard: ['Dashboard', () => import('./views/dashboard.js')],
+  business: ['Business dashboard', () => import('./views/business.js')],
+  dashboard: ['Website overview', () => import('./views/dashboard.js')],
   requests: ['Consultation requests', () => import('./views/requests.js')],
   home: ['Homepage', () => import('./views/home.js')],
   spaces: ['Shop by space', () => import('./views/spaces.js')],
@@ -71,7 +72,7 @@ $('#logoutButton').addEventListener('click', async () => {
   if (isDirty() && !confirm('You have unsaved changes. Log out anyway?')) return;
   setDirty(false);
   await sb.auth.signOut();
-  location.hash = '#/dashboard';
+  location.hash = '#/business';
   showLogin('You have logged out.');
 });
 
@@ -91,9 +92,9 @@ function showApp() {
 }
 
 function parseHash() {
-  const raw = location.hash.replace(/^#\/?/, '') || 'dashboard';
+  const raw = location.hash.replace(/^#\/?/, '') || 'business';
   const [name, query = ''] = raw.split('?');
-  return { name: ROUTES[name] ? name : 'dashboard', params: new URLSearchParams(query) };
+  return { name: ROUTES[name] ? name : 'business', params: new URLSearchParams(query) };
 }
 
 function onHashChange() {
@@ -111,7 +112,7 @@ let routeSeq = 0;
 async function route() {
   const seq = ++routeSeq;
   const { name, params } = parseHash();
-  lastHash = location.hash || '#/dashboard';
+  lastHash = location.hash || '#/business';
   const [title, load] = ROUTES[name];
   $('#pageTitle').textContent = title;
   document.title = title + ' · LumaDesign Admin';

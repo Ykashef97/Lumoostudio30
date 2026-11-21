@@ -1,6 +1,6 @@
 # LumaDesign Website Guide
 
-*Updated 20 November 2026 for the owners. No coding knowledge needed.*
+*Updated 21 November 2026 for the owners. No coding knowledge needed.*
 
 The LumaDesign website lets a visitor browse our lights (54 today), explore ideas room by room, design a lamp and turn it 360° in 3D, preview it in a photo of their own room, and then request a quote or book a consultation. It does not take payments. The owners change the content in a private admin portal.
 
@@ -126,7 +126,7 @@ If the database cannot be reached when the customer presses Send, the form hands
 
 ## 5. What works today and what is missing
 
-| Part | Status on 20 Nov 2026 |
+| Part | Status on 21 Nov 2026 |
 | --- | --- |
 | All four pages, menu, search, filters, shortlist, selection | Working. Checked at phone, tablet, laptop and wide-screen sizes |
 | 3D lamp designer | Working for every design, with 360° turning, tilting, zoom, explode and every option shown on the model |
@@ -135,8 +135,9 @@ If the database cannot be reached when the customer presses Send, the form hands
 | Call button | Working (`+20 109 324 4530`) |
 | Consultation form | Working: checks every field, attaches the design and setup, shows a clear confirmation |
 | Consultation requests | Saved in the database and managed in the admin portal. The Google Sheet copy is optional and needs a 10-minute setup |
-| Admin portal | Working and tested on 20 Nov 2026: requests, photos, rooms, preview and publishing |
-| Database kept awake | A daily GitHub job stops the free database from pausing (runs once both branches are pushed) |
+| Admin portal | Working and tested: requests, photos, rooms, preview and publishing |
+| Business dashboard (portal) | Working: inquiry figures, charts and a Needs attention list. Sales, costs, profit and visits are not recorded yet |
+| Database kept awake | A daily GitHub job stops the free database from pausing |
 | Instagram and TikTok | Hidden until we add the links in the portal |
 | Email address, city, opening hours | Hidden until we add them |
 | Prices in the lamp designer | Hidden ("Price: On request") until we enter our real prices in Settings and switch on "Show these prices on the website" |
@@ -189,9 +190,9 @@ A brand-new kind of section, a new page or a new 3D shape still needs a develope
 
 **Preview on a computer.** Double-click `preview.bat` in the project folder. A black window opens and the site appears in the browser at `http://localhost:8124`. Keep the black window open while looking, and close it when finished. Only that computer can see the preview.
 
-**Where the public site lives.** It is hosted free on GitHub Pages, from the GitHub account `Ykashef97`, project `Lumoostudio30`. The public address shows the `refactor` branch.
+**Where the public site lives.** It is hosted free on GitHub Pages, from the GitHub account `Ykashef97`, project `Lumoostudio30`. The public address shows the `main` branch.
 
-**Publish a change.** Save the changed files into the project's history (a "commit") and upload them to GitHub (a "push") on the `refactor` branch. The public site updates by itself one or two minutes later. This needs someone signed in to the GitHub account that owns the project, or invited to it as a collaborator.
+**Publish a change.** Save the changed files into the project's history (a "commit") and upload them to GitHub (a "push"), then merge them into the `main` branch. The public site updates by itself one or two minutes later. This needs someone signed in to the GitHub account that owns the project, or invited to it as a collaborator.
 
 **A new public address.** See [HOW-TO-CREATE-A-NEW-LINK.md](HOW-TO-CREATE-A-NEW-LINK.md).
 
@@ -206,7 +207,7 @@ Possible next steps, only when the reason for them appears:
 | Step | Move here when | Effort and cost |
 | --- | --- | --- |
 | Arabic version of the site | Customers ask for it | Several days |
-| Visitor statistics | We want to know which designs and pages are popular | Half a day. Free options exist |
+| Sales, costs, profit and visitor figures in the Business dashboard | We want to see real sales and profit | Planned in [BUSINESS-DASHBOARD-PROPOSAL.md](BUSINESS-DASHBOARD-PROPOSAL.md), free to run. Start with the meeting questions in [OWNER-DISCOVERY-QUESTIONNAIRE.md](OWNER-DISCOVERY-QUESTIONNAIRE.md) |
 | Our own web address (e.g. lumadesign.com) | Before printing it on cards or ads | An hour plus the yearly domain fee |
 | Online ordering and payment, real booking calendar | Requests outgrow WhatsApp and the portal | Weeks of development, monthly fees, plus privacy and refund policies |
 
@@ -218,7 +219,7 @@ The free Supabase plan includes a 500 MB database and 1 GB of photo storage, far
 
 - [x] Add our WhatsApp number (done: 010 9324 4530)
 - [x] Create the admin account and sign in to the portal
-- [ ] Push both branches (`git push origin refactor main`) so the portal and the daily keep-awake job go live
+- [x] Put the portal and the daily keep-awake job live (merged into `main`)
 - [ ] Optional: set up the Google Sheet copy of requests
 - [ ] Enter our real lamp-designer prices and switch on "Show these prices on the website" (portal: Settings), then Publish. Until then the designer shows "Price: On request"
 - [ ] Read and approve the privacy policy (`privacy.html`)

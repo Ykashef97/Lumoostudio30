@@ -3,7 +3,7 @@ import { sb, q, mediaMap, designsAll, img, slugify, invalidate } from '../api.js
 import { $, esc, icon, loading, empty, toast, fail, dialog, confirmDialog, statusBadge, setDirty } from '../ui.js';
 import { imageSlot, bindImageSlots } from '../widgets.js';
 
-const CATEGORY = { sconces: ['Wall light', 'W'], ceiling: ['Ceiling light', 'C'], chandeliers: ['Chandelier', 'H'] };
+export const CATEGORY = { sconces: ['Wall light', 'W'], ceiling: ['Ceiling light', 'C'], chandeliers: ['Chandelier', 'H'] };
 const state = { search: '', category: '' };
 
 export async function render(root) {

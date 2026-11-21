@@ -66,7 +66,7 @@ Running it again does not create a second account and does not change the passwo
 
 ## Step 6. Publish and sign in
 
-1. Publish the project as usual (commit and push the `refactor` branch). The files `assets/js/backend.js` and `assets/js/site-defaults.js` now contain your project's public address and should be included.
+1. Publish the project as usual (commit, push, and merge into the `main` branch). The files `assets/js/backend.js` and `assets/js/site-defaults.js` now contain your project's public address and should be included.
 2. Open `https://ykashef97.github.io/Lumoostudio30/admin/` and sign in with `admin` and the password.
 3. Go to **Settings → Change password** and choose your own password.
 
