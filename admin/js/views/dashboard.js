@@ -1,6 +1,6 @@
 /* Dashboard: a live overview from the database. */
 import { rpc, img } from '../api.js';
-import { esc, icon, loading, empty, timeAgo, statusBadge } from '../ui.js';
+import { esc, icon, loading, empty, timeAgo, statusBadge, requestLabel } from '../ui.js';
 
 const ACTION = { insert: 'Added', update: 'Updated', delete: 'Deleted', publish: 'Published the website', status: 'Changed status' };
 const ENTITY = { media: 'image', media_folders: 'folder', designs: 'design', collections: 'collection', spaces: 'room', site_content: 'page', admin_settings: 'setting', consultation_requests: 'request', site: '' };
@@ -13,7 +13,7 @@ export async function render(root) {
   root.innerHTML = `
     ${site.unpublished ? `<p class="notice notice--warn">${icon('sparkle')}<span>You have changes that are not live yet. Use <b>Preview</b> to check them and <b>Publish</b> to put them on the website.</span></p>` : ''}
     <div class="stats">
-      <a class="stat" href="#/requests"><b>${r.total}</b><span>Consultation requests</span></a>
+      <a class="stat" href="#/requests"><b>${r.total}</b><span>Requests and quotes</span></a>
       <a class="stat" href="#/requests?status=new"><b>${r.new}</b><span>New, not yet handled</span></a>
       <a class="stat" href="#/requests?status=pending"><b>${r.pending}</b><span>In progress</span></a>
       <a class="stat" href="#/requests?status=completed"><b>${r.completed}</b><span>Completed</span></a>
@@ -25,11 +25,11 @@ export async function render(root) {
     <div class="dash-grid">
       <div class="stack" style="gap:20px">
         <div class="card">
-          <div class="card-head"><div><h2>Latest consultation requests</h2><p>${r.last7days} in the last 7 days</p></div><a class="btn btn--outline btn--sm" href="#/requests">All requests</a></div>
+          <div class="card-head"><div><h2>Latest requests</h2><p>${r.last7days} in the last 7 days</p></div><a class="btn btn--outline btn--sm" href="#/requests">All requests</a></div>
           ${d.latestRequests.length ? `<div class="table-wrap"><table class="table"><tbody>${d.latestRequests.map(x => `
-            <tr class="clickable" data-href="#/requests?id=${encodeURIComponent(x.id)}"><td><span class="cell-main">${esc(x.name)}</span><span class="cell-sub">${esc(x.design_name || 'General consultation')}</span></td>
+            <tr class="clickable" data-href="#/requests?id=${encodeURIComponent(x.id)}"><td><span class="cell-main">${esc(x.name)}</span><span class="cell-sub">${esc(requestLabel(x))}</span></td>
             <td>${statusBadge(x.status)}</td><td class="muted hide-sm">${timeAgo(x.created_at)}</td></tr>`).join('')}</tbody></table></div>`
-            : empty('No consultation requests yet. They appear here as soon as a customer sends one.', 'calendar')}
+            : empty('No requests yet. They appear here as soon as a customer sends a consultation or quote request.', 'calendar')}
         </div>
         <div class="card">
           <div class="card-head"><h2>Recently added images</h2><a class="btn btn--outline btn--sm" href="#/media">Media library</a></div>

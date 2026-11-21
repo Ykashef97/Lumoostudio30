@@ -122,8 +122,11 @@ export function formatDay(iso) {
 }
 
 export function consultationMessage(p) {
-  const lines = ['Hello LumaDesign, I would like to book a consultation.'];
-  if (p.design) {
+  const quote = p.type === 'quote';
+  const items = quote && Array.isArray(p.items) ? p.items : [];
+  const lines = [quote ? 'Hello LumaDesign, I would like a quote' + (items.length ? ' for:' : '.') : 'Hello LumaDesign, I would like to book a consultation.'];
+  items.forEach((x, i) => lines.push((i + 1) + '. ' + x.name + ' (' + x.category + ')' + (x.qty > 1 ? ' × ' + x.qty : '')));
+  if (p.design && !quote) {
     lines.push('', 'Design: ' + p.design.name + ' (' + p.design.category + ', ref ' + p.design.ref + ')');
     if (p.setup) lines.push('My setup: ' + p.setup);
     lines.push('Photo: ' + p.design.image);

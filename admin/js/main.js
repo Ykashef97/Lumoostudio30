@@ -6,7 +6,7 @@ import { cleanTrash } from './upload.js';
 const ROUTES = {
   business: ['Business dashboard', () => import('./views/business.js')],
   dashboard: ['Website overview', () => import('./views/dashboard.js')],
-  requests: ['Consultation requests', () => import('./views/requests.js')],
+  requests: ['Requests and quotes', () => import('./views/requests.js')],
   home: ['Homepage', () => import('./views/home.js')],
   spaces: ['Shop by space', () => import('./views/spaces.js')],
   collections: ['Collections', () => import('./views/collections.js')],

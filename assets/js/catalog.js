@@ -48,6 +48,14 @@ export function fixtureModel(key, index) {
   return (d && d.model) || key + ':' + index;
 }
 
+// The finish the 3D model starts in, matching the product photo (set per design in the admin portal).
+export function fixtureFinish(key, index) {
+  const f = fixtureSpecs(key, index).finish;
+  return f === 'white' || f === 'black' || f === 'brass' ? f : 'brass';
+}
+// Cord that goes with that finish: black with matte black, white otherwise.
+export const cordFor = finish => (finish === 'black' ? 'black' : 'white');
+
 // Short reference shown to customers and used in requests: W-02, C-10, H-05.
 export function refCode(key, index) {
   const d = designAt(key, index);

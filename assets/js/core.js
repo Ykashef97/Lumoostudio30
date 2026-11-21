@@ -177,24 +177,6 @@ function injectSharedMarkup() {
   </div>
 </div>
 
-<div class="dialog-backdrop" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteTitle" hidden>
-  <div class="dialog dialog--narrow">
-    <button class="dialog-close" type="button" data-close-dialog aria-label="Close quote request">${icon('close')}</button>
-    <h2 class="h2 h2--sm" id="quoteTitle">Request a quote</h2>
-    <p class="dialog-lede" id="quoteLede"></p>
-    <ul class="quote-items" id="quoteItems"></ul>
-    <label class="field" for="quoteNote"><span>Anything we should know? <small>(optional)</small></span>
-      <textarea id="quoteNote" rows="3" placeholder="Room size, ceiling height, quantity, when you need it…"></textarea>
-    </label>
-    <div class="quote-actions">
-      <a class="btn btn--primary btn--block" id="quoteWhatsApp" href="#" target="_blank" rel="noopener">${icon('message')}Send on WhatsApp</a>
-      <a class="btn btn--outline" id="quoteEmail" href="#">${icon('mail')}Send by email</a>
-      <button class="btn btn--outline" id="quoteCopy" type="button">${icon('copy')}Copy message</button>
-    </div>
-    <p class="fine">This opens WhatsApp or your email app with the message filled in. Nothing is sent until you press send there.</p>
-  </div>
-</div>
-
 <div class="dialog-backdrop" id="consultModal" role="dialog" aria-modal="true" aria-labelledby="consultTitle" hidden>
   <div class="dialog dialog--narrow dialog--consult">
     <button class="dialog-close" type="button" data-close-dialog aria-label="Close consultation request">${icon('close')}</button>
@@ -224,6 +206,9 @@ function injectSharedMarkup() {
           </label>
         </div>
       </div>
+      <div class="consult-quote" id="consultQuote" hidden>
+        <ul class="quote-items" id="quoteItems"></ul>
+      </div>
       <form class="consult-form" id="consultForm" novalidate>
         <div class="field">
           <label for="cfName">Your name</label>
@@ -249,7 +234,7 @@ function injectSharedMarkup() {
             <label class="pill"><input type="radio" name="contactBy" value="Phone call"><span>${icon('phone')}Phone call</span></label>
           </div>
         </fieldset>
-        <div class="field-row">
+        <div class="field-row" id="cfWhen">
           <div class="field">
             <label for="cfDate">Preferred day <small>(optional)</small></label>
             <input id="cfDate" name="preferredDate" type="date" aria-describedby="cfDateError">
@@ -264,7 +249,7 @@ function injectSharedMarkup() {
           </div>
         </div>
         <div class="field">
-          <label for="cfNotes">What would you like to discuss? <small>(optional)</small></label>
+          <label for="cfNotes"><span id="cfNotesLabel">What would you like to discuss?</span> <small>(optional)</small></label>
           <textarea id="cfNotes" name="notes" rows="3" maxlength="1000" placeholder="Room size, ceiling height, finish ideas, quantity…" aria-describedby="cfNotesCount"></textarea>
           <p class="field-hint" id="cfNotesCount">0 / 1000</p>
         </div>
@@ -274,7 +259,8 @@ function injectSharedMarkup() {
         </div>
         <p class="form-error" id="consultError" role="alert" hidden></p>
         <button class="btn btn--primary btn--block" type="submit" id="consultSubmit">Send request</button>
-        <p class="fine">We only use these details to arrange your consultation. Your name and phone are remembered on this device to save typing next time. <a href="privacy.html">Privacy policy</a></p>
+        <p class="consult-alt" id="consultAlt" hidden>Prefer WhatsApp? <a id="consultAltLink" href="#" target="_blank" rel="noopener">Send the list there instead</a></p>
+        <p class="fine"><span id="consultFineText">We only use these details to arrange your consultation.</span> Your name and phone are remembered on this device to save typing next time. <a href="privacy.html">Privacy policy</a></p>
       </form>
     </div>
 
@@ -504,7 +490,7 @@ function bindShortlist() {
       if (found) addLumaCartItem(fixtureCartItem(found.key, found.index), true);
     });
     designs.forEach(name => addLumaCartItem({ key: 'saved:' + name, name, category: 'Custom lamp' }, true));
-    openQuote();
+    openQuote('shortlist');
   });
 }
 
@@ -585,7 +571,7 @@ function bindFixtureDialog() {
   $('#quoteFixture').addEventListener('click', () => {
     if (!activeFixture) return;
     addLumaCartItem(fixtureCartItem(activeFixture.key, activeFixture.index), true);
-    openQuote();
+    openQuote('details');
   });
   $('#discussFixture').addEventListener('click', () => {
     if (activeFixture) openConsultation({ ...activeFixture, source: 'details' });
@@ -652,33 +638,35 @@ export function addLumaCartItem(item, silent = false) {
   if (!silent) toast('Added to your selection');
 }
 
+// A quote request uses the consultation form without a meeting time, and is saved the same way
+// (it appears in the admin portal as a quote). source: where the button was pressed.
+export function openQuote(source = 'quote') {
+  openConsultation({ quote: true, source: typeof source === 'string' ? source : 'quote' });
+}
+
+// The quote as a WhatsApp message, for customers who prefer to send it there themselves.
 function quoteMessage() {
-  const lines = lumaCartItems.length
-    ? ['Hello LumaDesign, I would like a quote for:', ...lumaCartItems.map((x, i) => (i + 1) + '. ' + x.name + ' (' + x.category + ')' + (x.qty > 1 ? ' × ' + x.qty : ''))]
+  const items = consult.items || [];
+  const lines = items.length
+    ? ['Hello LumaDesign, I would like a quote for:', ...items.map((x, i) => (i + 1) + '. ' + x.name + ' (' + x.category + ')' + (x.qty > 1 ? ' × ' + x.qty : ''))]
     : ['Hello LumaDesign, I would like help choosing lighting for my space.'];
-  const note = $('#quoteNote').value.trim();
+  const note = $('#cfNotes').value.trim();
   if (note) lines.push('', 'Notes: ' + note);
   return lines.join('\n');
 }
 
-function updateQuoteLinks() {
-  const text = quoteMessage();
-  $('#quoteWhatsApp').href = contact.whatsappHref(text) || '#';
-  $('#quoteWhatsApp').hidden = !contact.whatsappDigits;
-  $('#quoteEmail').href = 'mailto:' + (LUMA_CONTACT.email || '') + '?subject=' + encodeURIComponent('Quote request') + '&body=' + encodeURIComponent(text);
-  $('#quoteEmail').hidden = !LUMA_CONTACT.email;
+function updateQuoteAlt() {
+  const show = Boolean(consult.quote && contact.whatsappDigits);
+  $('#consultAlt').hidden = !show;
+  if (show) $('#consultAltLink').href = contact.whatsappHref(quoteMessage());
 }
 
-export function openQuote() {
-  setMenu(false);
-  $('#quoteLede').textContent = lumaCartItems.length
-    ? 'We will reply with the price, lead time and delivery details for:'
-    : 'Your selection is empty, so this sends a general enquiry. Add designs first if you want prices for specific pieces.';
-  $('#quoteItems').innerHTML = lumaCartItems.map(x =>
-    '<li>' + icon('check') + '<span>' + escapeLuma(x.name) + (x.qty > 1 ? ' × ' + x.qty : '') + '</span></li>').join('');
-  $('#quoteItems').hidden = !lumaCartItems.length;
-  updateQuoteLinks();
-  swapDialog($('#quoteModal'));
+// The design a one-piece quote is about (a custom lamp counts as its design), for the request record.
+function quoteDesign(items) {
+  if (items.length !== 1) return null;
+  const parts = items[0].key.split(':');
+  if (parts[0] === 'saved') return null;
+  return parts[0] === 'build' ? (CATEGORY[parts[1]] ? parsePick(parts[1] + ':' + parts[2]) : parsePick(parts[1])) : parsePick(items[0].key);
 }
 
 async function copyText(text, focusAfter) {
@@ -703,12 +691,11 @@ function bindSelectionAndQuote() {
     again.focus();
   });
   $('#clearCart').addEventListener('click', () => { lumaCartItems.length = 0; saveLumaCart(); $('#cartModal [data-close-dialog]').focus(); });
-  $('#quoteCart').addEventListener('click', openQuote);
-  document.addEventListener('click', e => { if (e.target.closest('[data-open-quote]')) openQuote(); });
-  $('#quoteNote').addEventListener('input', updateQuoteLinks);
-  $('#quoteWhatsApp').addEventListener('click', updateQuoteLinks);
-  $('#quoteEmail').addEventListener('click', updateQuoteLinks);
-  $('#quoteCopy').addEventListener('click', () => copyText(quoteMessage(), $('#quoteCopy')));
+  $('#quoteCart').addEventListener('click', () => openQuote('selection'));
+  document.addEventListener('click', e => {
+    const opener = e.target.closest('[data-open-quote]');
+    if (opener) openQuote(opener.dataset.source || 'quote');
+  });
 }
 
 /* =====================================================================
@@ -716,7 +703,7 @@ function bindSelectionAndQuote() {
    ===================================================================== */
 
 const CONTACT_MEMORY = 'lumaContact';
-let consult = { item: null, setup: '', source: '', payload: null, room: null };
+let consult = { item: null, setup: '', source: '', payload: null, room: null, quote: false, items: null };
 
 function consultStep(name) {
   $$('#consultModal .consult-step').forEach(step => { step.hidden = step.dataset.step !== name; });
@@ -724,19 +711,36 @@ function consultStep(name) {
 
 // item: { key, index, setup?, source, room? } — or nothing for a general consultation.
 // room (from the Room Studio): { preview (image URL), blob (JPEG), lines: [text], lamps: [...] }
+// { quote: true, source }: a quote request for the pieces in the selection (no meeting time).
 export function openConsultation(item = {}) {
   setMenu(false);
-  const room = item.room || null;
-  const hasDesign = !room && item.key !== undefined && styleCatalog[item.key];
+  const quote = Boolean(item.quote);
+  const room = quote ? null : item.room || null;
+  const hasDesign = !quote && !room && item.key !== undefined && styleCatalog[item.key];
   const setup = hasDesign ? (item.setup || hooks.currentSetup(item.key, item.index) || '') : (room ? item.setup || '' : '');
-  consult = { item: hasDesign ? { key: item.key, index: item.index } : null, setup, source: item.source || 'general', payload: null, room };
+  const items = quote ? lumaCartItems.map(x => ({ ...x })) : null;
+  consult = { item: hasDesign ? { key: item.key, index: item.index } : null, setup, source: item.source || 'general', payload: null, room, quote, items };
 
-  $('#consultTitle').textContent = room ? 'Send my room design' : hasDesign ? 'Discuss this design' : 'Book a consultation';
-  $('#consultLede').textContent = room
+  $('#consultTitle').textContent = quote ? 'Request a quote' : room ? 'Send my room design' : hasDesign ? 'Discuss this design' : 'Book a consultation';
+  $('#consultLede').textContent = quote
+    ? (items.length
+      ? 'Tell us how to reach you and we will reply with the price, lead time and delivery details for:'
+      : 'Your selection is empty, so this asks us for general advice and prices. Add designs first if you want prices for specific pieces.')
+    : room
     ? 'We will look at your room and the lights you chose, then contact you to talk it through and agree a time.'
     : hasDesign
       ? 'Talk to us about customisation, sizes, finishes or pricing. Tell us how to reach you and we will agree a time.'
       : 'Tell us about your space and how to reach you. We will get in touch to agree a time that suits you.';
+
+  $('#consultQuote').hidden = !(quote && items.length);
+  if (quote) $('#quoteItems').innerHTML = items.map(x =>
+    '<li>' + icon('check') + '<span>' + escapeLuma(x.name) + (x.qty > 1 ? ' × ' + x.qty : '') + '</span></li>').join('');
+  $('#cfWhen').hidden = quote;
+  $('#cfNotesLabel').textContent = quote ? 'Anything we should know?' : 'What would you like to discuss?';
+  $('#cfNotes').placeholder = quote ? 'Room size, ceiling height, quantity, when you need it…' : 'Room size, ceiling height, finish ideas, quantity…';
+  $('#consultFineText').textContent = quote ? 'We only use these details to send your quote.' : 'We only use these details to arrange your consultation.';
+  $('#consultSubmit').textContent = submitLabel();
+  updateQuoteAlt();
 
   $('#consultRoom').hidden = !room;
   if (room) {
@@ -769,6 +773,8 @@ export function openConsultation(item = {}) {
   swapDialog($('#consultModal'));
 }
 
+const submitLabel = () => (consult.quote ? 'Send quote request' : 'Send request');
+
 function formValues() {
   const form = $('#consultForm');
   return {
@@ -776,8 +782,8 @@ function formValues() {
     phone: form.cfPhone.value.trim(),
     email: form.cfEmail.value.trim(),
     contactBy: form.contactBy.value || 'WhatsApp',
-    preferredDate: form.cfDate.value,
-    preferredTime: form.cfTime.value,
+    preferredDate: consult.quote ? '' : form.cfDate.value,
+    preferredTime: consult.quote ? '' : form.cfTime.value,
     notes: form.cfNotes.value.trim(),
     website: form.cfWebsite.value
   };
@@ -811,12 +817,13 @@ function showErrors(errors) {
 }
 
 function buildPayload(values) {
-  const { item } = consult;
-  const includeSetup = consult.setup && $('#consultSetup').checked;
+  const item = consult.quote ? quoteDesign(consult.items) : consult.item;
+  const includeSetup = !consult.quote && consult.setup && $('#consultSetup').checked;
   return {
     id: newRequestId(),
     createdAt: new Date().toISOString(),
-    type: 'consultation',
+    type: consult.quote ? 'quote' : 'consultation',
+    items: consult.quote ? consult.items.map(({ key, name, category, qty }) => ({ key, name, category, qty })) : undefined,
     source: consult.source,
     page: location.href.split('#')[0],
     name: values.name,
@@ -844,11 +851,13 @@ function showDone(payload, id) {
   const how = payload.contactBy === 'Phone call' ? 'call you' : 'message you on WhatsApp';
   const when = [formatDay(payload.preferredDate), payload.preferredTime].filter(Boolean).join(', ');
   const phone = payload.phone.replace(/^(0\d{2})(\d{4})(\d{4})$/, '$1 $2 $3');
-  $('#consultDoneText').textContent = 'Thank you, ' + firstName + '. We will ' + how + ' at ' + phone +
-    ' to agree a time' + (when ? ', keeping your preference (' + when + ') in mind.' : '.') +
-    ' Your consultation is confirmed once we have agreed a time together.';
+  $('#consultDoneText').textContent = payload.type === 'quote'
+    ? 'Thank you, ' + firstName + '. We will ' + how + ' at ' + phone + ' with the price, lead time and delivery details.'
+    : 'Thank you, ' + firstName + '. We will ' + how + ' at ' + phone +
+      ' to agree a time' + (when ? ', keeping your preference (' + when + ') in mind.' : '.') +
+      ' Your consultation is confirmed once we have agreed a time together.';
   $('#consultDoneRef').textContent = id;
-  const calendar = String(LUMA_REQUESTS.calendarUrl || '').trim();
+  const calendar = payload.type === 'quote' ? '' : String(LUMA_REQUESTS.calendarUrl || '').trim();
   $('#consultCalendar').hidden = !calendar;
   if (calendar) $('#consultCalendarLink').href = calendar;
   consultStep('done');
@@ -869,7 +878,8 @@ function showWhatsAppStep(payload, reason) {
 
 function bindConsultation() {
   const form = $('#consultForm');
-  form.cfNotes.addEventListener('input', () => { $('#cfNotesCount').textContent = form.cfNotes.value.length + ' / 1000'; });
+  form.cfNotes.addEventListener('input', () => { $('#cfNotesCount').textContent = form.cfNotes.value.length + ' / 1000'; updateQuoteAlt(); });
+  $('#consultAltLink').addEventListener('click', () => { $('#consultAltLink').href = contact.whatsappHref(quoteMessage()); writeSession(CONSULT_SENT, '1'); });
   // Clear a field's error as soon as it is corrected.
   Object.entries(errorFields).forEach(([field, id]) => {
     $('#' + id).addEventListener('input', () => {
@@ -907,7 +917,7 @@ function bindConsultation() {
     }
     const result = await submitRequest(payload);
     submit.disabled = false;
-    submit.textContent = 'Send request';
+    submit.textContent = submitLabel();
     if (result.ok) {
       form.cfNotes.value = '';
       $('#cfNotesCount').textContent = '0 / 1000';

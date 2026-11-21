@@ -4,7 +4,7 @@ import { pageContent, fill, richText, mediaById, designCount } from './content.j
 import { mediaUrl, focalPosition } from './media.js';
 import {
   CATEGORY, CATEGORY_ORDER, styleCatalog, FINISH, COLLECTIONS, SPACES, SPACE_ORDER,
-  fixtureImage, fixtureModel, refCode, parsePick, locateDesign
+  fixtureImage, fixtureModel, fixtureFinish, cordFor, refCode, parsePick, locateDesign
 } from './catalog.js';
 import {
   $, $$, icon, escapeLuma, applyTone, toast, scrollToSection, hooks, productCardHTML, bindProductGrid,
@@ -243,7 +243,7 @@ hooks.search = () => {
 
 const firstKey = CATEGORY_ORDER[0];
 const build = window.lumaBuild = {
-  shade: 42, style: 'brass', cord: 'white',
+  shade: 42, style: fixtureFinish(firstKey, 0), cord: cordFor(fixtureFinish(firstKey, 0)),
   fixtureCategory: firstKey, fixtureIndex: 0, fixtureName: styleCatalog[firstKey].items[0], fixtureModel: fixtureModel(firstKey, 0),
   explode: false, customised: false
 };
@@ -308,6 +308,9 @@ function setBuildFixture(key, index) {
   build.fixtureIndex = index;
   build.fixtureName = styleCatalog[key].items[index];
   build.fixtureModel = fixtureModel(key, index);
+  // Each design opens in the finish of its photo; the customer can change it afterwards.
+  build.style = fixtureFinish(key, index);
+  build.cord = cordFor(build.style);
   $('#builderCategory').value = key;
   $('#builderSearch').value = '';
   renderBuilderStyles();
@@ -422,7 +425,7 @@ function buildCartItem() {
   return { key: ['build', refCode(build.fixtureCategory, build.fixtureIndex), build.shade, build.style, needsCord(build) ? build.cord : 'none'].join(':'), name: buildLabel(build), category: 'Custom lamp' };
 }
 $('#addBuildToCart').addEventListener('click', () => addLumaCartItem(buildCartItem()));
-$('#quoteBuild').addEventListener('click', () => { addLumaCartItem(buildCartItem(), true); openQuote(); });
+$('#quoteBuild').addEventListener('click', () => { addLumaCartItem(buildCartItem(), true); openQuote('designer'); });
 $('#consultBuild').addEventListener('click', () => openConsultation({ key: build.fixtureCategory, index: build.fixtureIndex, setup: buildSummary(build), source: 'designer' }));
 $('#saveDesign').addEventListener('click', () => { saveDesign(buildLabel(build)); toast('Design saved to your shortlist'); });
 $('#roomBuild').addEventListener('click', () => {

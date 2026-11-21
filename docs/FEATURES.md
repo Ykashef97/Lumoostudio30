@@ -29,14 +29,15 @@ The website has two sides:
 
 ### Website overview (formerly Dashboard)
 
-- Counts of consultation requests: new, in progress and completed.
+- Counts of requests (consultations and quotes): new, in progress and completed.
 - The latest requests, the most-liked designs (hearts), recent uploads and recent changes in the portal.
 - Whether the website has unpublished changes, and when the Google Sheet was last updated (if used).
 
-### Consultation requests
+### Requests and quotes
 
 - See every request: name, phone, email, how they want to be contacted, preferred day and time, their notes, the design they asked about, and the size, finish and cord they chose in the lamp designer.
-- Search by name, phone or reference. Filter by status or date. Sort newest or oldest first. Pages of 25.
+- **Quote requests** are in the same list with a **Quote** tag: the pieces and quantities the customer chose, their notes and contact details.
+- Search by name, phone, reference or design. Filter by type (consultations or quotes), status or date. Sort newest or oldest first. Pages of 25.
 - Change the status: **New → Contacted → Meeting scheduled → In progress → Completed** (or **Cancelled**). Every change is recorded in the request's history.
 - Add **private notes**. Customers never see them.
 - Open WhatsApp, call the customer, or copy their details with one click.
@@ -57,7 +58,7 @@ Every content change is a **draft** until it is published:
 | **Homepage** | The headline and buttons. The slideshow: photos, room labels, the line under the headline, and descriptions for blind visitors. The notice bar at the top of every page. Show, hide or reorder each section and edit its text. The shortcut cards, the "How it works" steps and the promises. A strip of featured designs (off until designs are chosen) |
 | **Shop by space** | Add, edit, delete, reorder, show or hide rooms. For each room: name, page title, introduction, icon, web address, a banner photo, an optional phone photo, the focal point (the part of the photo kept in view on phones), and which designs appear and in what order. Kitchen is prepared but hidden |
 | **Collections** | The filters above the product grid. Add your own (for example "New arrivals"), with a description, a cover photo and its designs in order. A design can be in several collections |
-| **Designs** | Add, edit, hide or delete products. For each: name, reference (W-02 style), type (wall, ceiling, chandelier), description, price, size, material, lead time, photo, 3D shape used in the lamp designer, and order. See how many hearts each design has |
+| **Designs** | Add, edit, hide or delete products. For each: name, reference (W-02 style), type (wall, ceiling, chandelier), description, price, size, material, lead time, photo, 3D shape used in the lamp designer, the finish the 3D model starts in, and order. See how many hearts each design has |
 | **About us** | The banner (text and photo). Blocks that can be added, reordered, hidden or removed: story with photo, text, comparison, steps, values, photo strip of designs, closing message with buttons |
 | **Contact us** | Phone, WhatsApp number, email, city, opening hours, Instagram, TikTok and any other links. The Contact page text and banner photo. These details also update the footer and every WhatsApp button on the site |
 | **Settings** | Lamp designer prices (per size, cord, bulbs) and a switch to show them on the website (off until real prices are entered). An optional online booking link. The optional Google Sheet copy of requests. Published versions with Restore |
@@ -78,7 +79,6 @@ Every content change is a **draft** until it is published:
 - Change the page layout or the visual design.
 - Add new kinds of pages or sections, or new 3D shapes.
 - Take online orders or payments.
-- Quote requests arrive on WhatsApp, not in the portal.
 
 ---
 
@@ -122,7 +122,7 @@ No account is needed. It works on phones, tablets and computers.
 ### Selection and quote
 
 - Collect designs and custom lamps in a selection (the bag icon), with quantities.
-- **Request a quote:** opens WhatsApp with the message already written. Email also appears once the owners add an email address. The message can also be copied.
+- **Request a quote:** a short form (name, phone, optional email and notes) sends the selection to LumaDesign and shows a reference such as `LD-…`. It appears in the admin portal under Requests and quotes. Customers who prefer WhatsApp can send the list there instead. If the website cannot reach the database, the request is handed to WhatsApp, already written.
 
 ### Book a consultation
 
@@ -169,4 +169,4 @@ No account is needed. It works on phones, tablets and computers.
 | Google Sheet copy of requests | Optional, not set up | Free |
 | 3D engine and fonts | Three.js and Google Fonts, loaded from the internet | Free |
 
-If the database is ever unreachable, the website still opens with its built-in content, and consultation requests fall back to WhatsApp.
+If the database is ever unreachable, the website still opens with its built-in content, and consultation and quote requests fall back to WhatsApp.

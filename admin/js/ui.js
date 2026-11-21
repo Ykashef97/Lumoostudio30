@@ -190,4 +190,15 @@ export const STATUS_LABEL = {
   new: 'New', contacted: 'Contacted', meeting_scheduled: 'Meeting scheduled', in_progress: 'In progress',
   completed: 'Completed', cancelled: 'Cancelled', published: 'Live', hidden: 'Hidden'
 };
+// What a request is about, in a few words: a quote's pieces, the design, a room design, or general.
+// r: a consultation_requests row, or a dashboard row with `pieces` (the number of items in a quote).
+export function requestLabel(r) {
+  const pieces = r.pieces ?? (Array.isArray(r.items) ? r.items.length : 0);
+  if (r.kind === 'quote') {
+    if (!pieces) return 'Quote request (no pieces chosen)';
+    return 'Quote: ' + (pieces === 1 && r.design_name ? r.design_name : pieces + ' items');
+  }
+  return r.design_name || (r.room ? 'Room design' : 'General consultation');
+}
+
 export const statusBadge = status => `<span class="status status--${esc(status)}">${esc(STATUS_LABEL[status] || status)}</span>`;

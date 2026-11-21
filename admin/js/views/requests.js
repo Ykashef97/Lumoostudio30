@@ -1,11 +1,15 @@
-/* Consultation requests: find, read, update status, keep private notes, contact the customer, export. */
+/* Requests and quotes: find, read, update status, keep private notes, contact the customer, export.
+   Consultation requests and quote requests (kind 'quote', with the pieces in items) share one table. */
 import { sb, q, rpc } from '../api.js';
-import { $, esc, icon, loading, empty, toast, fail, dialog, fmtDate, timeAgo, statusBadge, STATUS_LABEL } from '../ui.js';
+import { $, esc, icon, loading, empty, toast, fail, dialog, fmtDate, timeAgo, statusBadge, requestLabel, STATUS_LABEL } from '../ui.js';
+import { SOURCE } from './business.js';
 
 const PAGE_SIZE = 25;
 const STATUSES = ['new', 'contacted', 'meeting_scheduled', 'in_progress', 'completed', 'cancelled'];
 const PENDING = ['contacted', 'meeting_scheduled', 'in_progress'];
-const state = { search: '', status: '', from: '', to: '', sort: 'newest', page: 1 };
+const state = { search: '', status: '', kind: '', from: '', to: '', sort: 'newest', page: 1 };
+const KIND_LABEL = { consultation: 'Consultation', quote: 'Quote' };
+const quoteTag = r => (r.kind === 'quote' ? ' <span class="kind-tag">Quote</span>' : '');
 
 function whatsappNumber(phone) {
   const digits = String(phone || '').replace(/\D/g, '');
@@ -18,8 +22,10 @@ function buildQuery(base) {
   let query = base;
   if (state.status === 'pending') query = query.in('status', PENDING);
   else if (state.status) query = query.eq('status', state.status);
+  if (state.kind) query = query.eq('kind', state.kind);
   const term = state.search.trim().replace(/[,()%*\\]/g, ' ').trim();
-  if (term) query = query.or(['name', 'phone', 'id', 'design_name', 'email'].map(c => `${c}.ilike.*${term}*`).join(','));
+  // setup holds the custom setup, or a quote's list of pieces.
+  if (term) query = query.or(['name', 'phone', 'id', 'design_name', 'email', 'setup'].map(c => `${c}.ilike.*${term}*`).join(','));
   if (state.from) query = query.gte('created_at', new Date(state.from + 'T00:00:00').toISOString());
   if (state.to) query = query.lte('created_at', new Date(state.to + 'T23:59:59').toISOString());
   return query.order('created_at', { ascending: state.sort === 'oldest' });
@@ -28,18 +34,19 @@ function buildQuery(base) {
 export async function render(root, params) {
   // A link from a dashboard (status, from, to, q) shows exactly that list, replacing earlier filters.
   // Those filters last for that visit only: opening the page from the menu afterwards shows everything.
-  if (['status', 'from', 'to', 'q'].some(k => params.has(k))) {
+  if (['status', 'from', 'to', 'q', 'kind'].some(k => params.has(k))) {
     const day = v => (/^\d{4}-\d{2}-\d{2}$/.test(v || '') ? v : '');
     Object.assign(state, { status: params.get('status') || '', from: day(params.get('from')), to: day(params.get('to')),
-      search: (params.get('q') || '').slice(0, 80), page: 1, fromLink: true });
+      kind: KIND_LABEL[params.get('kind')] ? params.get('kind') : '', search: (params.get('q') || '').slice(0, 80), page: 1, fromLink: true });
   } else if (state.fromLink && !params.has('id')) {
-    Object.assign(state, { status: '', from: '', to: '', search: '', page: 1, fromLink: false });
+    Object.assign(state, { status: '', kind: '', from: '', to: '', search: '', page: 1, fromLink: false });
   }
   root.innerHTML = `
     <div class="card">
       <div class="card-head">
         <div class="toolbar">
           <label class="search"><span class="visually-hidden">Search requests</span>${icon('search')}<input type="search" id="rqSearch" placeholder="Name, phone, request ID or design" value="${esc(state.search)}"></label>
+          <select id="rqKind" aria-label="Type"><option value="">Requests and quotes</option><option value="consultation">Consultations only</option><option value="quote">Quotes only</option></select>
           <select id="rqStatus" aria-label="Status"><option value="">All statuses</option><option value="pending">Pending (contacted, scheduled or in progress)</option>${STATUSES.map(s => `<option value="${s}">${STATUS_LABEL[s]}</option>`).join('')}</select>
           <label class="row" style="gap:6px"><span class="muted">From</span><input type="date" id="rqFrom" value="${state.from}"></label>
           <label class="row" style="gap:6px"><span class="muted">To</span><input type="date" id="rqTo" value="${state.to}"></label>
@@ -51,12 +58,14 @@ export async function render(root, params) {
       <div class="pager" id="rqPager" hidden></div>
     </div>`;
   $('#rqStatus').value = state.status;
+  $('#rqKind').value = state.kind;
   $('#rqSort').value = state.sort;
 
   let timer;
   const refilter = () => { state.page = 1; state.fromLink = false; load(); };
   $('#rqSearch').addEventListener('input', e => { state.search = e.target.value; clearTimeout(timer); timer = setTimeout(refilter, 300); });
   $('#rqStatus').addEventListener('change', e => { state.status = e.target.value; refilter(); });
+  $('#rqKind').addEventListener('change', e => { state.kind = e.target.value; refilter(); });
   $('#rqFrom').addEventListener('change', e => { state.from = e.target.value; refilter(); });
   $('#rqTo').addEventListener('change', e => { state.to = e.target.value; refilter(); });
   $('#rqSort').addEventListener('change', e => { state.sort = e.target.value; refilter(); });
@@ -79,14 +88,14 @@ export async function render(root, params) {
       const { data, count } = await q(buildQuery(sb.from('consultation_requests').select('*', { count: 'exact' })).range(start, start + PAGE_SIZE - 1));
       if (!table.isConnected) return; // the admin moved to another page while this was loading
       table.innerHTML = data.length ? `<div class="table-wrap"><table class="table">
-        <thead><tr><th>Request</th><th>Customer</th><th>Design</th><th>Status</th><th class="hide-sm">Contact by</th></tr></thead>
+        <thead><tr><th>Request</th><th>Customer</th><th>About</th><th>Status</th><th class="hide-sm">Contact by</th></tr></thead>
         <tbody>${data.map(r => `<tr class="clickable" data-id="${esc(r.id)}" tabindex="0">
-          <td><span class="cell-main">${esc(r.id)}</span><span class="cell-sub">${fmtDate(r.created_at)}</span></td>
+          <td><span class="cell-main">${esc(r.id)}${quoteTag(r)}</span><span class="cell-sub">${fmtDate(r.created_at)}</span></td>
           <td><span class="cell-main">${esc(r.name)}</span><span class="cell-sub">${esc(r.phone)}</span></td>
-          <td><div class="row" style="flex-wrap:nowrap">${r.design_image ? `<img class="thumb" src="${esc(r.design_image)}" alt="">` : ''}<span><span class="cell-main">${esc(r.design_name || (r.room ? 'Room design' : 'General consultation'))}</span><span class="cell-sub">${esc(r.setup || r.design_ref || '')}</span></span></div></td>
+          <td><div class="row" style="flex-wrap:nowrap">${r.design_image ? `<img class="thumb" src="${esc(r.design_image)}" alt="">` : ''}<span><span class="cell-main">${esc(requestLabel(r))}</span><span class="cell-sub">${esc(r.setup || r.design_ref || '')}</span></span></div></td>
           <td>${statusBadge(r.status)}</td>
           <td class="hide-sm">${esc(r.contact_by)}</td></tr>`).join('')}</tbody></table></div>`
-        : empty(state.search || state.status || state.from || state.to ? 'No requests match these filters.' : 'No consultation requests yet.', 'calendar');
+        : empty(state.search || state.status || state.kind || state.from || state.to ? 'No requests match these filters.' : 'No requests or quotes yet.', 'calendar');
       const pages = Math.max(1, Math.ceil(count / PAGE_SIZE));
       pager.hidden = count <= PAGE_SIZE;
       pager.innerHTML = `<span>${count} request${count === 1 ? '' : 's'} · page ${state.page} of ${pages}</span>
@@ -111,9 +120,9 @@ async function exportCsv() {
       if (batch.length < 1000) break;
     }
     if (!rows.length) return toast('There are no requests to export with these filters.', 'error');
-    const cols = [['id', 'Request ID'], ['created_at', 'Received'], ['status', 'Status'], ['name', 'Name'], ['phone', 'Phone'], ['email', 'Email'],
+    const cols = [['id', 'Request ID'], ['created_at', 'Received'], ['kind', 'Type'], ['status', 'Status'], ['name', 'Name'], ['phone', 'Phone'], ['email', 'Email'],
       ['contact_by', 'Contact by'], ['preferred_date', 'Preferred day'], ['preferred_time', 'Preferred time'], ['design_name', 'Design'],
-      ['design_ref', 'Ref'], ['setup', 'Custom setup'], ['notes', 'Customer notes'], ['source', 'Started from']];
+      ['design_ref', 'Ref'], ['setup', 'Custom setup or pieces'], ['notes', 'Customer notes'], ['source', 'Started from']];
     // Text a customer typed that starts with = + - @ (or a tab) could run as a formula in Excel;
     // a leading apostrophe keeps it as plain text.
     const cell = v => {
@@ -121,10 +130,10 @@ async function exportCsv() {
       if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
       return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
     };
-    const csv = [cols.map(c => c[1]).join(','), ...rows.map(r => cols.map(([k]) => cell(k === 'status' ? STATUS_LABEL[r[k]] : k === 'created_at' ? fmtDate(r[k]) : k === 'phone' ? "'" + r[k] : r[k])).join(','))].join('\r\n');
+    const csv = [cols.map(c => c[1]).join(','), ...rows.map(r => cols.map(([k]) => cell(k === 'status' ? STATUS_LABEL[r[k]] : k === 'kind' ? KIND_LABEL[r[k]] || r[k] : k === 'created_at' ? fmtDate(r[k]) : k === 'phone' ? "'" + r[k] : r[k])).join(','))].join('\r\n');
     // The byte-order mark lets Excel read Arabic and other non-Latin text correctly.
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
-    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'consultation-requests-' + new Date().toISOString().slice(0, 10) + '.csv' });
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'requests-' + new Date().toISOString().slice(0, 10) + '.csv' });
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     toast(rows.length + ' request' + (rows.length === 1 ? '' : 's') + ' exported');
@@ -138,10 +147,12 @@ async function openRequest(id, onChange) {
   } catch (error) { return fail(error); }
   if (!r) return toast('Request ' + id + ' was not found.', 'error');
   const room = r.room && Array.isArray(r.room.lamps) ? r.room : null;
+  const quote = r.kind === 'quote';
+  const pieces = quote && Array.isArray(r.items) ? r.items : [];
   const wa = whatsappNumber(r.phone);
-  const greeting = encodeURIComponent(`Hello ${r.name.split(/\s+/)[0]}, this is LumaDesign about your consultation request ${r.id}${r.design_name ? ' (' + r.design_name + ')' : ''}.`);
+  const greeting = encodeURIComponent(`Hello ${r.name.split(/\s+/)[0]}, this is LumaDesign about your ${quote ? 'quote' : 'consultation'} request ${r.id}${r.design_name ? ' (' + r.design_name + ')' : ''}.`);
   const d = dialog({
-    title: r.name + ' · ' + r.id,
+    title: r.name + ' · ' + r.id + (quote ? ' · Quote' : ''),
     size: 'wide',
     body: `<div class="editor-layout">
       <div class="stack">
@@ -154,18 +165,24 @@ async function openRequest(id, onChange) {
             <dt>Name</dt><dd>${esc(r.name)}</dd>
             <dt>Phone</dt><dd>${esc(r.phone)}</dd>
             <dt>Email</dt><dd>${r.email ? `<a href="mailto:${esc(r.email)}">${esc(r.email)}</a>` : '—'}</dd>
+            <dt>Type</dt><dd>${quote ? 'Quote request: send the price, lead time and delivery' : 'Consultation request'}</dd>
             <dt>Contact by</dt><dd>${esc(r.contact_by)}</dd>
-            <dt>Preferred time</dt><dd>${esc([r.preferred_date ? fmtDate(r.preferred_date, false) : '', r.preferred_time].filter(Boolean).join(', ') || 'Any time')}</dd>
-            <dt>Received</dt><dd>${fmtDate(r.created_at)} · from ${esc(r.source || 'the website')}</dd>
+            ${quote ? '' : `<dt>Preferred time</dt><dd>${esc([r.preferred_date ? fmtDate(r.preferred_date, false) : '', r.preferred_time].filter(Boolean).join(', ') || 'Any time')}</dd>`}
+            <dt>Received</dt><dd>${fmtDate(r.created_at)} · ${esc(SOURCE[r.source] || 'from ' + r.source)}</dd>
           </dl>
         </div>
-        <div class="card card-pad stack">
+        ${quote ? `<div class="card card-pad stack">
+          <h3 class="section-title">Pieces to quote · ${pieces.reduce((n, i) => n + (+i.qty || 1), 0)} in total</h3>
+          ${pieces.length ? `<ul class="room-lamps">${pieces.map(i => `<li><b>${esc(i.name)}</b>${+i.qty > 1 ? ' × ' + esc(i.qty) : ''} · ${esc(i.category || 'Design')}${i.ref ? ' · ref ' + esc(i.ref) : ''}${/^(build|saved):/.test(i.key || '') ? ' · customised by the customer' : ''}</li>`).join('')}</ul>`
+            : '<p class="muted">The customer\'s selection was empty: they asked for general advice and prices.</p>'}
+          <div class="field"><span class="field-label">Customer's notes</span><p>${r.notes ? esc(r.notes) : '<span class="muted">No notes</span>'}</p></div>
+        </div>` : `<div class="card card-pad stack">
           <h3 class="section-title">Design</h3>
           ${r.design_name ? `<div class="row" style="align-items:flex-start;flex-wrap:nowrap">${r.design_image ? `<img src="${esc(r.design_image)}" alt="" style="width:140px;border-radius:12px;background:var(--sand)">` : ''}
             <dl class="kv"><dt>Design</dt><dd>${esc(r.design_name)}</dd><dt>Reference</dt><dd>${esc(r.design_ref || '—')}</dd><dt>Category</dt><dd>${esc(r.design_category || '—')}</dd>
             <dt>Custom setup</dt><dd>${esc(r.setup || 'Not customised')}</dd></dl></div>` : room ? '<p class="muted">Sent from the Room Studio: see the room design below.</p>' : '<p class="muted">General consultation, not about a specific design.</p>'}
           <div class="field"><span class="field-label">Customer's notes</span><p>${r.notes ? esc(r.notes) : '<span class="muted">No notes</span>'}</p></div>
-        </div>
+        </div>`}
         ${room ? `<div class="card card-pad stack">
           <h3 class="section-title">Room design · ${room.lamps.length} ${room.lamps.length === 1 ? 'light' : 'lights'}</h3>
           <div id="rqRoomImg">${room.image ? loading() : '<p class="muted">The customer did not attach the picture of their room.</p>'}</div>

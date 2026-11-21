@@ -129,7 +129,7 @@ button { cursor: pointer; }
 .publish-state[data-state="changed"] { color: var(--warn); font-weight: 600; }
 .publish-state[data-state="changed"]::before { background: var(--gold); }
 .content { padding: 28px; display: grid; gap: 24px; align-content: start; }
-.content > .page { display: grid; gap: 24px; align-content: start; min-width: 0; }
+.content > .page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-content: start; min-width: 0; }
 
 /* ---------- Cards, stats, tables ---------- */
 .card { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); }
@@ -248,6 +248,7 @@ table.table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .cell-main { font-weight: 600; }
 .cell-sub { display: block; font-size: 12px; color: var(--muted); }
 
+.kind-tag { display: inline-block; margin-left: 6px; padding: 0 8px; border-radius: 999px; background: var(--olive-soft); color: var(--olive); font-size: 12px; font-weight: 600; line-height: 20px; vertical-align: 1px; }
 .status { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
 .status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .status--new { background: var(--info-soft); color: var(--info); }

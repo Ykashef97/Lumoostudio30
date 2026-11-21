@@ -464,7 +464,7 @@ Complexity: S = hours, M = 1–3 days, L = a week or more.
 
 ### P1: high priority
 
-*Status 21 Nov: P1-1, P1-2, P1-3 and P1-6 done; P1-5 partly done (module preloading and lazy fallback; content still waits for the database call on first visits). P1-4, P1-7, P1-8 and P1-9 open. P1-10: Phase 1 "Room Studio" built (photo-based placement with perspective, 360° photo support, lighting preview, save and send); AI 360° expansion not started.*
+*Status 21 Nov: P1-1, P1-2, P1-3 and P1-6 done; P1-5 partly done (module preloading and lazy fallback; content still waits for the database call on first visits). P1-4 done 21 Nov on branch `fix-bugs` (quotes saved like consultations, kind 'quote'; not live until merged). P1-7, P1-8 and P1-9 open. P1-10: Phase 1 "Room Studio" built (photo-based placement with perspective, 360° photo support, lighting preview, save and send); AI 360° expansion not started.*
 
 | ID | Category | Affected | Problem | Solution | Impact | Complexity | Depends on |
 | --- | --- | --- | --- | --- | --- | --- | --- |
