@@ -341,6 +341,7 @@
             <button class="btn btn--outline btn--block" id="consultBuild" type="button"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-calendar"/></svg>Book a consultation about this lamp</button>
             <button class="btn btn--outline" id="addBuildToCart" type="button">Add to selection</button>
             <button class="btn btn--outline" id="saveDesign" type="button"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-heart"/></svg>Save design</button>
+            <button class="btn btn--outline btn--block" id="roomBuild" type="button"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-image"/></svg>Place this lamp in my room</button>
           </div>
         </div>
       </div>
@@ -356,6 +357,35 @@
         <p class="lede">Add a photo of your room, pick a design, and click where it should go. Your photo never leaves your device.</p>
       </div>
 
+      <!-- Room Studio: 3D lamps placed in a photo of the customer's room (assets/js/roomstudio.js, loaded on demand) -->
+      <div class="room-studio" id="roomStudio">
+        <div class="rs-start" id="rsStart">
+          <div class="rs-start-copy">
+            <span class="quickcard-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-image"/></svg></span>
+            <h3>Start with a photo of your room</h3>
+            <p>Stand in a corner or doorway and hold your phone straight, so the photo shows a bit of the ceiling and the floor. Then match the room, choose our lights and place them where you want them.</p>
+            <ul class="rs-start-points">
+              <li><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-check"/></svg>Real 3D lights at their real size</li>
+              <li><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-check"/></svg>Several lights, warm or cool, day or evening</li>
+              <li><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-shield"/></svg>Your photo stays on your device unless you send your design to us</li>
+            </ul>
+          </div>
+          <div class="rs-start-actions">
+            <label class="upload-drop" for="rsFile">
+              <svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-upload"/></svg>
+              <span><b>Choose a room photo</b><small>JPG, PNG or WEBP · a 360° photo works too</small></span>
+            </label>
+            <input class="visually-hidden" id="rsFile" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif">
+            <button class="btn btn--outline" type="button" id="rsSample">Try a sample room</button>
+            <div class="rs-saved" id="rsSavedList" hidden></div>
+          </div>
+        </div>
+        <div class="rs-work" id="rsWork" hidden></div>
+        <div class="rs-busy" aria-hidden="true"><span class="spinner"></span></div>
+      </div>
+
+      <!-- Simple 2D preview: used only if the browser cannot run the Room Studio -->
+      <div class="visual-fallback" id="visualFallback" hidden>
       <div class="visualizer">
         <div class="visual-controls">
           <label class="upload-drop" for="fileInput">
@@ -405,6 +435,7 @@
           </div>
           <p class="visual-hint" id="visualHint" hidden>Click the photo to move the light</p>
         </div>
+      </div>
       </div>
     </div>
   </section>
@@ -486,7 +517,7 @@
     </div>
     <div>
       <h2 class="footer-title">Good to know</h2>
-      <p class="footer-note">Room photos never leave your device. Your shortlist and selection are stored only in this browser; hearts are counted anonymously. Nothing else is sent until you choose to contact us.</p>
+      <p class="footer-note">Room photos stay on your device unless you send your design to us. Your shortlist and selection are stored only in this browser; hearts are counted anonymously. Nothing else is sent until you choose to contact us.</p>
     </div>
   </div>
   <div class="container footer-bottom">

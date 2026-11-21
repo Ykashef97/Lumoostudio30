@@ -85,6 +85,26 @@ export async function submitRequest(payload) {
   }
 }
 
+// Stores the picture of a Room Studio design in the private "room-designs" bucket.
+// Visitors can only add files there (never read or list them); only the admin can view them.
+export async function uploadRoomDesign(blob) {
+  if (!hasEndpoint() || !blob) return { ok: false };
+  const id = crypto.randomUUID ? crypto.randomUUID() : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ (Math.random() * 16 >> c / 4)).toString(16));
+  const path = 'incoming/' + id + '/design.jpg';
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const h = { apikey: SUPABASE_ANON_KEY, 'Content-Type': 'image/jpeg', 'x-upsert': 'false' };
+    if (!SUPABASE_ANON_KEY.startsWith('sb_')) h.Authorization = 'Bearer ' + SUPABASE_ANON_KEY;
+    const response = await fetch(SUPABASE_URL + '/storage/v1/object/room-designs/' + path, { method: 'POST', headers: h, body: blob, signal: controller.signal });
+    return response.ok ? { ok: true, path } : { ok: false };
+  } catch (error) {
+    return { ok: false };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // Anonymous heart count per design (no personal data). Failures are ignored.
 export function recordLike(ref, delta) {
   if (!hasEndpoint() || !ref) return;
@@ -107,6 +127,10 @@ export function consultationMessage(p) {
     lines.push('', 'Design: ' + p.design.name + ' (' + p.design.category + ', ref ' + p.design.ref + ')');
     if (p.setup) lines.push('My setup: ' + p.setup);
     lines.push('Photo: ' + p.design.image);
+  }
+  if (p.room && p.room.lines && p.room.lines.length) {
+    lines.push('', 'My room design (' + p.room.lines.length + (p.room.lines.length === 1 ? ' light' : ' lights') + '):');
+    p.room.lines.forEach(line => lines.push('- ' + line));
   }
   lines.push('', 'Name: ' + p.name, 'Phone: ' + p.phone);
   if (p.email) lines.push('Email: ' + p.email);

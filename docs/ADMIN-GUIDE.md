@@ -33,6 +33,7 @@ Counts of requests by status, the latest requests, recent uploads, the most-like
 - Change the **status**: New → Contacted → Meeting scheduled → In progress → Completed (or Cancelled). Every change is recorded in the history.
 - **WhatsApp** opens a chat with the customer. **Copy** copies their details.
 - **Export CSV** downloads the requests matching your filters. It opens correctly in Excel, Arabic included.
+- **Room designs:** requests sent from the Room Studio say "Room design" in the list. Open one to see the picture of the customer's room with the lights they placed (if they attached it) and the list of lights with size, finish, cord, height and light colour. The picture is private: only the signed-in admin can open it.
 
 ### Homepage
 - **Top banner:** headline (put `*stars*` around words for gold italics), buttons and the slides. Each slide has a photo, a room label, the line under the headline and an ALT text (a short description for blind visitors).
@@ -64,6 +65,7 @@ Hide a design rather than deleting it if it may come back. Deleting removes it f
 ### Settings
 - **Change password:** enter the current password, then the new one twice (at least 12 characters, letters and numbers). Keep it in a password manager: with `admin@yourwebsite.com` there is no "forgot password" email.
 - **Lamp designer prices and booking:** the estimate in the 3D designer, and an optional online booking link shown after a request is sent. Prices appear on the website only when **Show these prices on the website** is switched on. Until then the designer shows "Price: On request" and no figures. Enter your real prices, switch it on, save, then **Publish**.
+- **Room Studio:** switch it on or off (when off, the homepage shows the simple photo preview) and choose its starting light (daytime, early evening, evening). Save, then Publish.
 - **Google Sheet copy of requests:** the two addresses, **Sync now**, **Rebuild the Sheet**, and a log of each copy.
 - **Published versions:** restore an earlier version of the website.
 

@@ -97,11 +97,18 @@ No account is needed. It works on phones, tablets and computers.
 - See an estimated price, confirmed later in the quote (only once the owners switch prices on; until then "Price: On request").
 - Save the design to the shortlist, add it to the selection, request a quote, or book a consultation about it.
 
-### Try it in your room
+### Room Studio: our lights in their own room
 
-- Upload a photo of their room, or use the sample room. The photo never leaves their device.
-- Choose a design, click where it should go, adjust its size and the warmth of the glow.
-- Download the picture.
+- **Start:** upload a normal photo of their room (or use the sample room). A 360° photo also works and can be explored all the way round.
+- **Match the room:** drag two lines to where the ceiling and the floor meet the back wall, and confirm the ceiling height. The website rebuilds the room's perspective from the photo and says how far away the back wall seems. If they know the real distance (roughly the room's length), they type it in and the lights are sized to match. Works with straight-on and corner views; furniture hiding the floor line is fine (they place the line where the floor meets the wall behind it).
+- **Place lights:** choose any of our designs and tap the ceiling or a wall. Chandeliers and pendants hang from the ceiling, ceiling lights sit on it, wall lights attach to walls, all at their real size.
+- **Adjust each light:** move it by dragging, change size, finish, cord colour, how low it hangs, its angle, warm or cool light and brightness. Duplicate or remove it; undo and redo.
+- **See the effect:** an evening control dims the room, and each light adds a soft pool of light on the walls and ceiling.
+- **Measurements:** shows how high the bottom of a hanging light is above the floor and below the ceiling.
+- **Save on their device**, reopen later, or **send the design** to LumaDesign with a consultation request (a picture of the design and the list of lights).
+- **What it is not:** a normal photo only shows part of the room, so the view can turn only a little, not 360°. It is a believable preview, not an exact light calculation. Furniture in the photo does not hide the lights.
+- **Fallback:** browsers that cannot show 3D get the simple 2D photo preview.
+- Up to 8 lights per room.
 
 ### Selection and quote
 
@@ -130,6 +137,7 @@ No account is needed. It works on phones, tablets and computers.
 - Create an account.
 - Order or pay online.
 - Choose a confirmed meeting time online (an optional booking calendar link can be added in Settings).
+- Walk around their room in 3D from a normal photo (only a slight turn is possible; a 360° photo allows looking all the way round).
 
 ---
 

@@ -67,7 +67,7 @@ The home page, from top to bottom:
 | Collections | Browses all designs (54 today), filters by collection (wall lights, ceiling lights, chandeliers, or any collection the owners add), searches by name or reference, opens a design for details, or taps the heart to save it |
 | How it works | Reads the three steps: choose, customise, talk to us |
 | Design your lamp | Picks a design, size, finish and cord. The 3D model updates with every choice and can be turned all the way round, tilted and zoomed |
-| Try in your room | Uploads a room photo (or uses our sample room), clicks where the light should go, and downloads the picture |
+| Try in your room (Room Studio) | Uploads a room photo (or a 360° photo, or our sample room), matches the room with two lines, places our real 3D lights on the ceiling and walls, adjusts them, and saves the design or sends it to us with a consultation request |
 | About | A short introduction with a link to the About page |
 | Saved designs | Appears only after the visitor saves something. Lists their hearts and saved lamp designs, each with a **Discuss** button |
 | Footer | Our phone, WhatsApp and the links again |

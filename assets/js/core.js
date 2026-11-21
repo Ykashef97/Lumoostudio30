@@ -4,7 +4,7 @@ import { LUMA_CONTACT, LUMA_REQUESTS } from './config.js';
 import { CATEGORY, styleCatalog, styleNotes, fixtureImage, fixtureTone, fixtureSpecs, refCode, findFixtureByName, parsePick } from './catalog.js';
 import { IS_PREVIEW, pageContent } from './content.js';
 import {
-  validateConsultation, normalizePhone, newRequestId, hasEndpoint, submitRequest, recordLike,
+  validateConsultation, normalizePhone, newRequestId, hasEndpoint, submitRequest, recordLike, uploadRoomDesign,
   consultationMessage, whatsappLink, isoDay, PREFERRED_DAY_MAX, formatDay
 } from './requests.js';
 
@@ -210,6 +210,17 @@ function injectSharedMarkup() {
           <label class="check" id="consultSetupWrap" hidden>
             <input type="checkbox" id="consultSetup" checked>
             <span>Include my custom setup: <b id="consultSetupText"></b></span>
+          </label>
+        </div>
+      </div>
+      <div class="consult-room" id="consultRoom" hidden>
+        <img id="consultRoomImg" alt="Your room design">
+        <div>
+          <b id="consultRoomTitle">Your room design</b>
+          <ul class="consult-room-list" id="consultRoomList"></ul>
+          <label class="check">
+            <input type="checkbox" id="consultRoomAttach" checked>
+            <span>Attach the picture of my room design. It is stored privately and only seen by our team.</span>
           </label>
         </div>
       </div>
@@ -705,23 +716,35 @@ function bindSelectionAndQuote() {
    ===================================================================== */
 
 const CONTACT_MEMORY = 'lumaContact';
-let consult = { item: null, setup: '', source: '', payload: null };
+let consult = { item: null, setup: '', source: '', payload: null, room: null };
 
 function consultStep(name) {
   $$('#consultModal .consult-step').forEach(step => { step.hidden = step.dataset.step !== name; });
 }
 
-// item: { key, index, setup?, source } — or nothing for a general consultation.
+// item: { key, index, setup?, source, room? } — or nothing for a general consultation.
+// room (from the Room Studio): { preview (image URL), blob (JPEG), lines: [text], lamps: [...] }
 export function openConsultation(item = {}) {
   setMenu(false);
-  const hasDesign = item.key !== undefined && styleCatalog[item.key];
-  const setup = hasDesign ? (item.setup || hooks.currentSetup(item.key, item.index) || '') : '';
-  consult = { item: hasDesign ? { key: item.key, index: item.index } : null, setup, source: item.source || 'general', payload: null };
+  const room = item.room || null;
+  const hasDesign = !room && item.key !== undefined && styleCatalog[item.key];
+  const setup = hasDesign ? (item.setup || hooks.currentSetup(item.key, item.index) || '') : (room ? item.setup || '' : '');
+  consult = { item: hasDesign ? { key: item.key, index: item.index } : null, setup, source: item.source || 'general', payload: null, room };
 
-  $('#consultTitle').textContent = hasDesign ? 'Discuss this design' : 'Book a consultation';
-  $('#consultLede').textContent = hasDesign
-    ? 'Talk to us about customisation, sizes, finishes or pricing. Tell us how to reach you and we will agree a time.'
-    : 'Tell us about your space and how to reach you. We will get in touch to agree a time that suits you.';
+  $('#consultTitle').textContent = room ? 'Send my room design' : hasDesign ? 'Discuss this design' : 'Book a consultation';
+  $('#consultLede').textContent = room
+    ? 'We will look at your room and the lights you chose, then contact you to talk it through and agree a time.'
+    : hasDesign
+      ? 'Talk to us about customisation, sizes, finishes or pricing. Tell us how to reach you and we will agree a time.'
+      : 'Tell us about your space and how to reach you. We will get in touch to agree a time that suits you.';
+
+  $('#consultRoom').hidden = !room;
+  if (room) {
+    $('#consultRoomImg').src = room.preview;
+    $('#consultRoomTitle').textContent = 'Your room design · ' + room.lamps.length + (room.lamps.length === 1 ? ' light' : ' lights');
+    $('#consultRoomList').innerHTML = room.lines.map(line => '<li>' + escapeLuma(line) + '</li>').join('');
+    $('#consultRoomAttach').checked = true;
+  }
 
   $('#consultItem').hidden = !hasDesign;
   if (hasDesign) {
@@ -810,7 +833,8 @@ function buildPayload(values) {
       category: CATEGORY[item.key].singular,
       image: absoluteUrl(fixtureImage(item.key, item.index, false))
     } : null,
-    setup: includeSetup ? consult.setup : ''
+    setup: consult.room ? consult.room.lines.join('; ').slice(0, 200) : includeSetup ? consult.setup : '',
+    room: consult.room ? { image: null, lamps: consult.room.lamps, lines: consult.room.lines } : null
   };
 }
 
@@ -875,6 +899,12 @@ function bindConsultation() {
     const submit = $('#consultSubmit');
     submit.disabled = true;
     submit.textContent = 'Sending…';
+    // The room design picture goes first; if it cannot be stored, the request is still sent without it.
+    if (consult.room && $('#consultRoomAttach').checked && consult.room.blob) {
+      const blob = await Promise.resolve(consult.room.blob).catch(() => null);
+      const uploaded = blob ? await uploadRoomDesign(blob) : { ok: false };
+      if (uploaded.ok) payload.room.image = uploaded.path;
+    }
     const result = await submitRequest(payload);
     submit.disabled = false;
     submit.textContent = 'Send request';

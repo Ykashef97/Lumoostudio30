@@ -181,6 +181,8 @@ create table if not exists public.consultation_requests (
 create index if not exists requests_created_idx on public.consultation_requests (created_at desc);
 create index if not exists requests_status_idx on public.consultation_requests (status);
 create index if not exists requests_updated_idx on public.consultation_requests (updated_at);
+-- Room Studio designs sent with a request: { image: storage path or null, lamps: [...] }.
+alter table public.consultation_requests add column if not exists room jsonb;
 
 create table if not exists public.request_notes (
   id uuid primary key default gen_random_uuid(),
@@ -311,7 +313,8 @@ language sql stable security definer set search_path = public as $$
     'content', (select data from content),
     'settings', jsonb_build_object(
        'pricing', (select settings -> 'pricing' from content),
-       'calendarUrl', (select settings -> 'calendarUrl' from content)),
+       'calendarUrl', (select settings -> 'calendarUrl' from content),
+       'roomStudio', (select settings -> 'roomStudio' from content)),
     'designs', coalesce((select jsonb_agg(jsonb_build_object(
         'id', d.id, 'slug', d.slug, 'ref', d.ref, 'name', d.name, 'category', d.category,
         'description', d.description, 'model', d.model, 'image', d.image_id, 'specs', d.specs)
@@ -447,6 +450,8 @@ declare
   v_notes text := coalesce(p ->> 'notes', '');
   v_date date;
   v_design public.designs%rowtype;
+  v_room jsonb := null;
+  v_image text;
 begin
   -- A person never fills the hidden "website" field; automated spam does.
   if coalesce(p ->> 'website', '') <> '' then return jsonb_build_object('ok', true, 'id', v_id); end if;
@@ -475,13 +480,30 @@ begin
 
   select * into v_design from designs where ref = (p -> 'design' ->> 'ref') limit 1;
 
+  -- A Room Studio design: keep only known fields, at most 8 lights, and only a picture that was
+  -- really uploaded to the private room-designs bucket under the expected name.
+  if jsonb_typeof(p -> 'room') = 'object' and octet_length((p -> 'room')::text) <= 12000 then
+    v_image := p -> 'room' ->> 'image';
+    if v_image is null or v_image !~ '^incoming/[0-9a-f-]{36}/design\.jpg$'
+       or not exists (select 1 from storage.objects o where o.bucket_id = 'room-designs' and o.name = v_image) then
+      v_image := null;
+    end if;
+    v_room := jsonb_build_object('image', v_image, 'lamps', coalesce((
+      select jsonb_agg(jsonb_build_object(
+        'ref', left(l ->> 'ref', 10), 'name', left(l ->> 'name', 80), 'size', left(l ->> 'size', 4),
+        'finish', left(l ->> 'finish', 20), 'cord', left(l ->> 'cord', 20), 'drop', left(l ->> 'drop', 4),
+        'kelvin', left(l ->> 'kelvin', 5), 'brightness', left(l ->> 'brightness', 4)))
+      from (select l from jsonb_array_elements(case when jsonb_typeof(p -> 'room' -> 'lamps') = 'array'
+                                                    then p -> 'room' -> 'lamps' else '[]'::jsonb end) l limit 8) x), '[]'::jsonb));
+  end if;
+
   insert into consultation_requests (id, name, phone, email, contact_by, preferred_date, preferred_time, notes,
-    design_id, design_ref, design_name, design_category, design_image, setup, source, page)
+    design_id, design_ref, design_name, design_category, design_image, setup, source, page, room)
   values (v_id, v_name, left(v_phone, 24), v_email, left(coalesce(nullif(p ->> 'contactBy', ''), 'WhatsApp'), 20),
     v_date, left(coalesce(p ->> 'preferredTime', ''), 40), v_notes,
     v_design.id, coalesce(v_design.ref, left(p -> 'design' ->> 'ref', 10)), coalesce(v_design.name, left(p -> 'design' ->> 'name', 80)),
     left(p -> 'design' ->> 'category', 40), left(p -> 'design' ->> 'image', 500),
-    left(coalesce(p ->> 'setup', ''), 200), left(coalesce(p ->> 'source', ''), 40), left(coalesce(p ->> 'page', ''), 300));
+    left(coalesce(p ->> 'setup', ''), 200), left(coalesce(p ->> 'source', ''), 40), left(coalesce(p ->> 'page', ''), 300), v_room);
   insert into request_events (request_id, kind, detail, actor) values (v_id, 'created', 'Received from the website', null);
   return jsonb_build_object('ok', true, 'id', v_id);
 end $$;
@@ -591,6 +613,34 @@ do $$ begin
   create policy "media admin insert" on storage.objects for insert to authenticated with check (bucket_id = 'media' and public.is_admin());
   create policy "media admin update" on storage.objects for update to authenticated using (bucket_id = 'media' and public.is_admin());
   create policy "media admin delete" on storage.objects for delete to authenticated using (bucket_id = 'media' and public.is_admin());
+exception when insufficient_privilege then
+  raise warning 'STORAGE_POLICIES_NEED_DASHBOARD';
+end $$;
+
+-- ---------------------------------------------------------------------
+-- Room Studio: pictures of room designs sent with consultation requests.
+-- Private bucket. Visitors may only add a JPEG (max 1.5 MB) under incoming/<uuid>/design.jpg,
+-- and at most 200 a day site-wide; they can never read or list files. Only the admin can view or delete.
+-- ---------------------------------------------------------------------
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('room-designs', 'room-designs', false, 1572864, array['image/jpeg'])
+on conflict (id) do update set public = false, file_size_limit = excluded.file_size_limit, allowed_mime_types = excluded.allowed_mime_types;
+
+create or replace function public.room_upload_allowed() returns boolean
+language sql stable security definer set search_path = public as $$
+  select (select count(*) from storage.objects where bucket_id = 'room-designs' and created_at > now() - interval '1 day') < 200
+$$;
+revoke execute on function public.room_upload_allowed() from public;
+grant execute on function public.room_upload_allowed() to anon, authenticated;
+
+do $$ begin
+  drop policy if exists "room designs visitor upload" on storage.objects;
+  drop policy if exists "room designs admin read" on storage.objects;
+  drop policy if exists "room designs admin delete" on storage.objects;
+  create policy "room designs visitor upload" on storage.objects for insert to anon, authenticated
+    with check (bucket_id = 'room-designs' and name ~ '^incoming/[0-9a-f-]{36}/design\.jpg$' and public.room_upload_allowed());
+  create policy "room designs admin read" on storage.objects for select to authenticated using (bucket_id = 'room-designs' and public.is_admin());
+  create policy "room designs admin delete" on storage.objects for delete to authenticated using (bucket_id = 'room-designs' and public.is_admin());
 exception when insufficient_privilege then
   raise warning 'STORAGE_POLICIES_NEED_DASHBOARD';
 end $$;

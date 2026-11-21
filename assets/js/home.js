@@ -1,5 +1,5 @@
 /* Home page: content from the admin portal, hero slideshow, collection, lamp designer and room preview. */
-import { LUMA_PRICING } from './config.js';
+import { LUMA_PRICING, LUMA_ROOM } from './config.js';
 import { pageContent, fill, richText, mediaById, designCount } from './content.js';
 import { mediaUrl, focalPosition } from './media.js';
 import {
@@ -425,6 +425,94 @@ $('#addBuildToCart').addEventListener('click', () => addLumaCartItem(buildCartIt
 $('#quoteBuild').addEventListener('click', () => { addLumaCartItem(buildCartItem(), true); openQuote(); });
 $('#consultBuild').addEventListener('click', () => openConsultation({ key: build.fixtureCategory, index: build.fixtureIndex, setup: buildSummary(build), source: 'designer' }));
 $('#saveDesign').addEventListener('click', () => { saveDesign(buildLabel(build)); toast('Design saved to your shortlist'); });
+$('#roomBuild').addEventListener('click', () => {
+  openRoom({ arm: { key: build.fixtureCategory, index: build.fixtureIndex, size: build.shade, finish: build.style, cord: build.cord } });
+  scrollToSection('#visualize');
+});
+
+/* =====================================================================
+   ROOM STUDIO (3D lamps in a photo of the customer's room; loaded on demand)
+   ===================================================================== */
+
+const webgl = (() => {
+  try { const c = document.createElement('canvas'); return Boolean(c.getContext('webgl2') || c.getContext('webgl')); }
+  catch (e) { return false; }
+})();
+
+// Browsers that cannot draw 3D keep the simple 2D preview.
+function showRoomFallback() {
+  $('#roomStudio').hidden = true;
+  $('#visualFallback').hidden = false;
+  if (window.syncVisualChoice) window.syncVisualChoice();
+}
+
+let roomLoading = null;
+function openRoom(action) {
+  if (!webgl || !LUMA_ROOM.enabled) { showRoomFallback(); if (action.arm && window.setVisualFixture) window.setVisualFixture(action.arm.key, action.arm.index); return; }
+  const box = $('#roomStudio');
+  box.classList.add('is-busy');
+  roomLoading = (roomLoading || import('./roomstudio.js'))
+    .then(m => m.roomStudio(action).then(() => m))
+    .catch(error => {
+      console.error(error);
+      roomLoading = null;
+      toast('The room preview could not start, so the simple version is shown.');
+      showRoomFallback();
+    })
+    .finally(() => box.classList.remove('is-busy'));
+}
+
+$('#rsFile').addEventListener('change', e => {
+  const file = e.target.files && e.target.files[0];
+  if (file) openRoom({ file });
+  e.target.value = '';
+});
+$('#rsSample').addEventListener('click', () => openRoom({ sample: true }));
+const dropZone = $('#rsStart .upload-drop');
+['dragenter', 'dragover'].forEach(type => dropZone.addEventListener(type, e => { e.preventDefault(); dropZone.classList.add('is-over'); }));
+['dragleave', 'drop'].forEach(type => dropZone.addEventListener(type, () => dropZone.classList.remove('is-over')));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  const file = e.dataTransfer && e.dataTransfer.files[0];
+  if (file) openRoom({ file });
+});
+
+// Rooms saved on this device (IndexedDB, written by roomstudio.js).
+function listSavedRooms() {
+  const box = $('#rsSavedList');
+  if (!('indexedDB' in window)) return;
+  let request;
+  try { request = indexedDB.open('lumaRooms', 1); } catch (e) { return; }
+  request.onupgradeneeded = () => request.result.createObjectStore('rooms', { keyPath: 'id' });
+  request.onsuccess = () => {
+    const db = request.result;
+    const all = db.transaction('rooms', 'readonly').objectStore('rooms').getAll();
+    all.onsuccess = () => {
+      const rooms = (all.result || []).sort((a, b) => b.savedAt - a.savedAt);
+      box.hidden = !rooms.length;
+      box.innerHTML = rooms.length ? '<p class="rs-saved-title">Your saved rooms</p>' + rooms.map(r =>
+        '<div class="rs-saved-item"><button type="button" data-room-open="' + escapeLuma(r.id) + '">' +
+        '<img src="' + escapeLuma(r.thumb || '') + '" alt="" width="72" height="54"><span><b>' + escapeLuma(r.name) + '</b><small>' +
+        r.lamps.length + (r.lamps.length === 1 ? ' light' : ' lights') + ' · ' + new Date(r.savedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + '</small></span></button>' +
+        '<button class="icon-btn" type="button" data-room-delete="' + escapeLuma(r.id) + '" aria-label="Delete ' + escapeLuma(r.name) + '">' + icon('close') + '</button></div>').join('') : '';
+      db.close();
+    };
+  };
+}
+$('#rsSavedList').addEventListener('click', e => {
+  const open = e.target.closest('[data-room-open]'), del = e.target.closest('[data-room-delete]');
+  if (open) openRoom({ saved: open.dataset.roomOpen });
+  if (del && confirm('Delete this saved room from this device?')) {
+    const request = indexedDB.open('lumaRooms', 1);
+    request.onsuccess = () => {
+      const db = request.result, tx = db.transaction('rooms', 'readwrite');
+      tx.objectStore('rooms').delete(del.dataset.roomDelete);
+      tx.oncomplete = () => { db.close(); listSavedRooms(); };
+    };
+  }
+});
+document.addEventListener('luma-rooms-changed', listSavedRooms);
+if (!webgl || !LUMA_ROOM.enabled) showRoomFallback(); else listSavedRooms();
 
 /* =====================================================================
    LINKS FROM OTHER PAGES AND DIALOGS
@@ -437,7 +525,7 @@ hooks.designFixture = (key, index) => {
   scrollToSection('#studio');
 };
 hooks.tryFixture = (key, index) => {
-  if (window.setVisualFixture) window.setVisualFixture(key, index);
+  openRoom({ arm: { key, index } });
   scrollToSection('#visualize');
 };
 hooks.currentSetup = (key, index) =>
@@ -458,7 +546,7 @@ const params = new URLSearchParams(location.search);
 const design = parsePick(params.get('design'));
 const tryIt = parsePick(params.get('try'));
 if (design) { build.customised = true; setBuildFixture(design.key, design.index); load3D(); }
-if (tryIt && window.setVisualFixture) window.setVisualFixture(tryIt.key, tryIt.index);
+if (tryIt) openRoom({ arm: { key: tryIt.key, index: tryIt.index } });
 if (params.get('search')) { showAllDesigns(); setTimeout(() => $('#catalogSearch').focus({ preventScroll: true }), 300); }
 if (design || tryIt || params.get('search')) {
   params.delete('design'); params.delete('try'); params.delete('search');
